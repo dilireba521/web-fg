@@ -1,18 +1,21 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { LAYOUT } from '@/router/constant'
 const route: RouteRecordRaw = {
-  path: '/',
-  name: 'home',
+  path: '/home',
+  name: 'Home',
   component: LAYOUT,
-  redirect: '/home',
+  redirect: '/home/index',
   meta: {
     title: '首页',
     orderNo: 10
   },
   children: [
     {
-      path: 'home',
+      path: 'index',
       name: 'HomeIndex',
+      meta: {
+        active: '/home/index' // 激活的菜单-面包屑或二级菜单必须要定义
+      },
       component: () => import('@/views/home/index')
     }
   ]

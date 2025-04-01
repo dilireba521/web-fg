@@ -1,6 +1,6 @@
 import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic'
 import type { RouteRecordRaw } from 'vue-router'
-// import { PageEnum } from '@/enums/pageEnum'
+import { PageEnum } from '@/enums/pageEnum'
 // import { LAYOUT } from '@/router/constant'
 
 // 公开路由模块
@@ -16,6 +16,14 @@ function addRoute(moduleList: Record<string, unknown>, routeList: RouteRecordRaw
   })
 }
 addRoute(basicModules, routebasicModuleList)
-
+// 根路由
+export const RootRoute: RouteRecordRaw = {
+  path: '/',
+  name: 'Root',
+  redirect: PageEnum.BASE_HOME,
+  meta: {
+    title: 'Root'
+  }
+}
 // 未经许可的基本路由
-export const basicRoutes = [...routebasicModuleList, PAGE_NOT_FOUND_ROUTE]
+export const basicRoutes = [RootRoute, ...routebasicModuleList, PAGE_NOT_FOUND_ROUTE]
