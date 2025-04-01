@@ -1,17 +1,64 @@
 :root {
   --color-white: #fff;
+  --color-black: #000;
+  --font-h1: 48px;
+  --font-h2: 40px;
+  --font-h3: 32px;
+  --font-h4: 24px;
+  --font-h5: 20px;
+  --font-h6: 16px;
+  --font-h7: 14px;
+  --font-h8: 12px;
+  --font-leading1: 64px;
+  --font-leading2: 52px;
+  --font-leading3: 42px;
+  --font-leading4: 32px;
+  --font-leading5: 28px;
+  --font-leading6: 24px;
+  --font-leading7: 20px;
+  --font-leading8: 16px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 390px) {
   :root {
     --color-white: #fff;
-  }
-}
-@media screen and (max-width: 1280px) {
-  :root {
-    --color-white: #fff;
+    --color-black: #000;
+    --font-h1: 24px;
+    --font-h2: 24px;
+    --font-h3: 24px;
+    --font-h4: 18px;
+    --font-h5: 14px;
+    --font-h6: 12px;
+    --font-h7: 12px;
+    --font-h8: 12px;
+    --font-leading1: 32px;
+    --font-leading2: 32px;
+    --font-leading3: 32px;
+    --font-leading4: 26px;
+    --font-leading5: 22px;
+    --font-leading6: 20px;
+    --font-leading7: 20px;
+    --font-leading8: 16px;
   }
 }
 
 // color
 @color-white: var(--color-white);
+@color-black: var(--color-black);
+@colorText: rgba(@color-black, 0.88); // 一级文本色
+@colorTextSecondary: rgba(@color-black, 0.65); // 二级文本色
+@colorTextTertiary: rgba(@color-black, 0.45); // 三级文本色
+@colorTextQuaternary: rgba(@color-black, 0.25); // 四级文本色
+@colorBorder: rgba(@color-black, 0.15); // 边框色
+@colorPrimary1: #c1272d; // 品牌色
+@colorPrimary2: #22b573; // 品牌色
+@colorPrimaryBg: #fff2f0; // 主色浅背景
+@colorPrimaryBgHover: #f5d2ce; // 主色浅色背景 悬浮态
+@colorPrimaryBorder: #e8a39e; // 主色描边色
+@colorPrimaryBorderHover: #db7672; // 主色描边色 悬浮态
+@colorPrimaryHover: #cf4a4a; // 主色悬浮态
+@colorPrimaryActive: #9c1720; // 主色激活态
+@colorSuccess: #52c41a; // 成功色
+@colorWarning: #faad14; // 警告色
+@colorError: #ff4d4f; // 错误色
+@colorBgBase: #ffffff; // 基础背景色
