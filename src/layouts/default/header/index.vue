@@ -1,75 +1,79 @@
 <template>
-    <div :class="['header', { 'black': tabType == 'black' }]">
-        <div class="container flex justify-center items-center">
-            <TabsVue :list="items" v-model:active="selectedKey" :type="tabType" @change="change"></TabsVue>
+    <div class="relative h-[1px]">
+        <div :style="headerStyle" :class="['header',
+            {
+                'black': tabType == 'black'
+            }
+        ]">
+            <!-- 一级导航 -->
+            <MenuVue @changeTab="changeTab"></MenuVue>
         </div>
+        <!-- 占位 -->
+        <div :class="['header-seat', { 'hidden': tabType == 'default' }]"></div>
     </div>
 </template>
 <script lang="ts" setup>
-import { watch, ref } from 'vue';
-import TabsVue from "./components/tabs/index.vue";
-import { useGo } from "@/hooks/web/usePage";
-import { useRoute } from 'vue-router';
-import type { RouteRecordRaw } from 'vue-router';
-import { routebasicModuleList } from "@/router/routes"
-
-const { go } = useGo();
-
-const route = useRoute();
-const items = ref()
-const selectedKey = ref()
+import { onMounted, onUnmounted, ref, nextTick } from 'vue';
+import MenuVue from "./components/menu.vue";
 const tabType = ref('default')
-
-const itemsFn = () => {
-    return sortRoutes(routebasicModuleList).map((item) => {
-        return {
-            ...item,
-            label: item.meta?.title || item.path,
-            value: item.redirect || item.path,
+const headerStyle = ref({})
+const isScrollDown = ref(true)
+function changeTab(type: string) {
+    tabType.value = type
+}
+function handleWheel(e: WheelEvent) {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+    let _style = {}
+    if (scrollTop <= 1) {
+        isScrollDown.value = true
+        _style = {
+            position: 'absolute',
         }
-    })
-}
-watch(() => route.path, () => {
-    // console.log(route, routebasicModuleList);
-    const _len = route.matched?.length
-    const _item = route.matched[_len - 1]
-    selectedKey.value = _item.meta?.active || _item.path
-    items.value = itemsFn()
-}, { immediate: true });
-
-watch(() => selectedKey.value, (val) => {
-    tabType.value = val == '/home/index' ? 'default' : 'black'
-}, { immediate: true })
-
-function change(params: any) {
-    // 如发现导航样式回选，可以写个定时器，延时对selectedKey赋值
-    go({
-        path: params
-    })
-}
-// 排序
-function sortRoutes(routes: RouteRecordRaw[]) {
-    return routes.sort((a: RouteRecordRaw, b: RouteRecordRaw) => {
-        if (a.meta?.orderNo && b.meta?.orderNo) {
-            // @ts-ignore
-            return a.meta?.orderNo - b.meta?.orderNo
-        } else if (a.meta?.orderNo) {
-            return -1
-        } else if (b.meta?.orderNo) {
-            return 1
+    } else {
+        if (e.deltaY > 0) {
+            _style = {
+                position: 'fixed',
+                transform: 'translateY(-56px)',
+                display: isScrollDown.value ? 'none' : 'block',
+            }
         } else {
-            return 0
+            isScrollDown.value = false
+            _style = {
+                transform: 'translateY(0px)',
+                position: 'fixed',
+            }
         }
-    })
+    }
+    // console.log("scrollTop===", scrollTop);
+    // console.log("_style===", _style);
+    headerStyle.value = _style
 }
+onMounted(() => {
+    document.addEventListener('wheel', handleWheel)
+})
+
+onUnmounted(() => {
+    document.removeEventListener('wheel', handleWheel)
+})
 </script>
 <style lang="less" scoped>
-.header {
+.header-seat {
     height: 56px;
+}
+
+.header {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 56px;
+    z-index: 2;
     background: rgba(0, 0, 0, 0.8);
+    transition: all 0.2s linear;
 
     &.black {
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.4);
+        // background-color: red;
     }
 }
 </style>

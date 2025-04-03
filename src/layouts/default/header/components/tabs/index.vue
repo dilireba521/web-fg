@@ -26,7 +26,7 @@ const props = defineProps({
             return ['default', 'large'].includes(value)
         }
     },
-    type: { // 白色还是黑色
+    type: { // 白色字还是黑色字
         type: String,
         default: 'default',
         validator: (value) => {
@@ -94,7 +94,7 @@ function handleClick(data) {
                 color: rgba(@colorBlack, 1);
 
                 .tab-inner {
-                    border-bottom-color: rgba(@colorBlack, .88);
+                    border-bottom-color: rgba(@colorPrimary1, .88);
                 }
             }
         }
