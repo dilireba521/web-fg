@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     host: true
   },
-  plugins: [vue(), vueJsx(), UnoCSS(), vueDevTools(), configSvgIconsPlugin({ isBuild: true })],
+  plugins: [vue(), vueJsx(), UnoCSS(), configSvgIconsPlugin({ isBuild: true })],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

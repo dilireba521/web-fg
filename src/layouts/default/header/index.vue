@@ -7,6 +7,9 @@
         ]">
             <!-- 一级导航 -->
             <MenuVue @changeTab="changeTab"></MenuVue>
+            <img v-if="tabType == 'default'" class="rta-logo" :src="iconLogoDefault" alt="">
+            <img v-else class="rta-logo" :src="iconLogoRed" alt="">
+            <div :class="['investor-login', tabType == 'default' ? 'active-white' : 'active-black']">投资者登录</div>
         </div>
         <!-- 占位 -->
         <div :class="['header-seat', { 'hidden': tabType == 'default' }]"></div>
@@ -15,6 +18,8 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, nextTick } from 'vue';
 import MenuVue from "./components/menu.vue";
+import iconLogoDefault from '@/assets/rta-logo.png'
+import iconLogoRed from '@/assets/rta-logo-red.png'
 const tabType = ref('default')
 const headerStyle = ref({})
 const isScrollDown = ref(true)
@@ -74,6 +79,30 @@ onUnmounted(() => {
     &.black {
         background: rgba(255, 255, 255, 0.4);
         // background-color: red;
+    }
+
+    .rta-logo {
+        width: 32px;
+        height: 29px;
+        position: absolute;
+        top: 14px;
+        left: 48px;
+        z-index: 1;
+    }
+
+    .investor-login{
+        font-weight: 400;
+        font-size: 14px;
+        position: absolute;
+        top: 18px;
+        right: 40px;
+
+        &.active-white {
+            color: rgba(@colorWhite, .88);
+        }
+        &.active-black {
+            color: rgba(@colorPrimary1, .88);
+        }
     }
 }
 </style>
