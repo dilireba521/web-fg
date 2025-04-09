@@ -11,12 +11,14 @@ import rtaLogoGold from '@/assets/rta-logo-gold.png'
 import Information from '@/views/home/components/information'
 import InvestConcept from '@/views/home/components/InvestConcept'
 import Connect from '@/views/home/components/connect'
+import { SvgIcon } from '@/components/Icon'
 
 export default defineComponent({
   components: {
     Information,
     InvestConcept,
-    Connect
+    Connect,
+    SvgIcon
   },
   setup(props, ctx) {
     const videoRef = ref<HTMLVideoElement | null>(null)
