@@ -1,4 +1,5 @@
 <template>
+    <!-- class="relative h-[1px]" -->
     <div>
         <div :style="headerStyle" :class="['header',
             {
