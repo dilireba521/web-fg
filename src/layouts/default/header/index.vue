@@ -1,5 +1,5 @@
 <template>
-    <div class="relative h-[1px]">
+    <div>
         <div :style="headerStyle" :class="['header',
             {
                 'black': tabType == 'black'
@@ -12,7 +12,7 @@
             <div :class="['investor-login', tabType == 'default' ? 'active-white' : 'active-black']">投资者登录</div>
         </div>
         <!-- 占位 -->
-        <div :class="['header-seat', { 'hidden': tabType == 'default' }]"></div>
+        <div :class="['header-seat','w-full', { 'hidden': tabType == 'default' }]"></div>
     </div>
 </template>
 <script lang="ts" setup>
