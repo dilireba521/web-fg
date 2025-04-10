@@ -36,3 +36,42 @@
   line-height: 22px;
   text-align: left;
 }
+
+/* 添加浮动动画 */
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.float-animation {
+  animation: floatAnimation 2s ease-in-out infinite;
+}
+
+.float-animation-delay {
+  animation: floatAnimation 2s ease-in-out 0.5s infinite;
+}
+
+/* 如果您已经有了 .video-bottom-icons 样式，可以在其中添加动画相关属性 */
+.video-bottom-icons {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  cursor: pointer;
+}
+
+.video-bottom-icons.up {
+  bottom: 50px;
+}
+
+.video-bottom-icons.down {
+  bottom: 20px;
+}

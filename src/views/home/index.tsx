@@ -56,12 +56,12 @@ export default defineComponent({
               x5-video-player-fullscreen="true"
               src="https://rta1.oss-cn-hangzhou.aliyuncs.com/uni/static/v2.mp4"
             ></video>
-            <img class="video-bottom-icons up" src={iconMouse} alt="鼠标图标" />
-            <img class="video-bottom-icons down" src={iconDown} alt="向下图标" />
+            <img class="video-bottom-icons up float-animation" src={iconMouse} alt="鼠标图标" />
+            <img class="video-bottom-icons down float-animation-delay" src={iconDown} alt="向下图标" />
           </div>
           <div class="w-full min-h-800px pt-160px pb-281px justify-center flex">
             <div>
-              <div class="home-intro-title font-medium text-5xl mb-32px">走进诺言私募</div>
+              <div class="home-intro-title font-medium font-h2 mb-32px">走进诺言私募</div>
               <div class="home-intro-content max-w-720px font-normal text-xl mb-57px">
                 <p class="mb-28px">{rtaIntro1}</p>
                 <p>{rtaIntro2}</p>
@@ -78,7 +78,7 @@ export default defineComponent({
             </div>
           </div>
           <Information />
-          <InvestConcept />
+          <InvestConcept themeBgColor={"white"} />
           <Connect />
         </div>
       </div>

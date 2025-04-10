@@ -13,7 +13,7 @@ export default defineComponent({
     return () => (
       <div class="info-page w-full min-h-706px pt-96px pb-120px px-320px">
         <div class="mb-40px flex justify-between">
-            <div class="font-medium text-black flex text-5xl">信息资讯</div>
+            <div class="font-medium text-black flex font-h3">信息资讯</div>
             <div class="text-sm font-normal flex">
                 <div class="mr-4px info-more">了解更多</div>
                 <img class="w-22px h-22px ml-4px" src={iconRightRed} alt="了解更多" />

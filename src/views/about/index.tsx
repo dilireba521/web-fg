@@ -2,8 +2,11 @@ import { defineComponent,ref } from 'vue'
 import './idnex.less'
 import { SubTitle } from '@/components/Icon'
 import Connect from '@/views/home/components/connect'
+import personalCard from './components/personalCard.vue'
+import DevelopCourse from './components/developCourse.vue'
 
 import iconRtaLarge from '@/assets/about-rta-large.svg'
+import aboutRtaFund from '@/assets/about-rta-fund.svg'
 
 const webBgHead = 'https://rta1.oss-cn-hangzhou.aliyuncs.com/web-bg/web-headbg'
 
@@ -12,18 +15,35 @@ const arrAboutCatalogue = ref(['公司介绍','企业文化','发展历程','核
 export default defineComponent({
   components: {
     SubTitle,
-    Connect
+    Connect,
+    personalCard,
+    DevelopCourse
   },
 
   setup(props, ctx) {
+    // 定义各个部分的ref引用
+    const companyIntroRef = ref(null)
+    const companyCultureRef = ref(null)
+    const developCourseRef = ref(null)
+    const coreTeamRef = ref(null)
+    const partnerRef = ref(null)
+
+    // 处理SubTitle点击事件
+    const handleSubTitleClick = (index: number) => {
+      const refs = [companyIntroRef, companyCultureRef, developCourseRef, coreTeamRef, partnerRef]
+      if (refs[index]?.value) {
+        (refs[index].value as HTMLElement).scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+
     return () => (
       <div>
         <div class="w-full">
           <img class="w-full h-480px" src={`${webBgHead}/head-about.jpg`} alt="关于我们" />
         </div>
-        <SubTitle arrTitle={arrAboutCatalogue.value} />
+        <SubTitle arrTitle={arrAboutCatalogue.value} onItemClick={handleSubTitleClick} />
         {/* 公司介绍 */}
-        <div class="w-full h-394px px-80 py-24 background-white">
+        <div ref={companyIntroRef} id="company-intro" class="w-full h-394px px-80 py-24 background-white">
           <div class="font-h3 mb-8">公司介绍</div>
           <div class="font-h5 text-xl font-normal text-left">
             <div class="mb-7">诺言私募基金管理有限公司成立于 2025 年，致力于为多元化的客户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和
@@ -33,7 +53,7 @@ export default defineComponent({
           </div>
         </div>
         {/* 企业文化 */}
-        <div class="w-full h-1005px px-80 py-24 background-white">
+        <div ref={companyCultureRef} id="company-culture" class="w-full h-1005px px-80 py-24 background-white">
           <div class="font-color-colorText text-center mb-39px">
             <div class="font-h3 mb-12">企业文化</div>
             <div class="font-h5 mb-4">核心理念</div>
@@ -70,28 +90,27 @@ export default defineComponent({
 
         </div>
         {/* 发展历程 */}
-        <div class="w-full px-80 py-24 text-center">
-          <div class="font-h3 font-color-colorText text-center font-medium">发展历程</div>
-          <div></div>
+        <div ref={developCourseRef} id="develop-course">
+          <developCourse />
         </div>
         {/* 核心团队 */}
-        <div class="w-full px-80 py-24 text-center">
-          <div class="">核心团队</div>
+        <div ref={coreTeamRef} id="core-team" class="w-full px-80 py-24 text-center">
+          <div class="font-h3 mb-8 font-medium">核心团队</div>
           <div class="flex flex-wrap">
-            {/* {Array.from({ length: 8 }).map((item,index)=>{
-              <div class="w-80 h-80"></div>
-            })} */}
+            <div class="w-2/4"><personalCard /></div>
+            <div class="w-2/4"><personalCard /></div>
           </div>
         </div>
         {/* 合作机构 */}
-        <div class="w-full h-99 px-80 py-24 background-colorBgLayout">
-            <div class="text-center mb-8">合作机构</div>
-            <div class="flex h-30">
-                <div class="w-84 h-30 bg-white"></div>
-                <div class="w-84 h-30 bg-white"></div>
-                <div class="w-84 h-30 bg-white"></div>
-                <div class="w-84 h-30 bg-white"></div>
-                <div class="w-84 h-30 bg-white"></div>
+        <div ref={partnerRef} id="partner" class="w-full h-99 px-80 py-24 background-colorBgLayout">
+            <div class="text-center mb-8 font-h3 font-color-colorText">合作机构</div>
+            <div class="flex h-30 flex-wrap justify-between">
+                <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
+                <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
+                <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
+                <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
+                <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
+                <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
             </div>
         </div>
         <Connect />
