@@ -18,40 +18,78 @@ body {
   height: 100%;
 }
 
+/* 自定义字体定义 */
+@font-face {
+  font-family: 'CustomFont';
+  src: url('https://rta1.oss-cn-hangzhou.aliyuncs.com/fonts/MISANS-MEDIUM.TTF') format('ttf'),
+       url('https://rta1.oss-cn-hangzhou.aliyuncs.com/fonts/MISANS-REGULAR.TTF') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* 优化字体加载过程中的显示 */
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('https://rta1.oss-cn-hangzhou.aliyuncs.com/fonts/MISANS-MEDIUM.TTF') format('ttf'),
+       url('https://rta1.oss-cn-hangzhou.aliyuncs.com/fonts/MISANS-REGULAR.TTF') format('ttf');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 应用字体的全局类 */
+.custom-font {
+  font-family: 'CustomFont', sans-serif;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
 .font-h1 {
+  font-family: 'CustomFont', sans-serif;
+  font-weight: bold;
   font-size: var(--font-h1);
   line-height: var(--font-leading1);
 }
 .font-h2 {
+  font-family: 'CustomFont', sans-serif;
+  font-weight: bold;
   font-size: var(--font-h2);
   line-height: var(--font-leading2);
 }
 .font-h3 {
+  font-family: 'CustomFont', sans-serif;
   font-size: var(--font-h3);
   line-height: var(--font-leading3);
 }
 .font-h4 {
+  font-family: 'CustomFont', sans-serif;
   font-size: var(--font-h4);
   line-height: var(--font-leading4);
 }
 .font-h5 {
+  font-family: 'CustomFont', sans-serif;
   font-size: var(--font-h5);
   line-height: var(--font-leading5);
 }
 .font-h6 {
+  font-family: 'CustomFont', sans-serif;
   font-size: var(--font-h6);
   line-height: var(--font-leading6);
 }
 .font-h7 {
+  font-family: 'CustomFont', sans-serif;
   font-size: var(--font-h7);
   line-height: var(--font-leading7);
 }
 .font-h8 {
+  font-family: 'CustomFont', sans-serif;
   font-size: var(--font-h8);
   line-height: var(--font-leading8);
 }
 
-.font-color-colorBlack{
+.font-color-colorBlack {
   color: @colorBlack;
 }
 
@@ -69,6 +107,10 @@ body {
 
 .background-colorBgLayout {
   background-color: @colorBgLayout;
+}
+
+.background-lightBlue {
+  background: linear-gradient( 180deg, #F4F9FF 0%, #EEF6FF 100%);
 }
 
 // 全局居中容器

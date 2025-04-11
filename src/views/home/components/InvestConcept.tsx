@@ -61,7 +61,7 @@ export default defineComponent({
 
     return () => (
       <div class={`invest-page w-full min-h-534px pt-24 pb-96px px-320px ${bgColor.value == 'white' ? 'background-white' : 'background-colorBgLayout'}`}>
-        <div class="invest-page-title font-medium mb-32px">投资理念</div>
+        <div class="invest-page-title mb-32px">投资理念</div>
         <div class="flex justify-between">
             {arrInvestConcept.map((item, index) => (
                 <div 

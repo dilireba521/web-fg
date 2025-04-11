@@ -4,11 +4,10 @@ import { SubTitle } from '@/components/Icon'
 import Connect from '@/views/home/components/connect'
 import personalCard from './components/personalCard.vue'
 import DevelopCourse from './components/developCourse.vue'
+import { WEB_BG_HEAD } from '@/utils/resources';
 
 import iconRtaLarge from '@/assets/about-rta-large.svg'
 import aboutRtaFund from '@/assets/about-rta-fund.svg'
-
-const webBgHead = 'https://rta1.oss-cn-hangzhou.aliyuncs.com/web-bg/web-headbg'
 
 const arrAboutCatalogue = ref(['公司介绍','企业文化','发展历程','核心团队','合作机构'])
 
@@ -38,8 +37,9 @@ export default defineComponent({
 
     return () => (
       <div>
-        <div class="w-full">
-          <img class="w-full h-480px" src={`${webBgHead}/head-about.jpg`} alt="关于我们" />
+        <div class="w-full relative">
+          <img class="w-full h-480px" src={`${WEB_BG_HEAD}/head-about.png`} alt="关于我们" />
+          <img class="w-60 h-82px absolute top-199px left-80" src={aboutRtaFund} />
         </div>
         <SubTitle arrTitle={arrAboutCatalogue.value} onItemClick={handleSubTitleClick} />
         {/* 公司介绍 */}

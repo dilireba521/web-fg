@@ -1,0 +1,225 @@
+.research-scope-container {
+    position: relative;
+    background-color: #f0f8ff;
+    padding: 0px;
+    border-radius: 4px;
+    padding-top: 64px;
+  }
+  
+  .research-title {
+    position: absolute;
+    left: 4px;
+    top: calc(50% + 32px);
+    transform: translateY(-50%);
+    font-weight: bold;
+  }
+  
+  .research-line {
+    position: relative;
+    height: 100%;
+    margin-left: 112px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .research-line::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #e74c3c;
+    z-index: 1;
+  }
+  
+  .research-line::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-left: 18px solid #e74c3c;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+  
+  .research-item {
+    position: relative;
+    min-width: 160px;
+    text-align: center;
+    font-size: 20px;
+    z-index: 3;
+  }
+  
+  .research-item.top {
+    align-self: flex-start;
+    margin-top: -68px;
+  }
+  
+  .research-item.bottom {
+    align-self: flex-end;
+    margin-bottom: -68px;
+  }
+  
+  .research-item::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+  }
+  
+  .research-item.top::before {
+    top: 32px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-right: 6px solid transparent;
+    border-bottom: 8px solid #e74c3c;
+    border-left: 6px solid transparent;
+  }
+  
+  .research-item.bottom::before {
+    bottom: 30px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #e74c3c;
+    border-left: 6px solid transparent;
+  }
+  
+  .research-item::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 30px;
+    background-color: #e74c3c;
+    left: 50%;
+  }
+  
+  .research-item.top::after {
+    top: 40px;
+    transform: translateX(-50%);
+  }
+  
+  .research-item.bottom::after {
+    bottom: 38px;
+    transform: translateX(-50%);
+  }
+
+.risk-item-line{
+    border-bottom: 2px solid #c2c2c2;
+    border-right: 2px solid #c2c2c2;
+}
+
+.risk-item-line-right{
+    border-bottom: 2px solid #c2c2c2;
+    border-left: 2px solid #c2c2c2;
+    margin-left: auto;
+}
+
+.risk-line-active{
+    border-bottom: 2px solid #C1272D;
+    border-right: 2px solid #C1272D;
+}
+
+.risk-line-right-active{
+    border-bottom: 2px solid #C1272D;
+    border-left: 2px solid #C1272D;
+    margin-left: auto;
+}
+
+.right-triangle-bottom-right {
+    width: 0;
+    height: 0;
+    border-bottom: 250px solid #c2c2c2;
+    border-left: 150px solid transparent;
+    top: 0;
+    right: -150px;
+    // transform: translateY(-50%);
+  }
+
+  .triangle-bottom-right-active{
+    width: 0;
+    height: 0;
+    border-bottom: 250px solid @colorPrimary1;
+    border-left: 150px solid transparent;
+    top: 0;
+    right: -150px;
+  }
+
+  .triangle-bottom-right-gray{
+    width: 0;
+    height: 0;
+    border-bottom: 250px solid #cdcdcd;
+    border-left: 150px solid transparent;
+    top: 0;
+    right: -150px;
+  }
+
+  .right-triangle {
+    width: 0;
+    height: 0;
+    border-bottom: 250px solid #c2c2c2; /* 高度为250px */
+    border-right: 150px solid transparent; /* 宽度为150px */
+    top: 0;
+    left:-150px;
+  }
+
+  .right-triangle-active {
+    width: 0;
+    height: 0;
+    border-bottom: 250px solid @colorPrimary1; /* 高度为250px */
+    border-right: 150px solid transparent; /* 宽度为150px */
+    top: 0;
+    left:-150px;
+  }
+
+  .right-triangle-gray {
+    width: 0;
+    height: 0;
+    border-bottom: 250px solid #cdcdcd; /* 高度为250px */
+    border-right: 150px solid transparent; /* 宽度为150px */
+    top: 0;
+    left:-150px;
+  }
+
+  .right-triangle-bottom{
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent; /* 宽度的一半 */
+    border-right: 150px solid transparent; /* 宽度的一半 */
+    border-bottom: 84px solid #cdcdcd; 
+}
+
+.right-triangle-bottom-active{
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent; /* 宽度的一半 */
+    border-right: 150px solid transparent; /* 宽度的一半 */
+    border-bottom: 84px solid @colorPrimary1; 
+}
+
+.right-triangle-bottom-gray{
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent; /* 宽度的一半 */
+    border-right: 150px solid transparent; /* 宽度的一半 */
+    border-bottom: 84px solid #c2c2c2; 
+}
+
+.risk-item-line-center{
+    width: 2px;
+    height: 47px;
+    background-color: #cdcdcd;
+}
+
+.risk-line-center-active{
+    width: 2px;
+    height: 47px;
+    background-color: #C1272D;
+}

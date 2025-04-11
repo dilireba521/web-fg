@@ -179,7 +179,7 @@ const handleYearClick = (index: number) => {
 .year-line.active {
     width: 153px;
     height: 1px;
-    background: linear-gradient( 180deg, rgba(193,39,45,0) 0%, #C1272D 100%);
+    background: linear-gradient(90deg, #C1272D 0%, rgba(193,39,45,0) 100%);
 }
 
 .current-year {
