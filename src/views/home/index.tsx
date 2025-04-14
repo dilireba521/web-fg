@@ -1,4 +1,5 @@
 import { defineComponent, ref, onMounted } from 'vue'
+import { useGo } from "@/hooks/web/usePage";
 import './index.less'
 // 导入图片资源
 import iconMouse from '@/assets/icon-mouse.png'
@@ -10,17 +11,16 @@ import rtaLogoGold from '@/assets/rta-logo-gold.png'
 // 组件引入
 import Information from '@/views/home/components/information'
 import InvestConcept from '@/views/home/components/InvestConcept'
-import Connect from '@/views/home/components/connect'
 import { SvgIcon } from '@/components/Icon'
 
 export default defineComponent({
   components: {
     Information,
     InvestConcept,
-    Connect,
     SvgIcon
   },
   setup(props, ctx) {
+    const { go } = useGo();
     const videoRef = ref<HTMLVideoElement | null>(null)
     let rtaIntro1 = `诺言私募基金管理有限公司成立于 2025 年，致力于为多元化的客户群体提供高质量金融增值服务，
     依托自主构建的宏微观研究框架和全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋能策略决策体系结构。`
@@ -37,6 +37,11 @@ export default defineComponent({
         })
       }
     })
+
+    const understandMore = () => {
+      go("/about")
+    }
+
     return () => (
       <div class="">
         <div class="mt-[-60px]">
@@ -66,7 +71,7 @@ export default defineComponent({
                 <p class="mb-28px">{rtaIntro1}</p>
                 <p>{rtaIntro2}</p>
               </div>
-              <div class="home-intro-more text-sm font-normal flex">
+              <div class="home-intro-more text-sm font-normal flex" onClick={understandMore}>
                 <div>了解更多</div>
                 <img class="w-22px h-22px ml-4px" src={iconRightRed} alt="了解更多" />
               </div>
@@ -79,7 +84,6 @@ export default defineComponent({
           </div>
           <Information />
           <InvestConcept themeBgColor={"white"} />
-          <Connect />
         </div>
       </div>
     )

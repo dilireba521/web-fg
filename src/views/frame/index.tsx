@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { SubTitle } from '@/components/Icon'
 import './index.less'
 import InvestConcept from '@/views/home/components/InvestConcept'
@@ -17,6 +17,53 @@ export default defineComponent({
   },
 
   setup(props, ctx) {
+    const investFrameRef = ref(null)
+    const investIdeaRef = ref(null)
+    const investStudyRef = ref(null)
+    const investControlRef = ref(null)
+
+    // 处理SubTitle点击事件
+    const handleSubTitleClick = (index: number) => {
+      const refs = [investFrameRef, investIdeaRef, investStudyRef, investControlRef]
+      if (refs[index]?.value) {
+        (refs[index].value as HTMLElement).scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+
+    // 当前激活的索引
+    const activeIndex = ref(0)
+
+    // 监听滚动事件，更新activeIndex
+    const handleScroll = () => {
+      const refs = [investFrameRef, investIdeaRef, investStudyRef, investControlRef]
+      const scrollPosition = window.scrollY + 300// 添加一些偏移量，使切换更自然
+      
+      // 找到当前在视口中的元素
+      for (let i = refs.length - 1; i >= 0; i--) {
+        if (refs[i]?.value) {
+          const element = refs[i].value as unknown as HTMLElement
+          const offsetTop = element.offsetTop
+          
+          if (scrollPosition >= offsetTop) {
+            activeIndex.value = i
+            break
+          }
+        }
+      }
+    }
+    
+    // 组件挂载时添加滚动监听
+    onMounted(() => {
+      window.addEventListener('scroll', handleScroll)
+      // 初始化时执行一次，确保初始状态正确
+      handleScroll()
+    })
+    
+    // 组件卸载时移除滚动监听
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll)
+    })
+
     const handleMouseEnter = (type: 'left' | 'right' | 'bottom'): void => {
       riskControlCurrent.value = type
     }
@@ -29,13 +76,15 @@ export default defineComponent({
             INVESTMENT FRAMEWORK
           </div>
         </div>
-        <SubTitle arrTitle={arrAboutCatalogue.value} />
-        <div class="w-full h-895px text-center pt-24">
+        <SubTitle arrTitle={arrAboutCatalogue.value} activeIndex={activeIndex.value}  onItemClick={handleSubTitleClick} />
+        <div  ref={investFrameRef} id="invest-frame" class="w-full h-895px text-center pt-24">
           <div class="font-h3 font-bold font-color-colorBlack">投资框架</div>
           <img class="w-983px h-757px" src={investFramework} alt="投资框架" />
         </div>
-        <InvestConcept themeBgColor={'gray'} />
-        <div class="w-full px-80 py-24 background-white text-center">
+        <div ref={investIdeaRef} id="invest-idea">
+          <InvestConcept themeBgColor={'gray'} />
+        </div>
+        <div ref={investStudyRef} id="invest-study" class="w-full px-80 py-24 background-white text-center">
           <div class="font-h3 font-bold font-color-colorBlack mb-34px">投资研究</div>
           <div class="w-full h-425px px-30 py-12 text-center background-lightBlue">
             <div class="font-h4 font-bold font-color-colorBlack mb-6">业务介绍</div>
@@ -61,6 +110,7 @@ export default defineComponent({
           </div>
         </div>
         <div
+          ref={investControlRef} id="invest-control"
           class="w-full h-714px relative px-80 py-24 bg-cover bg-center bg-no-repeat flex justify-center"
           style={{ backgroundImage: `url(${investRisk})` }}
         >

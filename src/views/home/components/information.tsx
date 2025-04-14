@@ -1,4 +1,5 @@
 import { defineComponent, ref, onMounted } from 'vue'
+import { useGo } from "@/hooks/web/usePage";
 import './index.less'
 // 导入图片资源
 import iconRightRed from '@/assets/icon-right-red.png'
@@ -6,15 +7,21 @@ import iconRightRed from '@/assets/icon-right-red.png'
 export default defineComponent({
   components: {},
   setup(props, ctx) {
+    const { go } = useGo();
+
     onMounted(() => {
       
     })
+
+    const goInformaton = () => {
+      go("/news");
+    }
     
     return () => (
       <div class="info-page w-full min-h-706px pt-96px pb-120px px-320px">
         <div class="mb-40px flex justify-between">
             <div class="font-medium text-black flex font-h3">信息资讯</div>
-            <div class="text-sm font-normal flex">
+            <div class="text-sm font-normal flex" onClick={goInformaton}>
                 <div class="mr-4px info-more">了解更多</div>
                 <img class="w-22px h-22px ml-4px" src={iconRightRed} alt="了解更多" />
             </div>

@@ -11,7 +11,14 @@ import { configSvgIconsPlugin } from './vite-config/svgSprite'
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    host: true
+    host: true,
+    proxy: {
+      "/fonts": {
+        target: "https://rtal.oss-on-hangzhou_aliyunos.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/fonts/, ""),
+      },
+    },
   },
   plugins: [vue(), vueJsx(), UnoCSS(), configSvgIconsPlugin({ isBuild: true })],
   resolve: {

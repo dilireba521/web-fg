@@ -1,12 +1,68 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
+import { WEB_BG_HEAD } from '@/utils/resources'
 import './index.less'
+import { SubTitle } from '@/components/Icon'
+
+const arrNewsTitle = ref(['公司公告', '新闻资讯'])
 
 export default defineComponent({
+  components: {
+    SubTitle
+  },
   setup(props, ctx) {
+    // 定义各个部分的ref引用
+    const companyAnnouncementRef = ref(null)
+    const informationRef = ref(null)
+
+    // 当前激活的索引
+    const activeIndex = ref(0)
+
+    // 处理SubTitle点击事件
+    const handleSubTitleClick = (index: number) => {
+      const refs = [companyAnnouncementRef, informationRef]
+      if (refs[index]?.value) {
+        (refs[index].value as HTMLElement).scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+
+    // 监听滚动事件，更新activeIndex
+    const handleScroll = () => {
+      const refs = [companyAnnouncementRef, informationRef]
+      const scrollPosition = window.scrollY + 500// 添加一些偏移量，使切换更自然
+      
+      // 找到当前在视口中的元素
+      for (let i = refs.length - 1; i >= 0; i--) {
+        if (refs[i]?.value) {
+          const element = refs[i].value as unknown as HTMLElement
+          const offsetTop = element.offsetTop
+          
+          if (scrollPosition >= offsetTop) {
+            activeIndex.value = i
+            break
+          }
+        }
+      }
+    }
+    
+    // 组件挂载时添加滚动监听
+    onMounted(() => {
+      window.addEventListener('scroll', handleScroll)
+      // 初始化时执行一次，确保初始状态正确
+      handleScroll()
+    })
+    
+    // 组件卸载时移除滚动监听
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll)
+    })
 
     return () => (
       <div>
-        <div class="w-full h-618px px-80 py-24 bg-gray-100">
+        <div class="w-full h-120">
+          <img class="w-full h120" src={`${WEB_BG_HEAD}/head-news.jpg`} />
+        </div>
+        <SubTitle arrTitle={arrNewsTitle.value} activeIndex={activeIndex.value} onItemClick={handleSubTitleClick} />
+        <div ref={companyAnnouncementRef} id="company-announcement" class="w-full h-618px px-80 py-24 bg-gray-100">
           <div class="mb-12 flex justify-between items-baseline">
             <div class="font-h3 font-bold text-black">公司公告</div>
             <div class="flex">
@@ -42,7 +98,7 @@ export default defineComponent({
             }
           </div>
         </div>
-        <div class="w-full h-602px px-80 py-24 bg-white">
+        <div ref={informationRef} id="information" class="w-full h-602px px-80 py-24 bg-white">
           <div class="mb-12 flex justify-between items-baseline">
             <div class="font-h3 font-bold text-black">新闻资讯</div>
             <div class="flex">

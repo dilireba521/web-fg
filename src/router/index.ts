@@ -7,6 +7,10 @@ import { basicRoutes } from './routes'
 export const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: basicRoutes,
+  scrollBehavior(to, from, savedPosition) {
+    // 始终滚动到顶部
+    return { top: 0 }
+  },
 })
 
 // 配置路由器

@@ -1,11 +1,62 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
+import { WEB_BG_HEAD } from '@/utils/resources'
 import stepNav from './components/stepNav.vue'
+import { SubTitle } from '@/components/Icon'
+
+const arrFundTitle = ref(['申赎流程', '旗下产品'])
 
 export default defineComponent({
   components: {
-    stepNav
+    stepNav,
+    SubTitle
   },
   setup(props, ctx) {
+    // 定义各个部分的ref引用
+    const applicationProcessRef = ref(null)
+    const subordinateProductsRef = ref(null)
+
+    // 处理SubTitle点击事件
+    const handleSubTitleClick = (index: number) => {
+      const refs = [applicationProcessRef, subordinateProductsRef]
+      if (refs[index]?.value) {
+        (refs[index].value as HTMLElement).scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+
+    // 当前激活的索引
+    const activeIndex = ref(0)
+
+    // 监听滚动事件，更新activeIndex
+    const handleScroll = () => {
+      const refs = [applicationProcessRef, subordinateProductsRef]
+      const scrollPosition = window.scrollY + 300// 添加一些偏移量，使切换更自然
+      
+      // 找到当前在视口中的元素
+      for (let i = refs.length - 1; i >= 0; i--) {
+        if (refs[i]?.value) {
+          const element = refs[i].value as unknown as HTMLElement
+          const offsetTop = element.offsetTop
+          
+          if (scrollPosition >= offsetTop) {
+            activeIndex.value = i
+            break
+          }
+        }
+      }
+    }
+    
+    // 组件挂载时添加滚动监听
+    onMounted(() => {
+      window.addEventListener('scroll', handleScroll)
+      // 初始化时执行一次，确保初始状态正确
+      handleScroll()
+    })
+    
+    // 组件卸载时移除滚动监听
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll)
+    })
+
     const currentStep = ref(0)
     const redemptionProcess = ref([
       {
@@ -28,7 +79,11 @@ export default defineComponent({
 
     return () => (
       <div>
-        <div class="w-full h-1042px px-80 py-24 bg-white">
+        <div class="w-full h-120">
+          <img class="w-full h120" src={`${WEB_BG_HEAD}/head-fund.jpg`} alt="" />
+        </div>
+        <SubTitle arrTitle={arrFundTitle.value} activeIndex={activeIndex.value} onItemClick={handleSubTitleClick} />
+        <div ref={applicationProcessRef} id="application-process" class="w-full h-1042px px-80 py-24 bg-white">
           <stepNav currentStep={currentStep} />
         </div>
         <div class="w-full h-490px px-80 py-24 text-center bg-slate-200">
@@ -77,7 +132,7 @@ export default defineComponent({
             })}
           </div>
         </div>
-        <div class="w-full h-602px px-80 py-24 bg-white text-center">
+        <div ref={subordinateProductsRef} id="subordinate-products" class="w-full h-602px px-80 py-24 bg-white text-center">
           <div class="font-h3 text-black font-bold mb-12">旗下产品</div>
           <div class="w-full h-80 px-24 bg-gray-100 text-center pt-24">
             <div class="font-h4 font-bold mb-12">跳转到RTA基金管理平台查看</div>

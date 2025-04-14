@@ -1,4 +1,5 @@
 <template>
+    <Connect />
     <div class="bg-layout">
         <div class="container pt-8 pb-8">
             <div class="font-h7 text-black/45 text-center">
@@ -7,11 +8,9 @@
                     网络文化经营许可证：京网文（2023）4872-140号</div>
             </div>
         </div>
-
     </div>
-
-
 </template>
 <script setup>
+import Connect from '@/views/home/components/connect'
 </script>
 <style lang="less" scoped></style>

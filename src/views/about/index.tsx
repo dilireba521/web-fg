@@ -1,7 +1,6 @@
-import { defineComponent,ref } from 'vue'
+import { defineComponent,ref,onMounted,onUnmounted } from 'vue'
 import './idnex.less'
 import { SubTitle } from '@/components/Icon'
-import Connect from '@/views/home/components/connect'
 import personalCard from './components/personalCard.vue'
 import DevelopCourse from './components/developCourse.vue'
 import { WEB_BG_HEAD } from '@/utils/resources';
@@ -14,7 +13,6 @@ const arrAboutCatalogue = ref(['公司介绍','企业文化','发展历程','核
 export default defineComponent({
   components: {
     SubTitle,
-    Connect,
     personalCard,
     DevelopCourse
   },
@@ -27,6 +25,9 @@ export default defineComponent({
     const coreTeamRef = ref(null)
     const partnerRef = ref(null)
 
+    // 当前激活的索引
+    const activeIndex = ref(0)
+
     // 处理SubTitle点击事件
     const handleSubTitleClick = (index: number) => {
       const refs = [companyIntroRef, companyCultureRef, developCourseRef, coreTeamRef, partnerRef]
@@ -35,13 +36,44 @@ export default defineComponent({
       }
     }
 
+    // 监听滚动事件，更新activeIndex
+    const handleScroll = () => {
+      const refs = [companyIntroRef, companyCultureRef, developCourseRef, coreTeamRef, partnerRef]
+      const scrollPosition = window.scrollY + 100 // 添加一些偏移量，使切换更自然
+      
+      // 找到当前在视口中的元素
+      for (let i = refs.length - 1; i >= 0; i--) {
+        if (refs[i]?.value) {
+          const element = refs[i].value as unknown as HTMLElement
+          const offsetTop = element.offsetTop
+          
+          if (scrollPosition >= offsetTop) {
+            activeIndex.value = i
+            break
+          }
+        }
+      }
+    }
+    
+    // 组件挂载时添加滚动监听
+    onMounted(() => {
+      window.addEventListener('scroll', handleScroll)
+      // 初始化时执行一次，确保初始状态正确
+      handleScroll()
+    })
+    
+    // 组件卸载时移除滚动监听
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll)
+    })
+
     return () => (
       <div>
         <div class="w-full relative">
           <img class="w-full h-480px" src={`${WEB_BG_HEAD}/head-about.png`} alt="关于我们" />
           <img class="w-60 h-82px absolute top-199px left-80" src={aboutRtaFund} />
         </div>
-        <SubTitle arrTitle={arrAboutCatalogue.value} onItemClick={handleSubTitleClick} />
+        <SubTitle arrTitle={arrAboutCatalogue.value} activeIndex={activeIndex.value} onItemClick={handleSubTitleClick} />
         {/* 公司介绍 */}
         <div ref={companyIntroRef} id="company-intro" class="w-full h-394px px-80 py-24 background-white">
           <div class="font-h3 mb-8">公司介绍</div>
@@ -108,12 +140,8 @@ export default defineComponent({
                 <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
                 <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
                 <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
-                <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
-                <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
-                <img class="w-84 h-30 bg-white" src={aboutRtaFund} alt="" />
             </div>
         </div>
-        <Connect />
       </div>
     )
   }

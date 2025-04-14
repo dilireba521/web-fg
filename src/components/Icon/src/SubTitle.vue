@@ -6,7 +6,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import type { PropType } from 'vue';
 
 defineOptions({ name: 'SubTitle' });
@@ -16,12 +16,20 @@ const props = defineProps({
         type: Array,
         default: [],
     },
+    activeIndex: {
+        type: Number,
+        default: 0
+    },
     onItemClick: {
         type: Function as PropType<(index: number) => void>,
         default: null
     }
 });
 const currentIndex = ref(0);
+
+watch(() => props.activeIndex, (newVal) => {
+    currentIndex.value = newVal; 
+})
 
 const handleClick = (index: number) => {
     currentIndex.value = index;

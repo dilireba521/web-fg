@@ -7,6 +7,9 @@ import { PageEnum } from '@/enums/pageEnum'
 const basicModules = import.meta.glob('./basicModules/**/*.ts', { eager: true })
 export const routebasicModuleList: RouteRecordRaw[] = []
 
+const otherModules = import.meta.glob('./otherModules/**/*.ts', { eager: true })
+export const routeOtherModuleList: RouteRecordRaw[] = []
+
 // 加入到路由集合中
 function addRoute(moduleList: Record<string, unknown>, routeList: RouteRecordRaw[]) {
   Object.keys(moduleList).forEach((key) => {
@@ -16,6 +19,7 @@ function addRoute(moduleList: Record<string, unknown>, routeList: RouteRecordRaw
   })
 }
 addRoute(basicModules, routebasicModuleList)
+addRoute(otherModules, routeOtherModuleList)
 // 根路由
 export const RootRoute: RouteRecordRaw = {
   path: '/',
@@ -26,4 +30,4 @@ export const RootRoute: RouteRecordRaw = {
   }
 }
 // 未经许可的基本路由
-export const basicRoutes = [RootRoute, ...routebasicModuleList, PAGE_NOT_FOUND_ROUTE]
+export const basicRoutes = [RootRoute, ...routebasicModuleList, ...routeOtherModuleList, PAGE_NOT_FOUND_ROUTE]
