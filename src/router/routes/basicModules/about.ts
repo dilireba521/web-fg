@@ -7,7 +7,7 @@ const route: RouteRecordRaw = {
   redirect: '/about/index',
   meta: {
     title: '关于我们',
-    orderNo: 20
+    orderNo: 50
   },
   children: [
     {

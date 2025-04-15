@@ -1,51 +1,78 @@
 @import 'color.less';
 
+// 添加字体声明
+@font-face {
+  font-family: 'MiSans';
+  src: url('https://rta1.oss-cn-hangzhou.aliyuncs.com/fonts/MISANS-REGULAR.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MiSans';
+  src: url('https://rta1.oss-cn-hangzhou.aliyuncs.com/fonts/MISANS-MEDIUM.TTF') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
+  font-family: 'MiSans', sans-serif;
 }
 
 body {
   // background-color: #33353eff;
-  color: #333;
+  color: @colorText;
 }
+
 #app {
   width: 100%;
   min-width: 1280px;
   height: 100%;
 }
 
+
 .font-h1 {
   font-size: var(--font-h1);
   line-height: var(--font-leading1);
 }
+
 .font-h2 {
   font-size: var(--font-h2);
   line-height: var(--font-leading2);
 }
+
 .font-h3 {
   font-size: var(--font-h3);
   line-height: var(--font-leading3);
 }
+
 .font-h4 {
   font-size: var(--font-h4);
   line-height: var(--font-leading4);
 }
+
 .font-h5 {
   font-size: var(--font-h5);
   line-height: var(--font-leading5);
 }
+
 .font-h6 {
   font-size: var(--font-h6);
   line-height: var(--font-leading6);
 }
+
 .font-h7 {
   font-size: var(--font-h7);
   line-height: var(--font-leading7);
 }
+
 .font-h8 {
   font-size: var(--font-h8);
   line-height: var(--font-leading8);
@@ -60,4 +87,32 @@ body {
 // 全局背景容器
 .bg-layout {
   background-color: @colorBgLayout;
+}
+
+.bg-module {
+  background-color: @colorBgModule;
+}
+
+.color-primary1 {
+  color: @colorPrimary1;
+}
+
+.color-secondary {
+  color: @colorTextSecondary;
+}
+
+.color-tertiary {
+  color: @colorTextTertiary;
+}
+
+.color-tertiary1 {
+  color: @colorTextTertiary1;
+}
+
+.color-quaternary {
+  color: @colorTextQuaternary;
+}
+
+.color-text1 {
+  color: @colorText1;
 }

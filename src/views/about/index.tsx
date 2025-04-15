@@ -1,7 +1,9 @@
-import { defineComponent } from 'vue'
-
+import { defineComponent, onMounted, onUnmounted } from 'vue'
+import MapVue from '@/components/map';
 export default defineComponent({
   setup(props, ctx) {
-    return () => <div class="container">about</div>
+    return () => <div class="container">
+      <MapVue></MapVue>
+    </div>
   }
 })

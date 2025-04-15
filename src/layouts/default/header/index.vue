@@ -18,7 +18,7 @@ const { go } = useGo();
 const route = useRoute();
 const items = ref()
 const selectedKey = ref()
-const tabType = ref('default')
+const tabType = ref('black')
 
 const itemsFn = () => {
     return sortRoutes(routebasicModuleList).map((item) => {
@@ -37,9 +37,10 @@ watch(() => route.path, () => {
     items.value = itemsFn()
 }, { immediate: true });
 
-watch(() => selectedKey.value, (val) => {
-    tabType.value = val == '/home/index' ? 'default' : 'black'
-}, { immediate: true })
+// watch(() => selectedKey.value, (val) => {
+//     tabType.value = val == '/home/index' ? 'default' : 'black'
+// }, { immediate: true })
+console.log("header==");
 
 function change(params: any) {
     // 如发现导航样式回选，可以写个定时器，延时对selectedKey赋值
