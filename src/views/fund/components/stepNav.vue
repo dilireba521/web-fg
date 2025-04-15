@@ -8,12 +8,12 @@
         :class="{ active: currentStep === index }"
       >
         <span class="step-number font-h6">{{ String(index + 1).padStart(2, '0') }}、</span>
-        <span class="step-text font-h6 font-medium">{{ item }}</span>
+        <span class="font-color-colorText font-bold font-h6">{{ item }}</span>
       </div>
     </div>
     <div class="flex mb-8">
         <div class="step-content h-40 p-4" v-for="(contents1,index) in stepsContent">
-            <div v-for="(item, itemIndex) in formatContent(contents1)" :key="itemIndex" class="content-item font-h7 font-normal">
+            <div v-for="(item, itemIndex) in formatContent(contents1)" :key="itemIndex" class="content-item font-color-colorTextSecondary font-h7 font-normal">
                 • {{ item }}
             </div>
         </div>
@@ -26,12 +26,12 @@
         :class="{ active: currentStep === index }"
       >
         <span class="step-number font-h6">{{ String(10 - index).padStart(2, '0') }}、</span>
-        <span class="step-text font-h6 font-medium">{{ item }}</span>
+        <span class="font-color-colorText font-bold font-h6">{{ item }}</span>
       </div>
     </div>
     <div class="flex mb-8">
         <div class="step-content h-40 p-4" v-for="(contents2,index) in stepsContent2">
-            <div v-for="(item, itemIndex) in formatContent(contents2)" :key="itemIndex" class="content-item font-h7 font-normal">
+            <div v-for="(item, itemIndex) in formatContent(contents2)" :key="itemIndex" class="content-item font-color-colorTextSecondary font-h7 font-normal">
                 • {{ item }}
             </div>
         </div>
@@ -39,15 +39,15 @@
     <div class="step-nav-third flex-wrap mb-4">
         <div class="step-item-right">
             <span class="step-number font-h6">11、</span>
-            <span class="step-text font-h6 font-medium">T+N日向托管机构 确认份额</span>
+            <span class="font-color-colorText font-bold font-h6">T+N日向托管机构 确认份额</span>
         </div>
         <div class="step-item-end">
-            <span class="step-text font-h6 font-medium">申购完成</span>
+            <span class="font-color-colorText font-bold font-h6">申购完成</span>
         </div>
     </div>
     <div class="flex mb-8">
         <div class="step-content h-40 p-4">
-            <div v-for="(item, itemIndex) in formatContent(stepsContent3)" :key="itemIndex" class="content-item font-h7 font-normal">
+            <div v-for="(item, itemIndex) in formatContent(stepsContent3)" :key="itemIndex" class="content-item font-color-colorTextSecondary font-h7 font-normal">
                 • {{ item }}
             </div>
         </div>
@@ -112,12 +112,10 @@ const formatContent = (content: string) => {
 
 .step-number {
   font-weight: bold;
-  color: #333;
 }
 
 .step-text {
   font-size: 14px;
-  color: #333;
 }
 
 .step-item.active {

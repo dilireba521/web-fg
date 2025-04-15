@@ -107,8 +107,8 @@ export default defineComponent({
                       borderRight: isLastItem ? 'none' : '1px dashed #979797'
                     }}
                   >
-                    <div class="font-h6 text-black font-bold mb-8">{item.title}</div>
-                    <div class="font-h7 text-black text-left">{item.desc}</div>
+                    <div class="font-h6 font-color-colorText font-bold mb-8">{item.title}</div>
+                    <div class="font-h7 font-color-colorTextSecondary text-left">{item.desc}</div>
                   </div>
                   <div class="absolute h-full w-16 top-0 right--8">
                     {!isLastItem && (
@@ -135,7 +135,7 @@ export default defineComponent({
         <div ref={subordinateProductsRef} id="subordinate-products" class="w-full h-602px px-80 py-24 bg-white text-center">
           <div class="font-h3 text-black font-bold mb-12">旗下产品</div>
           <div class="w-full h-80 px-24 bg-gray-100 text-center pt-24">
-            <div class="font-h4 font-bold mb-12">跳转到RTA基金管理平台查看</div>
+            <div class="font-h4 font-color-colorText mb-12">跳转到RTA基金管理平台查看</div>
             <div class="w-40 h-12 rounded text-white font-h6 mx-auto flex items-center justify-center" style={{ background: '#C1272D' }}>去基金管理平台</div>
           </div>
         </div>

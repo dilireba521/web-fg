@@ -58,8 +58,11 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, nextTick } from 'vue'
 import MenuVue from './components/menu.vue'
+import { useRoute, useRouter } from 'vue-router' // 添加路由相关导入
 import iconLogoDefault from '@/assets/rta-logo.png'
 import iconLogoRed from '@/assets/rta-logo-red.png'
+const route = useRoute()
+const router = useRouter()
 const tabType = ref('default')
 const headerStyle = ref({})
 const isScrollDown = ref(true)
@@ -74,6 +77,24 @@ function handleAccept() {
   console.log('用户点击了接受')
   showLoginModal.value = false
 }
+// 更新导航栏样式的函数
+function updateHeaderStyle(scrollTop = 0) {
+  let _style = {}
+  if (scrollTop <= 1) {
+    isScrollDown.value = true
+    _style = {
+      position: 'absolute'
+    }
+  } else {
+    isScrollDown.value = false
+    _style = {
+      transform: 'translateY(0px)',
+      position: 'fixed'
+    }
+  }
+  headerStyle.value = _style
+}
+
 function handleWheel(e: WheelEvent) {
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop
   let _style = {}
@@ -97,12 +118,24 @@ function handleWheel(e: WheelEvent) {
       }
     }
   }
-  // console.log("scrollTop===", scrollTop);
-  // console.log("_style===", _style);
   headerStyle.value = _style
 }
+
+// 监听路由变化
+router.afterEach((to, from) => {
+  // 路由变化后，重置导航栏样式
+  nextTick(() => {
+    // 确保DOM已更新
+    setTimeout(() => {
+      updateHeaderStyle(0)
+    }, 100)
+  })
+})
+
 onMounted(() => {
   document.addEventListener('wheel', handleWheel)
+  // 初始化时设置正确的样式
+  updateHeaderStyle(window.pageYOffset || document.documentElement.scrollTop)
 })
 
 onUnmounted(() => {

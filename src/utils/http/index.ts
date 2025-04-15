@@ -32,9 +32,11 @@ function createRequest(opt?: Partial<CreateFetchOptions>) {
               if (ctx.url.includes('?')) {
                 const _index = url.indexOf('?')
                 ctx.url =
-                  url.slice(0, _index) + joinTimestamp(true, true) + '&' + url.slice(_index + 1)
+                  // url.slice(0, _index) + joinTimestamp(true, true) + '&' + url.slice(_index + 1)
+                  url.slice(0, _index) + '?' + url.slice(_index + 1)
               } else {
-                ctx.url += joinTimestamp(true, true)
+                // ctx.url += joinTimestamp(true, true)
+                ctx.url
               }
             }
             // 处理请求，为了防止重复请求，添加到 pending 中

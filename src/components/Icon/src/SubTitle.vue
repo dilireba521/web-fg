@@ -1,7 +1,7 @@
 <template>
     <div class="w-full h-16 pl-80 sub-title-wrap flex">
         <div class="min-w-136px" v-for="(item, index) in arrTitle" @click="handleClick(index)">
-            <div :class="['item-content', 'text-sm', currentIndex == index ? 'item-active' : 'item-normal']">{{ item }}</div>
+            <div :class="['item-content', 'font-h7', currentIndex == index ? 'item-active' : 'item-normal']">{{ item }}</div>
         </div>
     </div>
 </template>

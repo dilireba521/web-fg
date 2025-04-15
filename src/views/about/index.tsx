@@ -61,7 +61,7 @@ export default defineComponent({
       // 初始化时执行一次，确保初始状态正确
       handleScroll()
     })
-    
+
     // 组件卸载时移除滚动监听
     onUnmounted(() => {
       window.removeEventListener('scroll', handleScroll)
@@ -103,19 +103,19 @@ export default defineComponent({
           </div>
           <div class="text-center">
             <div class="font-h5 font-color-colorText font-normal mb-5">发展指引</div>
-            <div class="font-color-colorTextSecondary text-center">
+            <div class="font-color-colorTextSecondary text-center font-h5">
               <div class="flex justify-between items-center mb-4">
-                <div class="develo-guid-blue w-158 h-22 flex items-center justify-center">坚持党的领导，为公司发展提供坚强政治保障</div>
-                <div class="develo-guid-blue w-158 h-22 flex items-center justify-center">坚持践行国家战略和经营宗旨</div>
+                <div class="develo-guid-blue h-22 flex items-center justify-center">坚持党的领导，为公司发展提供坚强政治保障</div>
+                <div class="develo-guid-blue h-22 flex items-center justify-center">坚持践行国家战略和经营宗旨</div>
               </div>
               <div class="flex justify-between items-center mb-4">
-                <div class="develo-guid-puerple w-104 h-22 flex items-center justify-center">坚持以客户为中心、与客户共成长的经营方针</div>
-                <div class="develo-guid-puerple w-104 h-22 flex items-center justify-center">坚持合规经营、严控风险的经营理念</div>
-                <div class="develo-guid-puerple w-104 h-22 flex items-center justify-center">坚持创新、保持坚韧的进取精神</div>
+                <div class="develo-guid-puerple h-22 flex items-center justify-center">坚持以客户为中心、与客户共成长的经营方针</div>
+                <div class="develo-guid-puerple h-22 flex items-center justify-center">坚持合规经营、严控风险的经营理念</div>
+                <div class="develo-guid-puerple h-22 flex items-center justify-center">坚持创新、保持坚韧的进取精神</div>
               </div>
               <div class="flex justify-between items-center">
-                <div class="develo-guid-pink w-158 h-22 flex items-center justify-center">坚持以人为本、市场化管理的人才强企战略</div>
-                <div class="develo-guid-pink w-158 h-22 flex items-center justify-center">坚持和发扬公司的优秀企业文化和传统</div>
+                <div class="develo-guid-pink h-22 flex items-center justify-center">坚持以人为本、市场化管理的人才强企战略</div>
+                <div class="develo-guid-pink h-22 flex items-center justify-center">坚持和发扬公司的优秀企业文化和传统</div>
               </div>
             </div>
           </div>

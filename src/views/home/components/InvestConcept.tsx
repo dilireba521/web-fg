@@ -69,12 +69,12 @@ export default defineComponent({
                   onMouseenter={() => handleMouseEnter(index)}
                 >
                     <img class="max-w-48px h-48px mb-12px" src={ currentHoverIndex.value === index ? item.iconActive : item.icon } alt={item.title} />
-                    <div class={`invest-item-title font-normal text-xl text-center`}>{item.title}</div>
+                    <div class={`invest-item-title font-normal font-h5 text-center`}>{item.title}</div>
                     {currentHoverIndex.value === index ? <div class={`invest-item-target ${bgColor.value == 'white' ? 'item-target-gray':'item-target-white'}`}></div> : ''}
                 </div>
             ))}        
         </div>      
-        <div class={`invest-item-desc w-full h-92px px-32px py-34px text-base font-normal mt-32px ${bgColor.value == 'white' ? 'background-colorBgLayout' : 'background-white'}`}>{arrInvestConcept[currentHoverIndex.value].desc}</div>
+        <div class={`invest-item-desc w-full h-92px px-32px py-34px font-h6 font-normal mt-32px ${bgColor.value == 'white' ? 'background-colorBgLayout' : 'background-white'}`}>{arrInvestConcept[currentHoverIndex.value].desc}</div>
       </div>
     )
   }
