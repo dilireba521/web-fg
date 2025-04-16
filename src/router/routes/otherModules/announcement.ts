@@ -1,18 +1,18 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { LAYOUT } from '@/router/constant'
 const route: RouteRecordRaw = {
-  path: '/newsDetail',
-  name: 'NewsDetail',
+  path: '/announcement',
+  name: 'Announcement',
   component: LAYOUT,
-  redirect: '/newsDetail/index',
+  redirect: '/announcement/index',
   meta: {
-    title: '新闻详情'
+    title: '资讯公告'
   },
   children: [
     {
       path: 'index',
-      name: 'NewsDetailIndex',
-      component: () => import('@/views/newsDetail/index')
+      name: 'AnnouncementIndex',
+      component: () => import('@/views/announcement/index')
     }
   ]
 }

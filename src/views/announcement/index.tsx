@@ -5,15 +5,11 @@ import { useGo } from "@/hooks/web/usePage";
 import './index.less'
 // antd
 import { Pagination } from 'ant-design-vue'
-import newsInfo from '@/assets/news-info.png'
-import rtaChinese from '@/assets/rta-chinese.png'
-import rtaEnglish from '@/assets/rta-english.png'
-import rtaLogoGold from '@/assets/rta-logo-gold.png'
 
 export default defineComponent({
   setup(props, ctx) {
     const { go } = useGo();
-    const arrNews = ref([])
+    const arrAnnouncement = ref([])
     const current = ref(1)
     const pageSize = ref(10)
     const total = ref(0)
@@ -21,7 +17,7 @@ export default defineComponent({
     const handleNewsInfo = async () => {
       try {
         // categoryId:2 新闻资讯, categoryId:3 公司公告
-        const res = await userApi.useGetNewsInfo({ categoryId: 2, pageIndex: current.value })
+        const res = await userApi.useGetNewsInfo({ categoryId: 3, pageIndex: current.value})
         // 获取数据，数据在data的_value中
         let data = res.data.value
         console.log('公司公告数据获取', data)
@@ -31,7 +27,7 @@ export default defineComponent({
             data.data[i].releaseDateMonth = data.data[i].releaseDate.split('-')[1]
             data.data[i].releaseDateDate = data.data[i].releaseDate.split('-')[2]
           }
-          arrNews.value = data.data
+          arrAnnouncement.value = data.data
           current.value = data.pageIndex || 1
           total.value = data.total || data.data.length || 0
         }
@@ -58,23 +54,36 @@ export default defineComponent({
 
     return () => (
       <div>
-        <div class="news-item-head w-full h-80 px-80 py-45px text-center">
-          <img class="w-15 h-54px mb-10 block mx-auto" src={rtaLogoGold} alt="" />
-          <img class="w-100 h-85px mb-18px block mx-auto" src={rtaEnglish} alt="" />
-          <img class="w-162px h-33px block mx-auto" src={rtaChinese} alt="" />
+        <div
+          class="w-full h-80 px-80 py-134px bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-information.png)` }}
+        >
+          <div class="font-h2 text-white">信息资讯</div>
         </div>
-        <div class="w-full h-16 px-85 pt-6 pb-18px background-colorBgLayout news-tab font-h7 font-color-colorTextTertiary">
-          首页 / 新闻信息 / 投资观察
+        <div class="w-full h-16 px-85 pt-6 pb-18px background-colorBgLayout announcement-tab font-h7 font-color-colorTextTertiary">
+          首页 / 新闻信息 / 资讯公告
         </div>
-        <div class="w-full min-h-100vh px-80 pt-12 background-colorBgLayout flex flex-col">
-          <div class="font-h4 font-medium mb-6">投资观察</div>
-          <div class="flex flex-wrap justify-between w-full flex-1">
-            {arrNews.value.map((item, index) => (
-              <div class="news-observe-item mb-6" onClick={() => handleArticleDetail(item)}>
-                <img class="w-full h-231px" src={newsInfo} alt="" />
-                <div class="w-full h-17 news-item-foot background-colorBgLayout px-6 pt-3 pb-2 font-h6 font-color-colorTextSecondary">
+        <div class="w-full min-h-100vh px-120 pt-12 background-colorBgLayout flex flex-col">
+          <div class="font-h4 font-medium mb-6">咨询公告</div>
+          <div class="flex-1">
+            {arrAnnouncement.value.map((item, index) => (
+              <div class="announcement-item bg-white px-8 py-6 h-40 mb-4 flex" onClick={()=>{handleArticleDetail(item)}}>
+                <div class="h-112px w-110px flex pr-8" style={{ borderRight: '1px solid #979797' }}>
+                  <div class="font-h4 mr-2px font-color-colorText">
+                    {(item as any).releaseDateDate}
+                  </div>
+                  <div class="font-h4 mr-1 font-color-colorTextSecondary">/</div>
+                  <div class="font-h7 font-color-colorTextSecondary">
+                    <div>{(item as any).releaseDateMonth}月</div>
+                    <div>{(item as any).releaseDateYear}</div>
+                  </div>
+                </div>
+                <div class="flex-1 pl-8 overflow-hidden">
+                  <div class="announcement-item-title truncate mb-2 font-h6 w-full font-color-colorText">
+                    {(item as any).title}
+                  </div>
                   <div
-                    class="news-item-title line-clamp-2 w-full overflow-hidden"
+                    class="line-clamp-2 font-color-colorTextSecondary mb-4 font-h7 w-full overflow-hidden"
                     style={{
                       display: '-webkit-box',
                       WebkitLineClamp: 2,
@@ -82,7 +91,10 @@ export default defineComponent({
                       overflow: 'hidden'
                     }}
                   >
-                    {(item as { title: string }).title}
+                    {(item as any).label}
+                  </div>
+                  <div class="font-h8" style={{ color: '#C1272D' }}>
+                    查看详情
                   </div>
                 </div>
               </div>

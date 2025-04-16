@@ -7,8 +7,11 @@ import './style/main.less'
 import App from './App.vue'
 import { router, setupRouter } from './router'
 import { setupRouterGuard } from '@/router/guard'
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/reset.css'
 
 const app = createApp(App)
+app.use(Antd)
 
 setupStore(app)
 
