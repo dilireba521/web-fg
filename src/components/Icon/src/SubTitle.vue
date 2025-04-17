@@ -57,7 +57,7 @@ const handleClick = (index: number) => {
 }
 
 .item-active {
-    border-bottom: 1px solid rgba(@colorBlack, 1);
+    border-bottom: 1px solid rgba(@colorPrimaryActive, 1);
 }
 
 .item-normal {

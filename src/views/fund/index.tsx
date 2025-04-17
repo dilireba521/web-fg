@@ -80,7 +80,7 @@ export default defineComponent({
     return () => (
       <div>
         <div class="w-full h-120">
-          <img class="w-full h120" src={`${WEB_BG_HEAD}/head-fund.jpg`} alt="" />
+          <img class="w-full h120" src={`${WEB_BG_HEAD}/head-fund.png`} alt="" />
         </div>
         <SubTitle arrTitle={arrFundTitle.value} activeIndex={activeIndex.value} onItemClick={handleSubTitleClick} />
         <div ref={applicationProcessRef} id="application-process" class="w-full h-1042px px-80 py-24 bg-white">

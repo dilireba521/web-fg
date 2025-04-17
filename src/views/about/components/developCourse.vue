@@ -88,7 +88,6 @@ const handleMilestoneInfo = async () => {
             content = content.replace(/<p>/g, '<p class="mb-20px flex font-h6 font-color-colorTextSecondary">');
             developEvents.value.unshift(content);
         })
-        console.log('富文本内容赋值', developEvents.value)  
     }
   } catch (error) {
     console.log(error)

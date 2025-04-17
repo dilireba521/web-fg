@@ -94,7 +94,7 @@ function handleClick(data) {
                 color: rgba(@colorBlack, 1);
 
                 .tab-inner {
-                    border-bottom-color: rgba(@colorBlack, .88);
+                    border-bottom-color: rgba(@colorPrimaryActive, 1);
                 }
             }
         }

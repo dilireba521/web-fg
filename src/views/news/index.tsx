@@ -1,9 +1,12 @@
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
-import { useGo } from "@/hooks/web/usePage";
+import { useGo } from '@/hooks/web/usePage'
 import './index.less'
 import { SubTitle } from '@/components/Icon'
 import * as userApi from '@/api/user'
+
+import iconRightGray from '@/assets/icon-right-gray.png'
+import iconRightRed from '@/assets/icon-right-red.png'
 
 const arrNewsTitle = ref(['公司公告', '新闻资讯'])
 
@@ -12,7 +15,7 @@ export default defineComponent({
     SubTitle
   },
   setup(props, ctx) {
-    const { go } = useGo();
+    const { go } = useGo()
     // 定义各个部分的ref引用
     const companyAnnouncementRef = ref(null)
     const informationRef = ref(null)
@@ -22,6 +25,8 @@ export default defineComponent({
 
     // 当前激活的索引
     const activeIndex = ref(0)
+    // 控制新闻资讯的activeIndex
+    const activeNewsIndex = ref(-1)
 
     // 处理SubTitle点击事件
     const handleSubTitleClick = (index: number) => {
@@ -82,6 +87,11 @@ export default defineComponent({
       go('/newsDetail')
     }
 
+    const handleMouseEnter = (index: number) => {
+      // 鼠标进入时，更新activeIndex
+      activeNewsIndex.value = index
+    }
+
     // 组件挂载时添加滚动监听
     onMounted(() => {
       window.addEventListener('scroll', handleScroll)
@@ -98,18 +108,18 @@ export default defineComponent({
 
     const handleAnnounce = () => {
       // 跳转到公司公告页面
-      go("/announcement");
+      go('/announcement')
     }
 
     const handleNews = () => {
       // 跳转到公司公告页面
-      go("/reportPage");
+      go('/reportPage')
     }
 
     return () => (
       <div>
         <div class="w-full h-120">
-          <img class="w-full h120" src={`${WEB_BG_HEAD}/head-news.jpg`} />
+          <img class="w-full h120" src={`${WEB_BG_HEAD}/head-news.png`} />
         </div>
         <SubTitle
           arrTitle={arrNewsTitle.value}
@@ -123,18 +133,19 @@ export default defineComponent({
         >
           <div class="mb-12 flex justify-between items-baseline">
             <div class="font-h3 font-bold text-black">公司公告</div>
-            <div class="flex" onClick={handleAnnounce}>
+            <div class="flex items-center" onClick={handleAnnounce}>
               <div class="font-h7 font-color-colorTextTertiary mr-9px">查看全部</div>
-              <div class="font-h7 font-color-colorTextTertiary">
-                {'>'}
-                {'>'}
-                {'>'}
-              </div>
+              <img class="w-22px h-22px" src={iconRightGray} />
             </div>
           </div>
           <div class="w-full flex flex-wrap justify-between">
             {arrAnnouncement.value.map((item, index) => (
-              <div class="news-item bg-white px-8 py-6 h-40 mb-4 flex" onClick={()=>{handleArticleDetail(item)}}>
+              <div
+                class="news-item bg-white px-8 py-6 h-40 mb-4 flex"
+                onClick={() => {
+                  handleArticleDetail(item)
+                }}
+              >
                 <div class="h-112px w-110px flex pr-8" style={{ borderRight: '1px solid #979797' }}>
                   <div class="font-h4 mr-2px font-color-colorText">
                     {(item as any).releaseDateDate}
@@ -171,17 +182,18 @@ export default defineComponent({
         <div ref={informationRef} id="information" class="w-full h-602px px-80 py-24 bg-white">
           <div class="mb-12 flex justify-between items-baseline">
             <div class="font-h3 font-bold text-black">新闻资讯</div>
-            <div class="flex" onClick={handleNews}>
+            <div class="flex items-center" onClick={handleNews}>
               <div class="font-h7 font-color-colorTextTertiary mr-9px">查看全部</div>
-              <div class="font-h7 font-color-colorTextTertiary">
-                {'>'}
-                {'>'}
-                {'>'}
-              </div>
+              <img class="w-22px h-22px" src={iconRightGray} />
             </div>
           </div>
           <div class="w-full flex justify-between h-80">
-            <div class="news-item bg-gray-100 pt-6 pb-4 px-8 flex flex-col justify-between" onClick={()=>{handleArticleDetail(firstNews.value)}}>
+            <div
+              class="news-item bg-gray-100 pt-6 pb-4 px-8 flex flex-col justify-between"
+              onClick={() => {
+                handleArticleDetail(firstNews.value)
+              }}
+            >
               <div class="ml-auto text-white">
                 <div class="font-h4 text-right">{(firstNews.value as any).releaseDateDate}</div>
                 <div class="font-h7 text-right">
@@ -195,7 +207,14 @@ export default defineComponent({
             </div>
             <div class="news-item bg-white flex justify-between">
               {arrNews.value.map((item, index) => (
-                <div class="news-item-container news-item h-full bg-gray-100 px-8 pt-6 pb-8 flex flex-col" onClick={()=>{handleArticleDetail(item)}}>
+                <div
+                  class="news-item-container news-item h-full bg-gray-100 px-8 pt-6 pb-8 flex flex-col"
+                  onMouseenter={() => handleMouseEnter(index)}
+                  onMouseleave={() => handleMouseEnter(-1)}
+                  onClick={() => {
+                    handleArticleDetail(item)
+                  }}
+                >
                   <div class="news-item-title line-clamp-2 font-h6 mb-6">{(item as any).title}</div>
                   <div class="line-clamp-3 font-h7 font-color-colorTextSecondary">
                     {(item as any).label}
@@ -209,11 +228,11 @@ export default defineComponent({
                         {(item as any).releaseDateYear}.{(item as any).releaseDateMonth}
                       </div>
                     </div>
-                    <div>
-                      {'>'}
-                      {'>'}
-                      {'>'}
-                    </div>
+                    {activeNewsIndex.value === index ? (
+                      <img class="w-22px h-22px" src={iconRightRed} />
+                    ) : (
+                      <img class="w-22px h-22px" src={iconRightGray} />
+                    )}
                   </div>
                 </div>
               ))}

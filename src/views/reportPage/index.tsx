@@ -1,10 +1,10 @@
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
 import * as userApi from '@/api/user'
-import { useGo } from "@/hooks/web/usePage";
+import { useGo } from '@/hooks/web/usePage'
 import './index.less'
 // antd
-import { Pagination } from 'ant-design-vue'
+import { Pagination, Breadcrumb } from 'ant-design-vue'
 import newsInfo from '@/assets/news-info.png'
 import rtaChinese from '@/assets/rta-chinese.png'
 import rtaEnglish from '@/assets/rta-english.png'
@@ -12,7 +12,7 @@ import rtaLogoGold from '@/assets/rta-logo-gold.png'
 
 export default defineComponent({
   setup(props, ctx) {
-    const { go } = useGo();
+    const { go } = useGo()
     const arrNews = ref([])
     const current = ref(1)
     const pageSize = ref(10)
@@ -49,7 +49,7 @@ export default defineComponent({
 
     const handleArticleDetail = (item: any) => {
       localStorage.setItem('currentArticleDetail', JSON.stringify(item))
-      go('/newsDetail')
+      go(`/newsDetail?source=report`)
     }
 
     onMounted(() => {
@@ -64,7 +64,28 @@ export default defineComponent({
           <img class="w-162px h-33px block mx-auto" src={rtaChinese} alt="" />
         </div>
         <div class="w-full h-16 px-85 pt-6 pb-18px background-colorBgLayout news-tab font-h7 font-color-colorTextTertiary">
-          首页 / 新闻信息 / 投资观察
+          {/* 首页 / 新闻信息 / 投资观察 */}
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <a
+                onClick={() => {
+                  go('/home')
+                }}
+              >
+                首页
+              </a>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <a
+                onClick={() => {
+                  go('/news')
+                }}
+              >
+                招聘信息
+              </a>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>投资观察</Breadcrumb.Item>
+          </Breadcrumb>
         </div>
         <div class="w-full min-h-100vh px-80 pt-12 background-colorBgLayout flex flex-col">
           <div class="font-h4 font-medium mb-6">投资观察</div>

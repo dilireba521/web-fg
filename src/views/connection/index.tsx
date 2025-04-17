@@ -9,7 +9,7 @@ export default defineComponent({
     const serviceBoxClass = "w-[calc((100%-32px)/3)] h-50 px-4 py-6"
     return () => (
       <div>
-        <div class="w-full h-120 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-connect.jpg)` }}></div>
+        <div class="w-full h-120 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-connect.png)` }}></div>
         <div class="w-full h120 bg-cover bg-center bg-no-repeat px-80 py-24 flex flex-col" style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-recruit.png)` }}>
           <div class="font-h4 font-color-colorText mb-6">诺言私募基金有限公司</div>
           <div class="font-h6 font-color-colorTextSecondary">

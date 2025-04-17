@@ -1,14 +1,15 @@
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
 import * as userApi from '@/api/user'
-import { useGo } from "@/hooks/web/usePage";
+import { useGo } from '@/hooks/web/usePage'
+import { Breadcrumb } from 'ant-design-vue'
 import './index.less'
 // antd
 import { Pagination } from 'ant-design-vue'
 
 export default defineComponent({
   setup(props, ctx) {
-    const { go } = useGo();
+    const { go } = useGo()
     const arrAnnouncement = ref([])
     const current = ref(1)
     const pageSize = ref(10)
@@ -17,7 +18,7 @@ export default defineComponent({
     const handleNewsInfo = async () => {
       try {
         // categoryId:2 新闻资讯, categoryId:3 公司公告
-        const res = await userApi.useGetNewsInfo({ categoryId: 3, pageIndex: current.value})
+        const res = await userApi.useGetNewsInfo({ categoryId: 3, pageIndex: current.value })
         // 获取数据，数据在data的_value中
         let data = res.data.value
         console.log('公司公告数据获取', data)
@@ -45,7 +46,7 @@ export default defineComponent({
 
     const handleArticleDetail = (item: any) => {
       localStorage.setItem('currentArticleDetail', JSON.stringify(item))
-      go('/newsDetail')
+      go(`/newsDetail?source=annuncement`)
     }
 
     onMounted(() => {
@@ -61,13 +62,39 @@ export default defineComponent({
           <div class="font-h2 text-white">信息资讯</div>
         </div>
         <div class="w-full h-16 px-85 pt-6 pb-18px background-colorBgLayout announcement-tab font-h7 font-color-colorTextTertiary">
-          首页 / 新闻信息 / 资讯公告
+          {/* 首页 / 新闻信息 / 资讯公告 */}
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <a
+                onClick={() => {
+                  go('/home')
+                }}
+              >
+                首页
+              </a>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <a
+                onClick={() => {
+                  go('/news')
+                }}
+              >
+                新闻信息
+              </a>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>资讯公告</Breadcrumb.Item>
+          </Breadcrumb>
         </div>
         <div class="w-full min-h-100vh px-120 pt-12 background-colorBgLayout flex flex-col">
           <div class="font-h4 font-medium mb-6">咨询公告</div>
           <div class="flex-1">
             {arrAnnouncement.value.map((item, index) => (
-              <div class="announcement-item bg-white px-8 py-6 h-40 mb-4 flex" onClick={()=>{handleArticleDetail(item)}}>
+              <div
+                class="announcement-item bg-white px-8 py-6 h-40 mb-4 flex"
+                onClick={() => {
+                  handleArticleDetail(item)
+                }}
+              >
                 <div class="h-112px w-110px flex pr-8" style={{ borderRight: '1px solid #979797' }}>
                   <div class="font-h4 mr-2px font-color-colorText">
                     {(item as any).releaseDateDate}

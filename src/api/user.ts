@@ -4,6 +4,7 @@ enum Api {
     NEWS_CATE = '/ow/news/category/',
     NEWS_INFO = '/ow/news/',
     HIRE_INFO = '/ow/hire/',
+    HIRE_TYPE = '/ow/hire/category/',
     MILESTONE_INFO = '/ow/milestone/',
     USER_INFO = '/user/info'
 }
@@ -11,6 +12,8 @@ enum Api {
 export const useGetNewsInfo = (params?: any) => useGet(Api.NEWS_INFO, params)
 
 export const useGetHireInfo = (params?: any) => useGet(Api.HIRE_INFO, params)
+
+export const useGetHireType = (params?: any) => useGet(Api.HIRE_TYPE, params)
 
 export const useGetMilestoneInfo = (params?: any) => useGet(Api.MILESTONE_INFO, params)
 
