@@ -1,5 +1,10 @@
 <template>
-    <div class="w-full h-16 pl-80 sub-title-wrap flex">
+    <div v-if="screenStore.isMobile" class="sub-title-wrap pl-6 flex">
+        <div class="mr-6" v-for="(item, index) in arrTitle" @click="handleClick(index)">
+            <div :class="['item-content', 'font-h7', currentIndex == index ? 'item-active' : 'item-normal']">{{ item }}</div>
+        </div>
+    </div>
+    <div v-else class="w-full h-16 pl-80 sub-title-wrap flex">
         <div class="min-w-136px" v-for="(item, index) in arrTitle" @click="handleClick(index)">
             <div :class="['item-content', 'font-h7', currentIndex == index ? 'item-active' : 'item-normal']">{{ item }}</div>
         </div>
@@ -8,6 +13,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
 import type { PropType } from 'vue';
+import { useScreenStore } from '@/store/modules/screen'
 
 defineOptions({ name: 'SubTitle' });
 
@@ -26,6 +32,7 @@ const props = defineProps({
     }
 });
 const currentIndex = ref(0);
+const screenStore = useScreenStore()
 
 watch(() => props.activeIndex, (newVal) => {
     currentIndex.value = newVal; 
@@ -62,5 +69,16 @@ const handleClick = (index: number) => {
 
 .item-normal {
     border-bottom: 1px solid transparent;
+}
+
+@media screen and (max-width: 768px) {
+    .item-content {
+    padding: 12px 0;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    margin: auto;
+    width: fit-content;
+}
 }
 </style>

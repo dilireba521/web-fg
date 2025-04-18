@@ -1,6 +1,31 @@
 <template>
+  <div v-if="screenStore.isMobile">
+    <div :style="headerStyle"
+        :class="[
+          'header',
+          {
+            black: tabType == 'black'
+          }
+        ]">
+      <div class="flex w-full px-6 pt-14px justify-between items-center">
+        <img  v-if="tabType == 'default'" @click="showMobileMenu = !showMobileMenu" class="w-8 h-29px" :src="iconLogoDefault">
+        <img  v-else class="w-8 h-29px" @click="showMobileMenu = !showMobileMenu" :src="iconLogoRed">
+        <img class="w-5 h-5" @click="showMobileMenu = !showMobileMenu" :src="mobileHeadMenu">
+      </div>
+    </div>
+    <div v-if="showMobileMenu" class="mobile-menu">
+      <MenuVue @changeTab="changeTab"></MenuVue>
+      <div class="flex-1 pt-4 h-full background-white">
+        <div class="py-4 px-6 font-h7 font-color-colorTextSecondary">公司简介</div>
+        <div class="py-4 px-6 font-h7 font-color-colorTextSecondary">企业文化</div>
+        <div class="py-4 px-6 font-h7 font-color-colorTextSecondary">发展历程</div>
+        <div class="py-4 px-6 font-h7 font-color-colorTextSecondary">核心团队</div>
+        <div class="py-4 px-6 font-h7 font-color-colorTextSecondary">合作机构</div>
+      </div>
+    </div>
+  </div>
   <!-- class="relative h-[1px]" -->
-  <div>
+  <div v-else>
     <div
       :style="headerStyle"
       :class="[
@@ -14,13 +39,14 @@
       <MenuVue @changeTab="changeTab"></MenuVue>
       <img v-if="tabType == 'default'" class="rta-logo" :src="iconLogoDefault" alt="" />
       <img v-else class="rta-logo" :src="iconLogoRed" alt="" />
-      <div
+      
+    </div>
+    <div
         :class="['investor-login', tabType == 'default' ? 'active-white' : 'active-black']"
         @click="showLoginModal = true"
       >
         投资者登录
       </div>
-    </div>
     <!-- 占位 -->
     <div :class="['header-seat', 'w-full', { hidden: tabType == 'default' }]"></div>
     <!-- 登录弹窗 -->
@@ -56,11 +82,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, nextTick } from 'vue'
+import { onMounted, onUnmounted, ref, nextTick, watch } from 'vue'
 import MenuVue from './components/menu.vue'
 import { useRoute, useRouter } from 'vue-router' // 添加路由相关导入
+import { useScreenStore } from '@/store/modules/screen'
 import iconLogoDefault from '@/assets/rta-logo.png'
 import iconLogoRed from '@/assets/rta-logo-red.png'
+import mobileHeadMenu from '@/assets/mobile-head-menu.png'
 const route = useRoute()
 const router = useRouter()
 const tabType = ref('default')
@@ -68,6 +96,8 @@ const headerStyle = ref({})
 const isScrollDown = ref(true)
 // 控制弹窗显示
 const showLoginModal = ref(false)
+const showMobileMenu = ref(false)
+const screenStore = useScreenStore()
 function changeTab(type: string) {
   tabType.value = type
 }
@@ -132,7 +162,19 @@ router.afterEach((to, from) => {
   })
 })
 
+// 添加对 isMobile 的监听
+watch(() => screenStore.isMobile, (newValue) => {
+  console.log('isMobile 值变化:', newValue)
+})
+
 onMounted(() => {
+  // 确保 screen store 已初始化
+  screenStore.init()
+  
+  // 使用 nextTick 确保在下一个 DOM 更新周期获取最新值
+  nextTick(() => {
+    console.log('查看是否小屏环境', screenStore.isMobile)
+  })
   document.addEventListener('wheel', handleWheel)
   // 初始化时设置正确的样式
   updateHeaderStyle(window.pageYOffset || document.documentElement.scrollTop)
@@ -170,13 +212,15 @@ onUnmounted(() => {
     left: 48px;
     z-index: 1;
   }
+}
 
-  .investor-login {
+.investor-login {
     font-weight: 400;
     font-size: 14px;
     position: absolute;
     top: 18px;
     right: 40px;
+    z-index: 99;
 
     &.active-white {
       color: rgba(@colorWhite, 0.88);
@@ -201,7 +245,7 @@ onUnmounted(() => {
       color: rgba(@colorPrimary1, 0.88);
     }
   }
-}
+
 // 弹窗样式
 .modal-overlay {
   position: fixed;
@@ -271,5 +315,16 @@ onUnmounted(() => {
   &:hover {
     opacity: 0.9;
   }
+}
+
+.mobile-menu{
+  position: fixed;
+  top: 56px;
+  left: 0;
+  width: 100%;
+  height: calc(100%-56px);
+  background-color: @colorWhite;
+  display: flex;
+  z-index: 1000;
 }
 </style>

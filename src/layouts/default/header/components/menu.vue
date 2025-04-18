@@ -1,19 +1,25 @@
 <template>
-    <div class="container flex justify-center items-center">
+    <div v-if="screenStore.isMobile" class="h-full">
+        <TabsMobileVue :list="items" v-model:active="selectedKey" :type="tabType" @change="change" />
+    </div>
+    <div v-else class="container flex justify-center items-center">
         <TabsVue :list="items" v-model:active="selectedKey" :type="tabType" @change="change"></TabsVue>
     </div>
 </template>
 <script lang="js" setup>
 import { watch, ref } from 'vue';
 import TabsVue from "./tabs/index.vue";
+import TabsMobileVue from "./tabsMobile/index.vue";
 import { useGo } from "@/hooks/web/usePage";
 import { useRoute } from 'vue-router';
 import { routebasicModuleList } from "@/router/routes"
+import { useScreenStore } from '@/store/modules/screen'
 
 const { go } = useGo();
 
 const emit = defineEmits(['changeTab'])
 
+const screenStore = useScreenStore()
 const route = useRoute();
 const items = ref()
 const selectedKey = ref()
