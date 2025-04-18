@@ -4,9 +4,10 @@ import { Form, Input, List ,Button, message } from 'ant-design-vue'
 import { BasicButtonForm } from '@/components/button'
 import { fundTypeOptions } from "@/utils/options/basicOptions"
 import { BasicList } from '@/components/list'
-
+import { useGo } from '@/hooks/web/usePage'
 export default defineComponent({
   setup(props, ctx) {
+    const { go } = useGo()
     const labelCol = { style: { width: '78px' } }
     const searchInfo = reactive({
       typeId: [],
@@ -32,6 +33,16 @@ export default defineComponent({
         <div class='color-secondary'>{name}</div>
         <div>{value}</div>
       </div>)
+    }
+    function jump(data:any){
+      console.log("222222----",data);
+      
+      go({
+        path: '/fund/detail',
+        query: {
+          id: data.id
+        }
+      })
     }
     return () => <div>
       <Banner />
@@ -79,7 +90,7 @@ export default defineComponent({
                   {renderItem('基金经理：', '基金经理名称')}
                   </div>
                 </div>
-                <div class='cursor-pointer color-primary1'>查看详细</div>
+                <div onClick={jump} class='cursor-pointer color-primary1'>查看详细</div>
               </div>
               </List.Item>
           }

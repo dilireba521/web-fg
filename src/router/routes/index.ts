@@ -25,5 +25,14 @@ export const RootRoute: RouteRecordRaw = {
     title: 'Root'
   }
 }
+// 登录路由
+export const LoginRoute: RouteRecordRaw = {
+  path: PageEnum.BASE_LOGIN,
+  name: 'Login',
+  component: () => import('@/views/login/index'),
+  meta: {
+    title: '登录'
+  }
+}
 // 未经许可的基本路由
-export const basicRoutes = [RootRoute, ...routebasicModuleList, PAGE_NOT_FOUND_ROUTE]
+export const basicRoutes = [RootRoute, LoginRoute, ...routebasicModuleList, PAGE_NOT_FOUND_ROUTE]

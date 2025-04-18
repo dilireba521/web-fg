@@ -13,7 +13,7 @@ const route: RouteRecordRaw = {
     {
       path: 'index',
       name: 'InfoIndex',
-      component: () => import('@/views/info/index')
+      component: () => import('@/views/info/index/index')
     }
   ]
 }

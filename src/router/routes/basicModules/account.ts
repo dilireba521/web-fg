@@ -17,7 +17,7 @@ const route: RouteRecordRaw = {
       meta: {
         title: '账户信息',
         orderNo: 10,
-        active: '/account/layout' // 激活的菜单-面包屑或二级菜单必须要定义
+        active: '/account/index' // 激活的菜单-面包屑或二级菜单必须要定义
       },
     }
   ]

@@ -34,7 +34,7 @@ export function usePagination(refProps: ComputedRef<BaseTableProps>) {
       pageSizeOptions: tableSetting.pageSizeOptions,
       //   itemRender: itemRender,
       showQuickJumper: true,
-      position: ['bottomCenter'],
+      position: ['bottomRight'],
       ...(isBoolean(pagination) ? {} : pagination),
       ...unref(configRef)
     }

@@ -13,12 +13,20 @@ const route: RouteRecordRaw = {
     {
       path: 'index',
       name: 'FundIndex',
-      component: () => import('@/views/fund/index/index')
+      component: () => import('@/views/fund/index/index'),
+      meta: {
+        title: '基金产品',
+      }
     },
     {
       path: 'detail',
       name: 'FundDetail',
-      component: () => import('@/views/fund/detail/index')
+      component: () => import('@/views/fund/detail/index'),
+      meta: {
+        title: '基金详情',
+        active:'/fund/index',
+        parentPath: '/fund/index'
+      }
     }
   ]
 }
