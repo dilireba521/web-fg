@@ -16,6 +16,11 @@ const themeConfig: ThemeConfig = {
     fontFamily: 'MiSans',
     colorPrimary: colorMap.colorPrimary,
     borderRadius: 4,
+  },
+  components: {
+    List:{
+      colorSplit: "#00000014"
+    }
   }
 }
 </script>
