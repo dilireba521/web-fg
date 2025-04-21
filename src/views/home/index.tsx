@@ -45,11 +45,12 @@ export default defineComponent({
 
     return () => (
       <div class="">
-        <div class="mt-[-60px]">
-          <div class="video">
+        {/* class="mt-[-60px]" */}
+        <div>
+          <div class="video w-full">
             <video
               ref={videoRef}
-              class="w-full h-full"
+              class={{"w-full": true, "h-full": screenStore.isMobile, "h-100vh object-cover": !screenStore.isMobile}}
               autoplay
               loop
               muted
@@ -62,12 +63,16 @@ export default defineComponent({
               x5-video-player-fullscreen="true"
               src="https://rta1.oss-cn-hangzhou.aliyuncs.com/uni/static/v2.mp4"
             ></video>
-            <img class="video-bottom-icons up float-animation" src={iconMouse} alt="鼠标图标" />
-            <img
-              class="video-bottom-icons down float-animation-delay"
-              src={iconDown}
-              alt="向下图标"
-            />
+            {screenStore.isMobile ? null : (
+              <div>
+                <img class="video-bottom-icons up float-animation" src={iconMouse} alt="鼠标图标" />
+                <img
+                  class="video-bottom-icons down float-animation-delay"
+                  src={iconDown}
+                  alt="向下图标"
+                />
+              </div>
+            )}
           </div>
           {screenStore.isMobile ? (
             <div class="home-mobile-company h-451px relative px-6 pt-10">
@@ -107,9 +112,7 @@ export default defineComponent({
             </div>
           )}
           <Information />
-          {
-            screenStore.isMobile ? null : <InvestConcept themeBgColor={'white'} />
-          }
+          {screenStore.isMobile ? null : <InvestConcept themeBgColor={'white'} />}
         </div>
       </div>
     )

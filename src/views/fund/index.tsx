@@ -52,6 +52,10 @@ export default defineComponent({
       window.addEventListener('scroll', handleScroll)
       // 初始化时执行一次，确保初始状态正确
       handleScroll()
+      if (screenStore.isMobile) {
+        let target_index = localStorage.getItem('MOBILE_SCOLL_TARGET') || 0
+        handleSubTitleClick(Number(target_index))
+      }
     })
 
     // 组件卸载时移除滚动监听
@@ -116,22 +120,22 @@ export default defineComponent({
         {screenStore.isMobile ? (
           <div class="w-full px-6 pt-10 pb-8 background-colorBgLayout">
             <div class="font-h3 font-color-colorText font-bold mb-6 text-center">赎回流程</div>
-            {
-              redemptionProcess.value.map((item, index) => {
-                const backgrounds = [
-                  'linear-gradient(180deg, #F4F9FF 0%, #EEF6FF 100%)',
-                  'linear-gradient(180deg, #F7F8FF 0%, #EEF0FF 100%)',
-                  'linear-gradient(180deg, #FFF8F8 0%, #FFEEEE 100%)',
-                  'linear-gradient(180deg, #F1FDF6 0%, #DEFAE9 100%)'
-                ]
-                return (
-                  <div class="w-full min-h-30 p-4 mb-2" style={{background: backgrounds[index]}}>
-                    <div class="text-base font-color-colorText font-bold mb-4 text-center">{item.title}</div>
-                    <div class="font-h5 font-color-colorTextSecondary text-left">{item.desc}</div>
+            {redemptionProcess.value.map((item, index) => {
+              const backgrounds = [
+                'linear-gradient(180deg, #F4F9FF 0%, #EEF6FF 100%)',
+                'linear-gradient(180deg, #F7F8FF 0%, #EEF0FF 100%)',
+                'linear-gradient(180deg, #FFF8F8 0%, #FFEEEE 100%)',
+                'linear-gradient(180deg, #F1FDF6 0%, #DEFAE9 100%)'
+              ]
+              return (
+                <div class="w-full min-h-30 p-4 mb-2" style={{ background: backgrounds[index] }}>
+                  <div class="text-base font-color-colorText font-bold mb-4 text-center">
+                    {item.title}
                   </div>
-                )
-              })
-            }
+                  <div class="font-h5 font-color-colorTextSecondary text-left">{item.desc}</div>
+                </div>
+              )
+            })}
           </div>
         ) : (
           <div class="w-full h-490px px-80 py-24 text-center bg-slate-200">
@@ -182,10 +186,16 @@ export default defineComponent({
           </div>
         )}
         {screenStore.isMobile ? (
-          <div class="w-full px-6 pt-10 pb-8 background-white">
+          <div
+            ref={subordinateProductsRef}
+            id="subordinate-products"
+            class="w-full px-6 pt-10 pb-8 background-white"
+          >
             <div class="font-h3 font-color-colorText font-bold mb-6 text-center">旗下产品</div>
             <div class="w-full min-h-50 background-colorBgLayout px-4 py-6">
-              <div class="font-h4 font-color-colorText mb-12 text-center">跳转到RTA基金管理平台查看</div>
+              <div class="font-h4 font-color-colorText mb-12 text-center">
+                跳转到RTA基金管理平台查看
+              </div>
               <div
                 class="w-30 h-6 rounded text-white font-h5 mx-auto flex items-center justify-center"
                 style={{ background: '#C1272D' }}

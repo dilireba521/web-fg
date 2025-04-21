@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { LAYOUT } from '@/router/constant'
 const route: RouteRecordRaw = {
   path: '/news',
-  name: 'news',
+  name: 'News',
   component: LAYOUT,
   redirect: '/news/index',
   meta: {

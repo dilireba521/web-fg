@@ -5,21 +5,20 @@
       <div class="mobile-step-nav mb-2 h-12 font-bold">
         <div class="mobile-step-item" :class="{'first-item': index === 0, 'last-item': index === mobileSteps.length - 1}">
           <span v-if="index !== mobileSteps.length - 1" class="mobile-step-number font-h6">{{ String(index + 1).padStart(2, '0') }}、</span>
-          <span :class="index === mobileSteps.length - 1 ? 'text-white font-bold' : 'font-color-colorText font-bold'">{{ item }}</span>
+          <span :class="index === mobileSteps.length - 1 ? 'text-white font-bold' : 'font-color-colorText font-bold'">{{ item.title }}</span>
         </div>
       </div>
       <div class="mb-4">
         <div class="mobile-step-content w-full min-h-35 p-4 overflow-hidden">
           <div
-            v-if="mobileStepsContent[index] && formatContent(mobileStepsContent[index]).length > 0"
-            v-for="(iten, itemIndex) in formatContent(mobileStepsContent[index])"
+            v-for="(iten, itemIndex) in formatContent(item.content)"
             :key="itemIndex"
             class="font-color-colorTextSecondary font-h5 font-normal mb-2 flex"
           >
             <span class="mr-1 flex-shrink-0">•</span>
             <span class="flex-1">{{ iten }}</span>
           </div>
-          <div v-else class="font-color-colorTextSecondary font-h5 font-normal text-center"></div>
+          <!-- <div v-else class="font-color-colorTextSecondary font-h5 font-normal text-center"></div> -->
         </div>
       </div>
     </div>
@@ -95,7 +94,7 @@
 
 <script setup lang="ts">
 import { useScreenStore } from '@/store/modules/screen'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 const screenStore = useScreenStore()
 const props = defineProps({
   currentStep: {
@@ -128,18 +127,54 @@ const stepsContent2 = [
 ]
 const stepsContent3 = '•投资者可登录托管机构官网查询份额。'
 const mobileSteps = [
-  '填写基本信息',
-  '风险等级评估',
-  '投资者适当性匹配',
-  '基金风险揭示',
-  '合格投资者确认',
-  '签署基金合同',
-  '投资者缴纳款项',
-  '投资冷静期',
-  '回访确认',
-  'T日提交申购开户和交易申请',
-  'T+N日向托管机构确认份额',
-  '申购完成'
+  {
+    title: '填写基本信息',
+    content: '•投资者准确完整填写《投资者基本信息表》，并提供相应证明资料； •管理人对投资者身份信息进行核查。'
+  },
+  {
+    title: '风险等级评估',
+    content: '•投资者准独立完成《投资者风险测评问卷》； •管理人综合评估投资者风险承受能力，并在5个工作日内，告知投资者风险等级评估结果。'
+  },
+  {
+    title: '投资者适当性匹配',
+    content: '•管理人根据投资者风险承受能力、产品的风险等级等信息，依据匹配原则，对投资者提出适当性匹配意见； •投资者通过签署《投资者类型及风险匹配告知书》确认。'
+  },
+  {
+    title: '基金风险揭示',
+    content: '•在清楚知晓投资风险后，投资者需签署《风险揭示书》。'
+  },
+  {
+    title: '合格投资者确认',
+    content: '•投资者提供资产证明或收入证明文件，证明自己符合合格投资者标准。'
+  },
+  {
+    title: '签署基金合同',
+    content: ''
+  },
+  {
+    title: '投资者缴纳款项',
+    content: '•投资者根据基金合同里的募集账户缴款，缴款后保存凭条或打印回单，通知管理人已经缴款； •管理人查询款项到账情况后通知投资者。'
+  },
+  {
+    title: '投资冷静期',
+    content: '•投资者进款后有不小于24小时的冷静期； •冷静期内管理人不得主动联系投资者，投资者有权解除基金合同。'
+  },
+  {
+    title: '回访确认',
+    content: '•冷静期后，管理人以电话、邮件或信函方式进行投资回访，投资者按实践情况逐一确认。'
+  },
+  {
+    title: 'T日提交申购开户和交易申请',
+    content: ''
+  },
+  {
+    title: 'T+N日向托管机构确认份额',
+    content: '•投资者可登录托管机构官网查询份额。'
+  },
+  {
+    title: '申购完成',
+    content: ''
+  }
 ]
 const mobileStepsContent: string[] = []
 
@@ -150,13 +185,6 @@ const formatContent = (content: string) => {
     .split('•')
     .filter((item) => item.trim() !== '')
 }
-
-onMounted(() => {
-  if (screenStore.isMobile) {
-    mobileStepsContent.push(...stepsContent, ...stepsContent2.reverse(), stepsContent3)
-    console.log('ssssssssssss',formatContent(mobileStepsContent[0]))
-  }
-})
 </script>
 
 <style scoped>

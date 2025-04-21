@@ -62,6 +62,10 @@ export default defineComponent({
       window.addEventListener('scroll', handleScroll)
       // 初始化时执行一次，确保初始状态正确
       handleScroll()
+      if(screenStore.isMobile) {
+        let target_index = localStorage.getItem('MOBILE_SCOLL_TARGET') || 0
+        handleSubTitleClick(Number(target_index))
+      }
     })
 
     // 组件卸载时移除滚动监听

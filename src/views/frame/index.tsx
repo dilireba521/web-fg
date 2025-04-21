@@ -7,6 +7,10 @@ import { useScreenStore } from '@/store/modules/screen'
 
 import investFramework from '@/assets/invest-framework.png'
 import investRisk from '@/assets/invest-risk.png'
+import mobileFrameBg from '@/assets/mobile-frame-bg.png'
+import mobileFrameCulture from '@/assets/mobile-frame-culture.png'
+import mobileFrameMachine from '@/assets/mobile-frame-machine.png'
+import mobileFrameSystem from '@/assets/mobile-frame-system.png'
 
 const arrAboutCatalogue = ref(['投资框架', '投资理念', '投资研究', '投资风控'])
 const riskControlCurrent = ref('left')
@@ -59,6 +63,10 @@ export default defineComponent({
       window.addEventListener('scroll', handleScroll)
       // 初始化时执行一次，确保初始状态正确
       handleScroll()
+      if(screenStore.isMobile) {
+        let target_index = localStorage.getItem('MOBILE_SCOLL_TARGET') || 0
+        handleSubTitleClick(Number(target_index))
+      }
     })
 
     // 组件卸载时移除滚动监听
@@ -171,7 +179,43 @@ export default defineComponent({
           </div>
         )}
         {screenStore.isMobile ? (
-          <div></div>
+          <div
+            ref={investControlRef}
+            id="invest-control"
+            class="w-full min-h-474px px-6 py-10 pb-8 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${mobileFrameBg}` }}
+          >
+            <div class="font-h1 font-color-colorText mb-6 text-center">投资风控</div>
+            <div>
+              <div
+                class="w-full min-h-110px bg-cover bg-center bg-no-repeat p-4 mb-2"
+                style={{ backgroundImage: `url(${mobileFrameCulture}` }}
+              >
+                <div class="font-h4 font-color-colorText mb-2">风控文化</div>
+                <div class="font-h5 font-color-colorTextSecondary">
+                  公司贯彻全员风控理念，坚守底线，坚持合规化发展，建立良好的全员风控文化。
+                </div>
+              </div>
+              <div
+                class="w-full min-h-110px bg-cover bg-center bg-no-repeat p-4 mb-2"
+                style={{ backgroundImage: `url(${mobileFrameMachine}` }}
+              >
+                <div class="font-h4 font-color-colorText mb-2">风控机制</div>
+                <div class="font-h5 font-color-colorTextSecondary">
+                  公司在募投管退各个环节严格执行内控制度，始终贯彻合规专业化运营方针。
+                </div>
+              </div>
+              <div
+                class="w-full min-h-110px bg-cover bg-center bg-no-repeat p-4"
+                style={{ backgroundImage: `url(${mobileFrameSystem}` }}
+              >
+                <div class="font-h4 font-color-colorText mb-2">风控系统</div>
+                <div class="font-h5 font-color-colorTextSecondary">
+                  构建智能风控系统，实时识别和监测，保障投资策略高效运行。
+                </div>
+              </div>
+            </div>
+          </div>
         ) : (
           <div
             ref={investControlRef}

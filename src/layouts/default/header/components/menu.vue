@@ -1,5 +1,5 @@
 <template>
-    <div v-if="screenStore.isMobile" class="h-full">
+    <div v-if="screenStore.isMobile" class="h-full w-full">
         <TabsMobileVue :list="items" v-model:active="selectedKey" :type="tabType" @change="change" />
     </div>
     <div v-else class="container flex justify-center items-center">
@@ -17,7 +17,7 @@ import { useScreenStore } from '@/store/modules/screen'
 
 const { go } = useGo();
 
-const emit = defineEmits(['changeTab'])
+const emit = defineEmits(['changeTab','closeMobileMenu'])
 
 const screenStore = useScreenStore()
 const route = useRoute();
@@ -52,6 +52,8 @@ function change(params) {
     go({
         path: params
     })
+    // 触发关闭移动菜单的事件
+    emit('closeMobileMenu')
 }
 // 排序
 function sortRoutes(routes) {

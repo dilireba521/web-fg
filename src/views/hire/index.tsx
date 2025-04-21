@@ -2,9 +2,10 @@ import { defineComponent, ref, onMounted, onUnmounted, reactive, watch } from 'v
 import { WEB_BG_HEAD } from '@/utils/resources'
 import { SubTitle } from '@/components/Icon'
 import * as userApi from '@/api/user'
+import { useScreenStore } from '@/store/modules/screen'
 import './index.less'
 import { Pagination, Checkbox, Col } from 'ant-design-vue'
-import { useGo } from "@/hooks/web/usePage";
+import { useGo } from '@/hooks/web/usePage'
 import { isBlock } from 'typescript'
 import iconSelected from '@/assets/icon-selected.png'
 import iconEmptySelect from '@/assets/icon-empty-select.png'
@@ -22,7 +23,8 @@ export default defineComponent({
     SubTitle
   },
   setup(props, ctx) {
-    const { go } = useGo();
+    const screenStore = useScreenStore()
+    const { go } = useGo()
     const current = ref(1)
     const pageSize = ref(10)
     const total = ref(0)
@@ -106,7 +108,7 @@ export default defineComponent({
 
     // 处理职位类别点击事件
     const hadleSelect = (item: any) => {
-      if(selectType.value == item.id){
+      if (selectType.value == item.id) {
         selectType.value = null
         return
       }
@@ -140,69 +142,118 @@ export default defineComponent({
 
     return () => (
       <div>
-        <div
-          class="w-full h-120 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-join.jpg)` }}
-        ></div>
+        {screenStore.isMobile ? (
+          <div
+            class="w-full h-390px bg-cover bg-center bg-no-repeat px-8 py-12"
+            style={{ backgroundImage: `url(${WEB_BG_HEAD}/mobile-head-join.png)` }}
+          >
+            <div class="font-color-colorText" style={{ fontSize: '32px' }}>
+              <div>RECRUIT</div>
+              <div>TALENTED PEOPLE</div>
+            </div>
+          </div>
+        ) : (
+          <div
+            class="w-full h-120 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-join.jpg)` }}
+          ></div>
+        )}
         {/* <SubTitle arrTitle={arrHireTitle.value}  onItemClick={handleSubTitleClick} /> */}
-        <div class="w-full px-80 pt-24 flex background-colorBgLayout min-h-100vh flex-col">
-          <div class="flex w-full">
-            <div class="hire-type-box w-304px min-h-100vh pr-8">
-              <div class="hire-type-clear flex justify-between py-4">
-                <div class="font-h7 font-color-colorTextSecondary">筛选</div>
-                <div class="font-h7 font-color-colorTextTertiary" onClick={handleClearSelectType}>清除</div>
+        {screenStore.isMobile ? (
+          <div class="w-full px-6 pt-10 pb-12 background-white">
+            <div class="font-bold font-h1 font-color-colorText">
+              开启新的工作（{jobsNumber.value}）
+            </div>
+            {arrHire.value.map((item, index) => (
+              <div
+                class="py-4 mb-4"
+                onClick={() => {
+                  jumpPositionDetail(item)
+                }}
+              >
+                <div class="mb-2 font-h5 font-medium font-color-colorText">
+                  {(item as any).title}
+                </div>
+                <div class="mb-2 font-h6 font-color-colorText">
+                  {(item as any).category.title}｜{(item as any).label}
+                </div>
+                <div
+                  class="line-clamp-2 font-h7 font-color-colorTextSecondary"
+                  v-html={(item as any).content}
+                ></div>
               </div>
-              <div class="pt-6">
-                <div class="font-h6 font-medium font-color-colorText mb-6">职位类别</div>
-                {/* <a-checkbox-group
-                  v-model:value={stateSelect.value}
-                  onChange={handleCheckboxChange}
-                  style={{ display: 'block' }}
-                >
+            ))}
+          </div>
+        ) : (
+          <div class="w-full px-80 pt-24 flex background-colorBgLayout min-h-100vh flex-col">
+            <div class="flex w-full">
+              <div class="hire-type-box w-304px min-h-100vh pr-8">
+                <div class="hire-type-clear flex justify-between py-4">
+                  <div class="font-h7 font-color-colorTextSecondary">筛选</div>
+                  <div class="font-h7 font-color-colorTextTertiary" onClick={handleClearSelectType}>
+                    清除
+                  </div>
+                </div>
+                <div class="pt-6">
+                  <div class="font-h6 font-medium font-color-colorText mb-6">职位类别</div>
                   {arrHireTYpe.value.map((item: any) => (
-                    <div class="h-38px">
-                      <a-checkbox class="font-h7" value={item.id}>
-                        {item.name}
-                      </a-checkbox>
-                    </div>
-                  ))}
-                </a-checkbox-group> */}
-                {arrHireTYpe.value.map((item: any) => (
                     <div class="py-2 flex items-center">
-                      {selectType.value == item.id ?<img onClick={()=>{hadleSelect(item)}} class="w-4 h-4" src={iconSelected} />:<img onClick={()=>{hadleSelect(item)}} class="w-4 h-4" src={iconEmptySelect} />}
+                      {selectType.value == item.id ? (
+                        <img
+                          onClick={() => {
+                            hadleSelect(item)
+                          }}
+                          class="w-4 h-4"
+                          src={iconSelected}
+                        />
+                      ) : (
+                        <img
+                          onClick={() => {
+                            hadleSelect(item)
+                          }}
+                          class="w-4 h-4"
+                          src={iconEmptySelect}
+                        />
+                      )}
                       <div class="ml-2 font-h7 font-medium">{item.title}</div>
                     </div>
                   ))}
+                </div>
+              </div>
+              <div class="pl-8 w-full">
+                <div class="font-h3 font-medium mb-10">开启新的工作（{jobsNumber.value}）</div>
+                {arrHire.value.map((item, index) => (
+                  <div
+                    class="mb-10 w-full"
+                    onClick={() => {
+                      jumpPositionDetail(item)
+                    }}
+                  >
+                    <div class="mb-2 font-h5 font-medium font-color-colorText">
+                      {(item as any).title}
+                    </div>
+                    <div class="mb-3 font-h6 font-color-colorText">
+                      {(item as any).category.title}｜{(item as any).label}
+                    </div>
+                    <div
+                      class="line-clamp-2 font-h7 font-color-colorTextSecondary"
+                      v-html={(item as any).content}
+                    ></div>
+                  </div>
+                ))}
               </div>
             </div>
-            <div class="pl-8 w-full">
-              <div class="font-h3 font-medium mb-10">开启新的工作（{jobsNumber.value}）</div>
-              {arrHire.value.map((item, index) => (
-                <div class="mb-10 w-full" onClick={()=>{jumpPositionDetail(item)}}>
-                  <div class="mb-2 font-h5 font-medium font-color-colorText">
-                    {(item as any).title}
-                  </div>
-                  <div class="mb-3 font-h6 font-color-colorText">
-                    {(item as any).category.title}｜{(item as any).label}
-                  </div>
-                  <div
-                    class="line-clamp-2 font-h7 font-color-colorTextSecondary"
-                    v-html={(item as any).content}
-                  ></div>
-                </div>
-              ))}
+            <div class="flex justify-end mt-auto">
+              <Pagination
+                current={current.value}
+                pageSize={pageSize.value}
+                total={total.value}
+                onChange={handlePageChange}
+                showSizeChanger={false} // 可选：隐藏页码大小选择器
+              />
             </div>
           </div>
-          <div class="flex justify-end mt-auto">
-            <Pagination
-              current={current.value}
-              pageSize={pageSize.value}
-              total={total.value}
-              onChange={handlePageChange}
-              showSizeChanger={false} // 可选：隐藏页码大小选择器
-            />
-          </div>
-        </div>
+        )}
       </div>
     )
   }
