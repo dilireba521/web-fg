@@ -8,7 +8,7 @@
           <span :class="index === mobileSteps.length - 1 ? 'text-white font-bold' : 'font-color-colorText font-bold'">{{ item.title }}</span>
         </div>
       </div>
-      <div class="mb-4">
+      <div class="mb-4" v-show="index !== mobileSteps.length - 1">
         <div class="mobile-step-content w-full min-h-35 p-4 overflow-hidden">
           <div
             v-for="(iten, itemIndex) in formatContent(item.content)"
@@ -314,6 +314,7 @@ const formatContent = (content: string) => {
 .step-content {
   border: 1px dashed rgba(0, 0, 0, 0.1);
   border-right: none;
+  width: 20%;
 }
 
 .step-content:last-child {

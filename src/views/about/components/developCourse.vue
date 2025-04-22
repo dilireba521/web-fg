@@ -69,13 +69,13 @@
         </div>
 
         <!-- 右侧内容区域 -->
-        <div class="timeline-content flex-1 ml-42">
+        <div class="timeline-content flex-1 ml-42 flex flex-col">
           <div class="content-header flex items-center mb-30px">
             <div class="current-year text-red-600 text-4xl font-medium mr-20px">
               {{ years[currentIndex] }}
             </div>
           </div>
-          <div class="text-left">
+          <div class="text-left flex-1">
             <!-- <div
               v-for="(item, idx) in developEvents[currentIndex]"
               :key="idx"
@@ -84,7 +84,7 @@
               <div>{{ item.month }}月-</div>
               <div>{{ item.desc }}</div>
             </div> -->
-            <div v-html="developEvents[currentIndex]"></div>
+            <div v-html="developEvents[currentIndex]" class="timeline-content-text hide-scrollbar max-h-395px"></div>
           </div>
         </div>
       </div>
@@ -146,7 +146,24 @@ onMounted(() => {
   handleMilestoneInfo()
 })
 </script>
-<style lang="less" scoped>
+<style scoped lang="less">
+/* 添加滚动内容样式 */
+.timeline-content-text {
+  overflow-y: auto; /* 启用垂直滚动 */
+}
+
+/* 隐藏滚动条但保留滚动功能 */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE 和 Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Webkit浏览器（Chrome、Safari等）隐藏滚动条 */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* 发展时间线容器样式 */
 .develop-timeline {
   position: relative;
   z-index: 1;

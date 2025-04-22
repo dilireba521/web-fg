@@ -50,7 +50,11 @@ export default defineComponent({
           <div class="video w-full">
             <video
               ref={videoRef}
-              class={{"w-full": true, "h-full": screenStore.isMobile, "h-100vh object-cover": !screenStore.isMobile}}
+              class={{
+                'w-full': true,
+                'h-100vh object-cover': true, // 基础样式：占满视口高度
+                'object-cover': !screenStore.isMobile // 桌面端可以添加其他特定样式
+              }}
               autoplay
               loop
               muted

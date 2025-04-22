@@ -147,10 +147,10 @@ export default defineComponent({
             class="w-full h-390px bg-cover bg-center bg-no-repeat px-8 py-12"
             style={{ backgroundImage: `url(${WEB_BG_HEAD}/mobile-head-join.png)` }}
           >
-            <div class="font-color-colorText" style={{ fontSize: '32px' }}>
+            {/* <div class="font-color-colorText" style={{ fontSize: '32px' }}>
               <div>RECRUIT</div>
               <div>TALENTED PEOPLE</div>
-            </div>
+            </div> */}
           </div>
         ) : (
           <div

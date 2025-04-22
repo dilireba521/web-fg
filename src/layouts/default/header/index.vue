@@ -22,7 +22,9 @@
           @click="showMobileMenu = !showMobileMenu"
           :src="iconLogoRed"
         />
-        <img class="w-5 h-5" @click="showMobileMenu = !showMobileMenu" :src="mobileHeadMenu" />
+        <!-- <img class="w-5 h-5" @click="showMobileMenu = !showMobileMenu" :src="mobileHeadMenu" /> -->
+        <SvgIcon v-if="tabType == 'black'" @click="showMobileMenu = !showMobileMenu" name="icon-menu" width="20" height="20" color="#000000" />
+        <SvgIcon v-else @click="showMobileMenu = !showMobileMenu" name="icon-menu" width="20" height="20" color="#ffffff" />
       </div>
     </div>
     <div class="w-full h-56px"></div>
@@ -103,6 +105,7 @@ import { onMounted, onUnmounted, ref, nextTick, watch } from 'vue'
 import MenuVue from './components/menu.vue'
 import { useRoute, useRouter } from 'vue-router' // 添加路由相关导入
 import { useScreenStore } from '@/store/modules/screen'
+import { SvgIcon } from '@/components/Icon'
 import iconLogoDefault from '@/assets/rta-logo.png'
 import iconLogoRed from '@/assets/rta-logo-red.png'
 import mobileHeadMenu from '@/assets/mobile-head-menu.png'
@@ -283,29 +286,14 @@ onUnmounted(() => {
   position: absolute;
   top: 18px;
   right: 40px;
+  cursor: pointer; // 添加鼠标指针样式
   z-index: 99;
 
   &.active-white {
     color: rgba(@colorWhite, 0.88);
   }
   &.active-black {
-    color: rgba(@colorPrimary1, 0.88);
-  }
-}
-
-.investor-login {
-  font-weight: 400;
-  font-size: 14px;
-  position: absolute;
-  top: 18px;
-  right: 40px;
-  cursor: pointer; // 添加鼠标指针样式
-
-  &.active-white {
-    color: rgba(@colorWhite, 0.88);
-  }
-  &.active-black {
-    color: rgba(@colorPrimary1, 0.88);
+    color: rgba(@colorBlack, 0.88);
   }
 }
 

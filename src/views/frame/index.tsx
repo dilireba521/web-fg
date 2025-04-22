@@ -61,15 +61,15 @@ export default defineComponent({
     }
 
     // 监听路由变化
-    watch(() => route.hash, (newHash) => {
-      if(screenStore.isMobile) {
-        // 去掉开头的 # 字符再转换为数字
-        const index = newHash ? Number(newHash.substring(1)) : 0
-        setTimeout(() => {
-          handleSubTitleClick(index)
-        }, 200)
-      }
-    }, { immediate: true, deep: true })
+    // watch(() => route.hash, (newHash) => {
+    //   if(screenStore.isMobile) {
+    //     // 去掉开头的 # 字符再转换为数字
+    //     const index = newHash ? Number(newHash.substring(1)) : 0
+    //     setTimeout(() => {
+    //       handleSubTitleClick(index)
+    //     }, 200)
+    //   }
+    // }, { immediate: true, deep: true })
 
     // 组件挂载时添加滚动监听
     onMounted(() => {
@@ -94,10 +94,10 @@ export default defineComponent({
             class="w-full h-390px pt-12 pl-8 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${WEB_BG_HEAD}/mobile-head-invest.png)` }}
           >
-            <div class="font-color-colorText" style={{ fontSize: '32px' }}>
+            {/* <div class="font-color-colorText" style={{ fontSize: '32px' }}>
               <div class="mb-1">INVESTMENT</div>
               <div>FRAMEWORK</div>
-            </div>
+            </div> */}
           </div>
         ) : (
           <div class="w-full relative">

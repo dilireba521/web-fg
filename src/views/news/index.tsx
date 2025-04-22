@@ -98,15 +98,15 @@ export default defineComponent({
     }
 
     // 监听路由变化
-    watch(() => route.hash, (newHash) => {
-      if(screenStore.isMobile) {
-        // 去掉开头的 # 字符再转换为数字
-        const index = newHash ? Number(newHash.substring(1)) : 0
-        setTimeout(() => {
-          handleSubTitleClick(index)
-        }, 200)
-      }
-    }, { immediate: true, deep: true })
+    // watch(() => route.hash, (newHash) => {
+    //   if(screenStore.isMobile) {
+    //     // 去掉开头的 # 字符再转换为数字
+    //     const index = newHash ? Number(newHash.substring(1)) : 0
+    //     setTimeout(() => {
+    //       handleSubTitleClick(index)
+    //     }, 200)
+    //   }
+    // }, { immediate: true, deep: true })
 
     // 组件挂载时添加滚动监听
     onMounted(() => {
@@ -115,10 +115,6 @@ export default defineComponent({
       handleScroll()
       handleNewsInfo('3')
       handleNewsInfo('2')
-      if(screenStore.isMobile) {
-        let target_index = localStorage.getItem('MOBILE_SCOLL_TARGET') || 0
-        handleSubTitleClick(Number(target_index))
-      }
     })
 
     // 组件卸载时移除滚动监听
@@ -143,9 +139,9 @@ export default defineComponent({
             class="w-full h-390px bg-cover bg-center bg-no-repeat px-8 py-12"
             style={{ backgroundImage: `url(${WEB_BG_HEAD}/mobile-head-news.png)` }}
           >
-            <div class="font-color-colorText" style={{ fontSize: '32px' }}>
+            {/* <div class="font-color-colorText" style={{ fontSize: '32px' }}>
               信息资讯
-            </div>
+            </div> */}
           </div>
         ) : (
           <div class="w-full h-120">

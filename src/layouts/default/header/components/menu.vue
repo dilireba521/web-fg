@@ -39,6 +39,7 @@ watch(() => route.path, () => {
     const _len = route.matched?.length
     const _item = route.matched[_len - 1]
     selectedKey.value = _item.meta?.active || _item.path
+    console.log('路由改变',selectedKey.value);
     items.value = itemsFn()
 }, { immediate: true });
 
@@ -54,6 +55,8 @@ function change(params) {
             path: params.path,
             hash: params.hash || '',
         })
+        tabType.value = params.path == '/home/index' ? 'default' : 'black'
+        emit('changeTab', tabType.value)
         if(params.isClosed){
             // 触发关闭移动菜单的事件
             emit('closeMobileMenu')

@@ -17,7 +17,7 @@ export default defineComponent({
       content = content.replace(/<img/g,'<img class="w-full" style="width: 100%; height: auto" ')
       data.content = content
       dataArticle.value = data
-      console.log(data.content)
+      
     }
 
     onMounted(() => {

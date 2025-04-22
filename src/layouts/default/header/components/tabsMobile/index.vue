@@ -150,7 +150,6 @@ function handleClick(data) {
   }
 }
 const handleTargets = (item,index) => {
-    localStorage.setItem('MOBILE_SCOLL_TARGET',index)
     emit('change', { path: curActive.value, hash: `#${index}`,isClosed:true })
 }
 </script>
