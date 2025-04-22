@@ -38,7 +38,7 @@ export function useECharts(
         itemHeight: 4,
         itemGap: 36,
         textStyle: {
-          color: '#D1D4DCFF'
+          color: '#000000E0'
         }
       },
       backgroundColor: 'transparent',

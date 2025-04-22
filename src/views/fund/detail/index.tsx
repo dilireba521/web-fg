@@ -3,12 +3,10 @@ import BannerElm from './components/banner'
 import { renderBaseInfo, renderStrate, renderRisk } from './components/modules'
 import ManagerElm from './components/manager'
 import CostElm from './components/cost'
-import FundModal from './components/fundModal'
 export default defineComponent({
   components: {
     BannerElm,
     CostElm,
-    FundModal,
     ManagerElm
   },
   setup(props, ctx) {
@@ -26,7 +24,6 @@ export default defineComponent({
         {/* 风险提示函 */}
         {renderRisk()}
       </div>
-      <FundModal />
     </div>
   }
 })

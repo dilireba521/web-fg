@@ -11,7 +11,7 @@
     </div>
   </div>
   <!-- 面包屑 -->
-  <div class="container"><BreadCrumbVue :breadcrumb="breadcrumb"></BreadCrumbVue></div>
+  <BreadCrumbVue :breadcrumb="breadcrumb"></BreadCrumbVue>
 </template>
 <script lang="ts" setup>
 import { watch, ref } from 'vue'
