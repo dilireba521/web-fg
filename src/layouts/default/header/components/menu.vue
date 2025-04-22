@@ -49,11 +49,20 @@ watch(() => selectedKey.value, (val) => {
 
 function change(params) {
     // 如发现导航样式回选，可以写个定时器，延时对selectedKey赋值
-    go({
-        path: params
-    })
-    // 触发关闭移动菜单的事件
-    emit('closeMobileMenu')
+    if(screenStore.isMobile){
+        go({
+            path: params.path,
+            hash: params.hash || '',
+        })
+        if(params.isClosed){
+            // 触发关闭移动菜单的事件
+            emit('closeMobileMenu')
+        }
+    }else{
+        go({
+            path: params
+        })
+    }
 }
 // 排序
 function sortRoutes(routes) {

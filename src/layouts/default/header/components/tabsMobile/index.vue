@@ -142,15 +142,16 @@ function handleClick(data) {
   if (matchedItem) {
     // 如果找到匹配项，设置子标签
     subTabs.value = matchedItem.targets
+    emit('change', {path:data.value,isClosed:false})
   } else {
     // 如果没有匹配项，清空子标签并执行路由跳转
     subTabs.value = []
-    emit('change', data.value)
+    emit('change', {path:data.value,isClosed:true})
   }
 }
 const handleTargets = (item,index) => {
     localStorage.setItem('MOBILE_SCOLL_TARGET',index)
-    emit('change', curActive.value)
+    emit('change', { path: curActive.value, hash: `#${index}`,isClosed:true })
 }
 </script>
 <template>

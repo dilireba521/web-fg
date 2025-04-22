@@ -1,9 +1,10 @@
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue'
 import { SubTitle } from '@/components/Icon'
 import './index.less'
 import InvestConcept from '@/views/home/components/InvestConcept'
 import { WEB_BG_HEAD } from '@/utils/resources'
 import { useScreenStore } from '@/store/modules/screen'
+import { useRoute } from 'vue-router'
 
 import investFramework from '@/assets/invest-framework.png'
 import investRisk from '@/assets/invest-risk.png'
@@ -23,6 +24,7 @@ export default defineComponent({
 
   setup(props, ctx) {
     const screenStore = useScreenStore()
+    const route = useRoute()
     const investFrameRef = ref(null)
     const investIdeaRef = ref(null)
     const investStudyRef = ref(null)
@@ -32,7 +34,7 @@ export default defineComponent({
     const handleSubTitleClick = (index: number) => {
       const refs = [investFrameRef, investIdeaRef, investStudyRef, investControlRef]
       if (refs[index]?.value) {
-        ;(refs[index].value as HTMLElement).scrollIntoView({ behavior: 'smooth' })
+        (refs[index].value as HTMLElement).scrollIntoView({ behavior: 'smooth' })
       }
     }
 
@@ -58,15 +60,22 @@ export default defineComponent({
       }
     }
 
+    // 监听路由变化
+    watch(() => route.hash, (newHash) => {
+      if(screenStore.isMobile) {
+        // 去掉开头的 # 字符再转换为数字
+        const index = newHash ? Number(newHash.substring(1)) : 0
+        setTimeout(() => {
+          handleSubTitleClick(index)
+        }, 200)
+      }
+    }, { immediate: true, deep: true })
+
     // 组件挂载时添加滚动监听
     onMounted(() => {
       window.addEventListener('scroll', handleScroll)
       // 初始化时执行一次，确保初始状态正确
       handleScroll()
-      if(screenStore.isMobile) {
-        let target_index = localStorage.getItem('MOBILE_SCOLL_TARGET') || 0
-        handleSubTitleClick(Number(target_index))
-      }
     })
 
     // 组件卸载时移除滚动监听

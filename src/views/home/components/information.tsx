@@ -1,7 +1,8 @@
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, handleError } from 'vue'
 import { useGo } from '@/hooks/web/usePage'
 import { useScreenStore } from '@/store/modules/screen'
 import './index.less'
+
 // 导入图片资源
 import iconRightRed from '@/assets/icon-right-red.png'
 // 导入API
@@ -44,6 +45,11 @@ export default defineComponent({
       go('/news')
     }
 
+    const handleNewsDetail = (item: any) => {
+      localStorage.setItem('currentArticleDetail', JSON.stringify(item))
+      go('/newsDetail')
+    }
+
     return () => (
       <div>
         {screenStore.isMobile ? (
@@ -55,7 +61,7 @@ export default defineComponent({
                 <img class="w-22px h-22px ml-4px" src={iconRightRed} alt="了解更多" />
               </div>
             </div>
-            <div class="info-item w-full pt-23px">
+            <div class="info-item w-full pt-23px" onClick={()=>{handleNewsDetail(firstNews.value )}}>
               <div class="info-item-type font-normal font-h8 mb-1">
                 {(firstNews.value as any).category?.name || '未分类'}
               </div>
@@ -79,7 +85,7 @@ export default defineComponent({
             </div>
             <div class="flex flex-wrap justify-between">
               {newsData.value.map((item, index) => (
-                <div key={index} class="info-item mb-30px">
+                <div key={index} class="info-item mb-30px" onClick={()=>{handleNewsDetail(item)}}>
                   <div class="info-item-line w-296px h-2px mb-22px"></div>
                   <div class="info-item-type font-normal font-h8 mb-4px">
                     {(item as any).category?.name || '未分类'}

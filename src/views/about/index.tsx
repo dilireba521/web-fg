@@ -1,10 +1,11 @@
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue'
 import './idnex.less'
 import { SubTitle } from '@/components/Icon'
 import personalCard from './components/personalCard.vue'
 import DevelopCourse from './components/developCourse.vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
 import { useScreenStore } from '@/store/modules/screen'
+import { useRoute } from 'vue-router'
 
 import iconRtaLarge from '@/assets/about-rta-large.svg'
 import aboutRtaFund from '@/assets/about-rta-fund.svg'
@@ -20,6 +21,7 @@ export default defineComponent({
 
   setup(props, ctx) {
     const screenStore = useScreenStore()
+    const route = useRoute()
     // 定义各个部分的ref引用
     const companyIntroRef = ref(null)
     const companyCultureRef = ref(null)
@@ -56,6 +58,17 @@ export default defineComponent({
         }
       }
     }
+
+    // 监听路由变化
+    watch(() => route.hash, (newHash) => {
+      if(screenStore.isMobile) {
+        // 去掉开头的 # 字符再转换为数字
+        const index = newHash ? Number(newHash.substring(1)) : 0
+        setTimeout(() => {
+          handleSubTitleClick(index)
+        }, 200)
+      }
+    }, { immediate: true, deep: true })
 
     // 组件挂载时添加滚动监听
     onMounted(() => {
@@ -115,12 +128,10 @@ export default defineComponent({
             <div class="font-h5 text-xl font-normal text-left">
               <div class="mb-7">
                 诺言私募基金管理有限公司成立于 2025
-                年，致力于为多元化的客户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和
-                全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋能策略决策体系结构。
+                年，致力于为多元化的客户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋能策略决策体系结构。
               </div>
               <div>
-                公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个金融衍生品领域。公司将秉持以客户利益为核心的买方思维，在波动
-                市场中持续创造超额收益。协助国内外企业客户、机构客户、高净值客户实现其资产可持续发展目标。
+                公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个金融衍生品领域。公司将秉持以客户利益为核心的买方思维，在波动市场中持续创造超额收益。协助企业客户、机构客户、高净值客户实现其资产可持续发展目标。
               </div>
             </div>
           </div>

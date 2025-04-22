@@ -1,10 +1,11 @@
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
 import { useGo } from '@/hooks/web/usePage'
 import './index.less'
 import { SubTitle } from '@/components/Icon'
 import * as userApi from '@/api/user'
 import { useScreenStore } from '@/store/modules/screen'
+import { useRoute } from 'vue-router'
 
 import iconRightGray from '@/assets/icon-right-gray.png'
 import iconRightRed from '@/assets/icon-right-red.png'
@@ -19,6 +20,7 @@ export default defineComponent({
   setup(props, ctx) {
     const screenStore = useScreenStore()
     const { go } = useGo()
+    const route = useRoute()
     // 定义各个部分的ref引用
     const companyAnnouncementRef = ref(null)
     const informationRef = ref(null)
@@ -94,6 +96,17 @@ export default defineComponent({
       // 鼠标进入时，更新activeIndex
       activeNewsIndex.value = index
     }
+
+    // 监听路由变化
+    watch(() => route.hash, (newHash) => {
+      if(screenStore.isMobile) {
+        // 去掉开头的 # 字符再转换为数字
+        const index = newHash ? Number(newHash.substring(1)) : 0
+        setTimeout(() => {
+          handleSubTitleClick(index)
+        }, 200)
+      }
+    }, { immediate: true, deep: true })
 
     // 组件挂载时添加滚动监听
     onMounted(() => {

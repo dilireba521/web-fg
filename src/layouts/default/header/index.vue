@@ -164,7 +164,6 @@ watch(
 )
 
 function changeTab(type: string) {
-  console.log('type', type)
   tabType.value = type
 }
 // 处理接受按钮点击
@@ -232,18 +231,13 @@ router.afterEach((to, from) => {
 watch(
   () => screenStore.isMobile,
   (newValue) => {
-    console.log('isMobile 值变化:', newValue)
+    
   }
 )
 
 onMounted(() => {
   // 确保 screen store 已初始化
   screenStore.init()
-
-  // 使用 nextTick 确保在下一个 DOM 更新周期获取最新值
-  nextTick(() => {
-    console.log('查看是否小屏环境', screenStore.isMobile)
-  })
   document.addEventListener('wheel', handleWheel)
   // 初始化时设置正确的样式
   updateHeaderStyle(window.pageYOffset || document.documentElement.scrollTop)
