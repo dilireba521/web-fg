@@ -2,12 +2,33 @@ import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
 import { useScreenStore } from '@/store/modules/screen'
 
+import investorPDF from '@/assets/documents/investor-qualification.pdf'
 import rtaLogoRed from '@/assets/rta-logo-red.png'
+import iconAttachment from '@/assets/icon-attachment.png'
 
 export default defineComponent({
   setup(props, ctx) {
     const screenStore = useScreenStore()
-    const serviceBoxClass = 'w-[calc((100%-32px)/3)] h-50 px-4 py-6'
+    const serviceBoxClass = 'w-[calc((100%-32px)/3)] min-h-232px px-4 py-6'
+
+    // 添加下载PDF文件的处理函数
+    const handleDownloadPDF = (pdfUrl: string, fileName: string) => {
+      // 创建一个隐藏的a标签
+      const link = document.createElement('a')
+      link.href = pdfUrl
+      link.target = '_blank' // 在新窗口打开
+      link.download = fileName // 设置下载的文件名
+      
+      // 将链接添加到文档中
+      document.body.appendChild(link)
+      
+      // 模拟点击链接
+      link.click()
+      
+      // 从文档中移除链接
+      document.body.removeChild(link)
+    }
+
     return () => (
       <div>
         {screenStore.isMobile ? (
@@ -15,9 +36,9 @@ export default defineComponent({
             class="w-full h-390px bg-cover bg-center bg-no-repeat pt-12 pl-8"
             style={{ backgroundImage: `url(${WEB_BG_HEAD}/mobile-head-connect.png)` }}
           >
-            <div class="font-color-colorText" style={{ fontSize: '32px' }}>
+            {/* <div class="font-color-colorText" style={{ fontSize: '32px' }}>
               联系我们
-            </div>
+            </div> */}
           </div>
         ) : (
           <div
@@ -105,7 +126,11 @@ export default defineComponent({
                   <div class="mb-2 font-bold">个人投资者</div>
                   <div class="mb-2">提供附带盖章的收入或资产证明文件材料</div>
                   <div class="mb-2 font-bold">机构投资者</div>
-                  <div>提供最近一年的机构审计报告或财务报表</div>
+                  <div class="mb-5">提供最近一年的机构审计报告或财务报表</div>
+                  <div class="flex items-center" onClick={() => handleDownloadPDF('/path/to/your/pdf/file.pdf', '合格投资者资产证明一览表.pdf')}>
+                    <img class="w-5 h-5" src={iconAttachment} alt="附件" />
+                    <div class="font-color-colorRed">合格投资者资产证明一览表</div>
+                  </div>
                 </div>
               </div>
               <div

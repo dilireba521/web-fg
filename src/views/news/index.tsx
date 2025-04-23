@@ -68,9 +68,16 @@ export default defineComponent({
         let data = res.data.value
         if (data && data.retCode == 0) {
           for (let i = 0; i < data.data.length; i++) {
-            data.data[i].releaseDateYear = data.data[i].releaseDate.split('-')[0]
-            data.data[i].releaseDateMonth = data.data[i].releaseDate.split('-')[1]
-            data.data[i].releaseDateDate = data.data[i].releaseDate.split('-')[2]
+            if (data.data[i].releaseDate) {
+              const dateParts = data.data[i].releaseDate.split('-');
+              data.data[i].releaseDateYear = dateParts[0] || '-';
+              data.data[i].releaseDateMonth = dateParts[1] || '-';
+              data.data[i].releaseDateDate = dateParts[2] || '-';
+            } else {
+              data.data[i].releaseDateYear = '-';
+              data.data[i].releaseDateMonth = '-';
+              data.data[i].releaseDateDate = '-';
+            }
           }
           if (type == '2') {
             // 新闻资讯

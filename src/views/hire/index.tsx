@@ -25,6 +25,7 @@ export default defineComponent({
   setup(props, ctx) {
     const screenStore = useScreenStore()
     const { go } = useGo()
+    const hireChannel = ref(2)
     const current = ref(1)
     const pageSize = ref(10)
     const total = ref(0)
@@ -35,16 +36,29 @@ export default defineComponent({
     const arrHireTYpe = ref<HireType[]>([])
 
     // 处理SubTitle点击事件
-    const handleSubTitleClick = (index: number) => {}
+    const handleSubTitleClick = (index: number) => {
+      if (index == 0) {
+        hireChannel.value = 2
+      } else {
+        hireChannel.value = 1
+      }
+      handleHireInfo();
+    }
 
     const handleHireInfo = async () => {
       try {
         // categoryId:1 社会招聘, categoryId:2 校园招聘
-        const res = await userApi.useGetHireInfo({ categoryId: selectType.value })
-        console.log('招聘信息数据获取', res.data.value)
+        const res = await userApi.useGetHireInfo({ type:  hireChannel.value, categoryId: selectType.value, })
         // 获取数据，数据在data的_value中
         let data = res.data.value
         if (data && data.retCode == 0) {
+          // 根据order字段排序，数字越小排越前面
+          data.data.sort((a: { order?: number }, b: { order?: number }) => {
+            // 如果order字段不存在，则默认为最大值
+            const orderA = a.order !== undefined ? a.order : Number.MAX_VALUE;
+            const orderB = b.order !== undefined ? b.order : Number.MAX_VALUE;
+            return orderA - orderB;
+          });
           jobsNumber.value = data.data.length
           arrHire.value = data.data
         }
@@ -158,7 +172,7 @@ export default defineComponent({
             style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-join.jpg)` }}
           ></div>
         )}
-        {/* <SubTitle arrTitle={arrHireTitle.value}  onItemClick={handleSubTitleClick} /> */}
+        <SubTitle arrTitle={arrHireTitle.value}  onItemClick={handleSubTitleClick} />
         {screenStore.isMobile ? (
           <div class="w-full px-6 pt-10 pb-12 background-white">
             <div class="font-bold font-h1 font-color-colorText">
@@ -243,7 +257,7 @@ export default defineComponent({
                 ))}
               </div>
             </div>
-            <div class="flex justify-end mt-auto">
+            {/* <div class="flex justify-end mt-auto">
               <Pagination
                 current={current.value}
                 pageSize={pageSize.value}
@@ -251,7 +265,7 @@ export default defineComponent({
                 onChange={handlePageChange}
                 showSizeChanger={false} // 可选：隐藏页码大小选择器
               />
-            </div>
+            </div> */}
           </div>
         )}
       </div>

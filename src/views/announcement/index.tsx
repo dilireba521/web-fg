@@ -24,9 +24,16 @@ export default defineComponent({
         console.log('公司公告数据获取', data)
         if (data && data.retCode == 0) {
           for (let i = 0; i < data.data.length; i++) {
-            data.data[i].releaseDateYear = data.data[i].releaseDate.split('-')[0]
-            data.data[i].releaseDateMonth = data.data[i].releaseDate.split('-')[1]
-            data.data[i].releaseDateDate = data.data[i].releaseDate.split('-')[2]
+            if (data.data[i].releaseDate) {
+              const dateParts = data.data[i].releaseDate.split('-');
+              data.data[i].releaseDateYear = dateParts[0] || '-';
+              data.data[i].releaseDateMonth = dateParts[1] || '-';
+              data.data[i].releaseDateDate = dateParts[2] || '-';
+            } else {
+              data.data[i].releaseDateYear = '-';
+              data.data[i].releaseDateMonth = '-';
+              data.data[i].releaseDateDate = '-';
+            }
           }
           arrAnnouncement.value = data.data
           current.value = data.pageIndex || 1
@@ -86,7 +93,7 @@ export default defineComponent({
           </Breadcrumb>
         </div>
         <div class="w-full min-h-100vh px-120 pt-12 background-colorBgLayout flex flex-col">
-          <div class="font-h4 font-medium mb-6">咨询公告</div>
+          <div class="font-h4 font-medium mb-6">资讯公告</div>
           <div class="flex-1">
             {arrAnnouncement.value.map((item, index) => (
               <div

@@ -26,6 +26,18 @@ export default defineComponent({
         const res = await userApi.useGetNewsInfo({ isHome: true })
         let data = res.data.value
         if (data && data.retCode == 0) {
+          for (let i = 0; i < data.data.length; i++) {
+            if (data.data[i].releaseDate) {
+              const dateParts = data.data[i].releaseDate.split('-');
+              data.data[i].releaseDateYear = dateParts[0] || '-';
+              data.data[i].releaseDateMonth = dateParts[1] || '-';
+              data.data[i].releaseDateDate = dateParts[2] || '-';
+            } else {
+              data.data[i].releaseDateYear = '-';
+              data.data[i].releaseDateMonth = '-';
+              data.data[i].releaseDateDate = '-';
+            }
+          }
           newsData.value = data.data.slice(0, 4)
           firstNews.value = data.data[0]
         }

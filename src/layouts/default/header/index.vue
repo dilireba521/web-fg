@@ -16,15 +16,44 @@
           class="w-8 h-29px"
           :src="iconLogoDefault"
         />
-        <img
-          v-else
-          class="w-8 h-29px"
-          @click="showMobileMenu = !showMobileMenu"
-          :src="iconLogoRed"
-        />
+        <img v-else class="w-8 h-29px" @click="jumpHome" :src="iconLogoRed" />
         <!-- <img class="w-5 h-5" @click="showMobileMenu = !showMobileMenu" :src="mobileHeadMenu" /> -->
-        <SvgIcon v-if="tabType == 'black'" @click="showMobileMenu = !showMobileMenu" name="icon-menu" width="20" height="20" color="#000000" />
-        <SvgIcon v-else @click="showMobileMenu = !showMobileMenu" name="icon-menu" width="20" height="20" color="#ffffff" />
+        <template v-if="showMobileMenu">
+          <SvgIcon
+            v-if="tabType == 'black'"
+            @click="showMobileMenu = false"
+            name="icon-closed"
+            width="20"
+            height="20"
+            color="black"
+          />
+          <SvgIcon
+            v-else
+            @click="showMobileMenu = false"
+            name="icon-closed"
+            width="20"
+            height="20"
+            color="white"
+          />
+        </template>
+        <template v-else>
+          <SvgIcon
+            v-if="tabType == 'black'"
+            @click="showMobileMenu = true"
+            name="icon-menu"
+            width="20"
+            height="20"
+            color="black"
+          />
+          <SvgIcon
+            v-else
+            @click="showMobileMenu = true"
+            name="icon-menu"
+            width="20"
+            height="20"
+            color="white"
+          />
+        </template>
       </div>
     </div>
     <div class="w-full h-56px"></div>
@@ -46,23 +75,23 @@
       <!-- 一级导航 -->
       <MenuVue @changeTab="changeTab"></MenuVue>
       <img v-if="tabType == 'default'" class="rta-logo" :src="iconLogoDefault" alt="" />
-      <img v-else class="rta-logo" :src="iconLogoRed" alt="" />
-    </div>
-    <div
-      :class="['investor-login', tabType == 'default' ? 'active-white' : 'active-black']"
-      @click="showLoginModal = true"
-    >
-      投资者登录
+      <img @click="jumpHome" v-else class="rta-logo" :src="iconLogoRed" alt="" />
+      <div
+        :class="['investor-login', tabType == 'default' ? 'active-white' : 'active-black']"
+        @click="showLoginModal = true"
+      >
+        投资者登录
+      </div>
     </div>
     <!-- 占位 -->
     <div :class="['header-seat', 'w-full', { hidden: tabType == 'default' }]"></div>
     <!-- 登录弹窗 -->
-    <div v-if="showLoginModal" class="modal-overlay" @click="showLoginModal = false">
+    <div v-if="showLoginModal" class="modal-overlay" @click="preventClose">
       <div class="modal-content w-200" @click.stop>
         <div class="modal-body px-8 py-6">
           <!-- 弹窗内容 -->
           <div class="modal-title text-center">合格投资者认证</div>
-          <div class="mb-16 font-h7 font-color-colorTextSecondary">
+          <div v-if="!rejectedStatus" class="mb-16 font-h7 font-color-colorTextSecondary">
             <div class="mb-3">
               继续浏览本公司网站前，请您确认您或您所代表的机构是一名“合格投资者”。“合格投资者”指根据任何国家和地区的证券和投资法规所规定的有资格投资于私募证券投资基金的专业投资者。
               例如根据我国《私募投资基金监督管理暂行办法》的规定，合格投资者的标准如下：
@@ -91,10 +120,20 @@
               与本网站所载信息及资料有关的所有版权、专利权、知识产权及其他产权均为本公司所有。本公司概不向浏览该资料人士发出、转让或以任何方式转移任何种类的权利。
             </div>
           </div>
+          <div v-else class="mb-16 font-h7 font-color-colorTextSecondary">
+            <div class="mb-3 text-center">
+              根据《私募投资基金监督管理暂行办法》规定，即日起您需确认是合格投资者后，才能查看相关内容！
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
-          <button class="btn-cancel w-30 h-9" @click="showLoginModal = false">放弃</button>
-          <button class="btn-accept w-30 h-9" @click="handleAccept">接受</button>
+          <button v-if="!rejectedStatus" class="btn-cancel w-30 h-9" @click="handleReject">
+            放弃
+          </button>
+          <button v-if="!rejectedStatus" class="btn-accept w-30 h-9" @click="handleAccept">
+            接受
+          </button>
+          <button v-else class="btn-accept w-30 h-9" @click="resetRejectedStatus">重新确认</button>
         </div>
       </div>
     </div>
@@ -104,11 +143,14 @@
 import { onMounted, onUnmounted, ref, nextTick, watch } from 'vue'
 import MenuVue from './components/menu.vue'
 import { useRoute, useRouter } from 'vue-router' // 添加路由相关导入
+import { useGo } from '@/hooks/web/usePage'
 import { useScreenStore } from '@/store/modules/screen'
 import { SvgIcon } from '@/components/Icon'
 import iconLogoDefault from '@/assets/rta-logo.png'
 import iconLogoRed from '@/assets/rta-logo-red.png'
 import mobileHeadMenu from '@/assets/mobile-head-menu.png'
+
+const { go } = useGo()
 const route = useRoute()
 const router = useRouter()
 const tabType = ref('default')
@@ -118,9 +160,44 @@ const isScrollDown = ref(true)
 const showLoginModal = ref(false)
 const showMobileMenu = ref(false)
 const screenStore = useScreenStore()
+// 添加拒绝状态
+const rejectedStatus = ref(false)
 
 // 保存页面滚动位置
 let scrollPosition = 0
+
+// 检查用户是否已经接受了条款
+const checkUserAcceptance = () => {
+  const hasAccepted = localStorage.getItem('investorAccepted')
+  if (hasAccepted !== 'true') {
+    showLoginModal.value = true
+  }
+}
+
+// 处理接受按钮点击
+const handleAccept = () => {
+  localStorage.setItem('investorAccepted', 'true')
+  showLoginModal.value = false
+}
+
+// 处理拒绝按钮点击
+const handleReject = () => {
+  rejectedStatus.value = true
+}
+
+// 重置拒绝状态
+const resetRejectedStatus = () => {
+  rejectedStatus.value = false
+}
+
+// 阻止点击遮罩关闭弹窗
+const preventClose = (e: MouseEvent) => {
+  // 如果用户已接受，允许关闭；否则阻止关闭
+  if (localStorage.getItem('investorAccepted') === 'true') {
+    showLoginModal.value = false
+  }
+  e.stopPropagation()
+}
 
 // 监听弹窗显示状态变化
 watch(
@@ -169,12 +246,7 @@ watch(
 function changeTab(type: string) {
   tabType.value = type
 }
-// 处理接受按钮点击
-function handleAccept() {
-  // 这里添加接受后的逻辑
-  console.log('用户点击了接受')
-  showLoginModal.value = false
-}
+
 // 更新导航栏样式的函数
 function updateHeaderStyle(scrollTop = 0) {
   let _style = {}
@@ -233,10 +305,14 @@ router.afterEach((to, from) => {
 // 添加对 isMobile 的监听
 watch(
   () => screenStore.isMobile,
-  (newValue) => {
-    
-  }
+  (newValue) => {}
 )
+
+const jumpHome = () => {
+  go({
+    path: '/home'
+  })
+}
 
 onMounted(() => {
   // 确保 screen store 已初始化
@@ -244,6 +320,8 @@ onMounted(() => {
   document.addEventListener('wheel', handleWheel)
   // 初始化时设置正确的样式
   updateHeaderStyle(window.pageYOffset || document.documentElement.scrollTop)
+  // 检查用户是否已接受条款
+  checkUserAcceptance()
 })
 
 onUnmounted(() => {
@@ -261,12 +339,13 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   height: 56px;
-  z-index: 99;
+  z-index: 999;
   background: rgba(0, 0, 0, 0.8);
   transition: all 0.2s linear;
 
   &.black {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     // background-color: red;
   }
 
@@ -424,7 +503,7 @@ onUnmounted(() => {
   -webkit-overflow-scrolling: touch;
 }
 
-.mobile-header{
+.mobile-header {
   position: absolute;
   top: 0px;
   left: 0;
@@ -435,7 +514,8 @@ onUnmounted(() => {
   transition: all 0.2s linear;
 
   &.black {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     // background-color: red;
   }
 

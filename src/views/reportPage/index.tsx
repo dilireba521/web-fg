@@ -81,7 +81,7 @@ export default defineComponent({
                   go('/news')
                 }}
               >
-                招聘信息
+                新闻信息
               </a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>投资观察</Breadcrumb.Item>
@@ -89,9 +89,9 @@ export default defineComponent({
         </div>
         <div class="w-full min-h-100vh px-80 pt-12 background-colorBgLayout flex flex-col">
           <div class="font-h4 font-medium mb-6">投资观察</div>
-          <div class="flex flex-wrap justify-between w-full flex-1">
+          <div class="flex flex-wrap w-full">
             {arrNews.value.map((item, index) => (
-              <div class="news-observe-item mb-6" onClick={() => handleArticleDetail(item)}>
+              <div class="news-observe-item mb-6 mr-4" onClick={() => handleArticleDetail(item)}>
                 <img class="w-full h-231px" src={newsInfo} alt="" />
                 <div class="w-full h-17 news-item-foot background-colorBgLayout px-6 pt-3 pb-2 font-h6 font-color-colorTextSecondary">
                   <div

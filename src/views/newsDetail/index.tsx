@@ -10,14 +10,15 @@ export default defineComponent({
     const route = useRoute()
     const dataArticle = ref({})
     const sourcePage = ref('')
+    const articleType = ref('')
 
     const handleArticleDetail = async () => {
       let data = JSON.parse(localStorage.getItem('currentArticleDetail') || '{}')
       let content = data.content
       content = content.replace(/<img/g,'<img class="w-full" style="width: 100%; height: auto" ')
       data.content = content
+      articleType.value = data.category.id
       dataArticle.value = data
-      
     }
 
     onMounted(() => {
@@ -54,7 +55,7 @@ export default defineComponent({
                 新闻信息
               </a>
             </Breadcrumb.Item>
-            {sourcePage.value == 'annuncement' ? (
+            {articleType.value == '3' ? (
               <Breadcrumb.Item>
                 <a
                   onClick={() => {

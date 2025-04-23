@@ -1,5 +1,8 @@
 <template>
-  <div v-if="screenStore.isMobile" class="w-full min-h-465px mobile-develop-timeline px-6 pt-10 flex flex-col">
+  <div
+    v-if="screenStore.isMobile"
+    class="w-full min-h-465px mobile-develop-timeline px-6 pt-10 flex flex-col"
+  >
     <div class="font-h1 font-bold font-color-colorText text-center mb-6">发展历程</div>
     <div class="develop-timeline flex-1 flex">
       <!-- 左侧年份列表 -->
@@ -37,7 +40,12 @@
               <div>{{ item.month }}月-</div>
               <div>{{ item.desc }}</div>
             </div> -->
-          <div v-html="developEvents[currentIndex]"></div>
+          <div
+            class="max-h-307px mobile-contain-box hide-scrollbar"
+            v-html="developEvents[currentIndex]"
+            @touchmove.stop
+            @wheel.stop
+          ></div>
         </div>
       </div>
     </div>
@@ -84,7 +92,12 @@
               <div>{{ item.month }}月-</div>
               <div>{{ item.desc }}</div>
             </div> -->
-            <div v-html="developEvents[currentIndex]" class="timeline-content-text hide-scrollbar max-h-395px"></div>
+            <div
+              v-html="developEvents[currentIndex]"
+              @touchmove.stop
+              @wheel.stop
+              class="timeline-content-text hide-scrollbar max-h-395px"
+            ></div>
           </div>
         </div>
       </div>
@@ -126,6 +139,12 @@ const handleMilestoneInfo = async () => {
     // 获取数据，数据在data的_value中
     let data = res.data.value
     if (data && data.retCode == 0) {
+      data.data.sort((a: { order?: number }, b: { order?: number }) => {
+        // 如果order字段不存在，则默认为最大值
+        const orderA = a.order !== undefined ? a.order : Number.MAX_VALUE
+        const orderB = b.order !== undefined ? b.order : Number.MAX_VALUE
+        return orderB - orderA
+      })
       data.data.forEach((item: any) => {
         years.value.unshift(item.title)
         let content = item.content
@@ -373,6 +392,11 @@ onMounted(() => {
 
   .current-year {
     color: @colorPrimary1;
+  }
+
+  .mobile-contain-box {
+    overflow: hidden;
+    overflow-y: auto;
   }
 }
 </style>

@@ -118,10 +118,10 @@ export default defineComponent({
           <div
             ref={companyIntroRef}
             id="company-intro"
-            class="w-full h-394px px-80 py-24 background-white"
+            class="w-full px-80 py-24 background-white"
           >
-            <div class="font-h3 mb-8">公司介绍</div>
-            <div class="font-h5 text-xl font-normal text-left">
+            <div class="font-h3 mb-8 text-center">公司介绍</div>
+            <div class="font-h5 font-normal text-left max-w-250 mx-auto" style={{fontSize:"18px"}}>
               <div class="mb-7">
                 诺言私募基金管理有限公司成立于 2025
                 年，致力于为多元化的客户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋能策略决策体系结构。

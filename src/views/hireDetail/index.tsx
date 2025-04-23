@@ -3,9 +3,12 @@ import * as userApi from '@/api/user'
 import { WEB_BG_HEAD } from '@/utils/resources'
 import { useScreenStore } from '@/store/modules/screen'
 import './index.less'
+import { Breadcrumb } from 'ant-design-vue'
+import { useGo } from '@/hooks/web/usePage'
 
 export default defineComponent({
   setup(props, ctx) {
+    const { go } = useGo()
     const dataPosition = ref({})
     const screenStore = useScreenStore()
     const handleHireDetail = () => {
@@ -66,6 +69,31 @@ export default defineComponent({
             </div>
           </div>
         )}
+        {screenStore.isMobile ? null : (
+          <div class="w-full h-16 px-85 pt-6 pb-18px background-colorBgLayout news-tab font-h7 font-color-colorTextTertiary">
+            <Breadcrumb>
+              <Breadcrumb.Item>
+                <a
+                  onClick={() => {
+                    go('/home')
+                  }}
+                >
+                  首页
+                </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <a
+                  onClick={() => {
+                    go('/hire')
+                  }}
+                >
+                  招贤纳士
+                </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>招聘信息</Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
+        )}
         {screenStore.isMobile ? (
           <div
             class="w-full px-6 pb-8 background-colorBgLayout"
@@ -76,7 +104,7 @@ export default defineComponent({
             </div>
           </div>
         ) : (
-          <div class="w-full background-colorBgLayout px-80 pt-12">
+          <div class="w-full background-colorBgLayout px-80 py-12">
             <div class="w-full background-white p-12">
               <div v-html={(dataPosition.value as { content?: string })?.content || ''}></div>
             </div>

@@ -161,7 +161,7 @@ const handleTargets = (item,index) => {
         v-for="item in props.list"
         :key="item.value"
         :class="[
-          'tab-item font-h7 black',
+          'tab-item font-h5 black',
           {
             active: item.value == curActive,
             large: props.size == 'large'
