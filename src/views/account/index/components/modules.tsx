@@ -7,7 +7,7 @@ export function renderPanel(params: PanelModule) {
     //     console.log("curV=====",curV);
         
     // })
-    return (<div class={['bg-module', panelClass, type == 'default' ? 'pt-3 pl-4' : 'pt-2 pl-3']}>
+    return (<div class={['bg-module', panelClass, type == 'default' ? 'pt-3 px-4' : 'pt-2 px-3']}>
         <div class='flex justify-between items-center'>
             <div class={type == 'default' ? 'font-h8 leading-5' : 'font-h6'}>
                 {typeof title == 'function' ? title() : title}

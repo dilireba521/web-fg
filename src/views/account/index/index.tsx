@@ -2,7 +2,7 @@ import { defineComponent, onMounted, ref } from 'vue'
 import { renderPanel, renderBasicPanel } from './components/modules'
 import { Row, Col, Select } from 'ant-design-vue';
 import { formatNumberWithCommas } from "@/utils/formate"
-import { useRenderTotalEchart, useAssetPie, useFundPie } from './components/echarts'
+import { useRenderTotalEchart,useAssetChangeRate, useAssetPie, useFundPie, useFundValue } from './components/echarts'
 import { BasicSkeleton } from '@/components/skeleton';
 import { SwapOutlined } from '@ant-design/icons-vue';
 export default defineComponent({
@@ -24,9 +24,11 @@ export default defineComponent({
         name: 'USD',
       }
     ]
+    const { render: renderAssetChange } = useAssetChangeRate()
     const { render: renderTotalEchart } = useRenderTotalEchart()
     const { render: renderAssetEchart } = useAssetPie(assetArr)
     const { render: renderFundEchart } = useFundPie(assetArr)
+    const { render: renderFundValueEchart } = useFundValue(assetArr)
     function handleChangeMore() {
       isSwapped.value = !isSwapped.value
     }
@@ -115,7 +117,14 @@ export default defineComponent({
         <Col span={8}>
           {renderFundEchart()}
         </Col>
+        <Col span={8}>
+          {renderFundValueEchart()}
+        </Col>
       </Row>
+        {/* 资产占比变化率 */}
+        <div class='pt-6'>
+        {renderAssetChange()}
+      </div>
     </div>
   }
 })

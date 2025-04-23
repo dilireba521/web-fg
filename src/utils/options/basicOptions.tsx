@@ -28,3 +28,21 @@ export const fundTypeOptions: LabelValueOptions = [
     color: '#00AE93'
   }
 ]
+// 申赎状态
+export const applyStatusOptions: LabelValueOptions = [
+  {
+    label: '待审核',
+    value: '1',
+    color: '#FAAD14FF'
+  },
+  {
+    label: '成功',
+    value: '2',
+    color: '#2FB97BFF'
+  },
+  {
+    label: '失败',
+    value: '3',
+    color: '#FF4D4FFF'
+  },
+]
