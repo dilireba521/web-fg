@@ -34,7 +34,7 @@ export default defineComponent({
     const handleSubTitleClick = (index: number) => {
       const refs = [investFrameRef, investIdeaRef, investStudyRef, investControlRef]
       if (refs[index]?.value) {
-        (refs[index].value as HTMLElement).scrollIntoView({ behavior: 'smooth' })
+        ;(refs[index].value as HTMLElement).scrollIntoView({ behavior: 'smooth' })
       }
     }
 
@@ -85,6 +85,14 @@ export default defineComponent({
 
     const handleMouseEnter = (type: 'left' | 'right' | 'bottom'): void => {
       riskControlCurrent.value = type
+    }
+
+    // 添加三角形悬停状态
+    const triangleHover = ref<'left' | 'right' | 'top' | null>('left')
+
+    // 处理三角形悬停事件
+    const handleTriangleHover = (type: 'left' | 'right' | 'top'): void => {
+      triangleHover.value = type
     }
 
     return () => (
@@ -229,58 +237,63 @@ export default defineComponent({
           <div
             ref={investControlRef}
             id="invest-control"
-            class="w-full h-714px relative px-80 py-24 bg-cover bg-center bg-no-repeat flex justify-center"
+            class="w-full h-714px relative px-80 py-24 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${investRisk})` }}
           >
+            <div class="font-h3 font-bold font-color-colorBlack text-center pb-24">投资风控</div>
             <div>
-              <div class="font-h3 font-bold font-color-colorBlack text-center pb-24">投资风控</div>
-              <div class="flex text-center">
+              <div class="flex justify-center">
                 <div
                   class="flex relative risk-control-left"
-                  onMouseenter={() => handleMouseEnter('left')}
+                  onMouseenter={() => handleTriangleHover('left')}
                 >
-                  <div class="max-w-90 font-h6 font-color-colorTextSecondary mr-2 text-left flex items-end">
+                  <div class="flex items-center max-w-90 font-h6 font-color-colorTextSecondary mr-2 text-left flex items-end">
                     公司贯彻全员风控理念，坚守底线，坚持合规化发展，建立良好的全员风控文化。
                   </div>
-                  <div class="pb-34px">
+                  <div>
                     <div class="font-h4 font-bold font-color-colorBlack mb-8 ml-4">风控文化</div>
                     <div
-                      class={`w-64px h-58px ${riskControlCurrent.value == 'left' ? 'risk-line-active' : 'risk-item-line'}`}
+                      class={`w-64px h-58px ${triangleHover.value == 'left' ? 'risk-line-active' : 'risk-item-line'}`}
                     ></div>
                   </div>
-                  <div
-                    class={`absolute ${riskControlCurrent.value == 'left' ? 'triangle-bottom-right-active' : riskControlCurrent.value == 'bottom' ? 'triangle-bottom-right-gray' : 'right-triangle-bottom-right'}`}
-                  ></div>
+                </div>
+                <div class="triangle-container">
+                  <div class="main-triangle">
+                    <div
+                      class={`triangle-part triangle-left ${triangleHover.value === 'left' ? 'hover-active' : triangleHover.value === 'right' ? 'hover-light' : 'hover-gray'}`}
+                      onMouseenter={() => handleTriangleHover('left')}
+                    ></div>
+                    <div
+                      class={`triangle-part triangle-right ${triangleHover.value === 'right' ? 'hover-active' : triangleHover.value === 'left' ? 'hover-gray' : 'hover-light'}`}
+                      onMouseenter={() => handleTriangleHover('right')}
+                    ></div>
+                    <div
+                      class={`triangle-part triangle-top ${triangleHover.value === 'top' ? 'hover-active' : triangleHover.value === 'right' ? 'hover-gray' : 'hover-light'}`}
+                      onMouseenter={() => handleTriangleHover('top')}
+                    ></div>
+                  </div>
                 </div>
                 <div
-                  class="flex relative ml-300px risk-control-right"
-                  onMouseenter={() => handleMouseEnter('right')}
+                  class="flex relative risk-control-right"
+                  onMouseenter={() => handleTriangleHover('right')}
                 >
-                  <div
-                    class={`absolute ${riskControlCurrent.value == 'right' ? 'right-triangle-active' : riskControlCurrent.value == 'bottom' ? 'right-triangle-gray' : 'right-triangle'}`}
-                  ></div>
-                  <div class="pb-34px">
+                  <div>
                     <div class="font-h4 font-bold font-color-colorBlack mb-8 mr-4">风控机制</div>
                     <div
-                      class={`w-64px h-58px ${riskControlCurrent.value == 'right' ? 'risk-line-right-active' : 'risk-item-line-right'}`}
+                      class={`w-64px h-58px ${triangleHover.value == 'right' ? 'risk-line-right-active' : 'risk-item-line-right'}`}
                     ></div>
                   </div>
-                  <div class="max-w-90 font-h6 font-color-colorTextSecondary ml-2 text-left flex items-end">
+                  <div class="flex items-center max-w-90 font-h6 font-color-colorTextSecondary ml-2 text-left flex items-end">
                     公司在募投管退各个环节严格执行内控制度，始终贯彻合规专业化运营方针。
                   </div>
                 </div>
               </div>
               <div
                 class="text-center relative risk-control-bottom"
-                onMouseenter={() => handleMouseEnter('bottom')}
+                onMouseenter={() => handleTriangleHover('top')}
               >
                 <div
-                  class={`absolute top-10px left-480px ${riskControlCurrent.value == 'bottom' ? 'right-triangle-bottom-active' : riskControlCurrent.value == 'left' ? 'right-triangle-bottom' : 'right-triangle-bottom-gray'}`}
-                ></div>
-                {/* 占位盒子 */}
-                <div class="w-full h-94px"></div>
-                <div
-                  class={`mb-2 mt-2 ml-629px ${riskControlCurrent.value == 'bottom' ? 'risk-line-center-active' : 'risk-item-line-center'}`}
+                  class={`mb-2 mt-2 risk-bottom-line-mar ${triangleHover.value == 'top' ? 'risk-line-center-active' : 'risk-item-line-center'}`}
                 ></div>
                 <div class="font-h4 font-bold font-color-colorBlack mb-15px">风控系统</div>
                 <div class="font-color-colorTextSecondary font-h6">

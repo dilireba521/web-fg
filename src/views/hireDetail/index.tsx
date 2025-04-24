@@ -104,7 +104,7 @@ export default defineComponent({
             </div>
           </div>
         ) : (
-          <div class="w-full background-colorBgLayout px-80 py-12">
+          <div class="w-full background-colorBgLayout px-80 pb-12">
             <div class="w-full background-white p-12">
               <div v-html={(dataPosition.value as { content?: string })?.content || ''}></div>
             </div>

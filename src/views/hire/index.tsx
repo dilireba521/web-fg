@@ -247,7 +247,8 @@ export default defineComponent({
                       {(item as any).title}
                     </div>
                     <div class="mb-3 font-h6 font-color-colorText">
-                      {(item as any).category.title}｜{(item as any).label}
+                      {(item as any)?.category?.title} 
+                      {(item as any)?.label && <span>｜{(item as any)?.label}</span>}
                     </div>
                     <div
                       class="line-clamp-2 font-h7 font-color-colorTextSecondary"
