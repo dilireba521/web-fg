@@ -1,9 +1,15 @@
 import { formatToDateTime } from '@/utils/dateUtil'
 import { formatNumberWithCommas } from '@/utils/formate'
+import { useGo } from '@/hooks/web/usePage'
 
 export function basicColumns() {
+    const { go } = useGo()
     function handleClick(data: any) {
-        console.log('点击了',data)
+        go({
+            path: '/account/detail',
+            query: data
+        })
+        console.log('点击了', data)
     }
 
     return [

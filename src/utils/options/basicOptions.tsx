@@ -46,3 +46,15 @@ export const applyStatusOptions: LabelValueOptions = [
     color: '#FF4D4FFF'
   },
 ]
+
+// 产品公告
+export const productNoticeOptions: LabelValueOptions = [
+  {
+    value: '定期公告',
+    label: '定期公告'
+  },
+  {
+    value: '临时公告',
+    label: '临时公告'
+  }
+]

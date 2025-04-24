@@ -1,0 +1,135 @@
+import { renderBasicPanel, renderPanel } from '@/views/account/index/components/modules'
+import { ref, onMounted, nextTick } from 'vue'
+import { formatNumberWithCommas } from '@/utils/formate'
+import { useECharts } from '@/hooks/web/useECharts'
+import { Select, Empty, RangePicker, Tooltip } from 'ant-design-vue'
+import { BasicSkeleton } from '@/components/skeleton'
+
+//净值曲线
+export function useRenderTotalEchart(record: any) {
+    const loading = ref(true)
+    const chartDom = ref(null)
+    const { setOptions } = useECharts(chartDom as any)
+  
+    onMounted(async () => {
+      await nextTick() // 确保DOM已经渲染完成
+      initData()
+      loading.value = false
+    })
+  
+    function initData() {
+      const _xAxisData: any = ['1月', '2月', '3月', '4月', '5月', '6月', '7月'],
+        _seriesData1: any = [100, 200, 1510, 80, 70, 110, 130]
+      if (record) {
+        record?.forEach((item: any) => {
+          _xAxisData.push(item.date)
+          _seriesData1.push(item.value)
+        })
+      }
+      setOptions({
+        tooltip: {
+          trigger: 'axis',
+          backgroundColor: '#FFFFFF',
+          textStyle: {
+            color: '#000000E0',
+            fontSize: 12,
+            lineHeight: 20
+          },
+          formatter: (params) => {
+            return `<div class='min-w-30'>
+                                  <div clsss='text-black/65'>${params[0].name}</div>
+                                  <div style='border-bottom: 1px solid #00000026; margin: 8px 0;'></div>
+                                  ¥&nbsp;${formatNumberWithCommas(params[0].value)}
+                              </div>`
+          },
+          axisPointer: {
+            type: 'line',
+            lineStyle: {
+              type: [4, 6],
+              color: '#C1272D40'
+            }
+          }
+        },
+        color: ['#F55458FF'],
+        grid: {
+          left: '0',
+          right: 20,
+          bottom: '0',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          axisLabel: {
+            color: '#000000A6'
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#eaeaeaFF'
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          data: _xAxisData
+        },
+        yAxis: [
+          {
+            // name: 'AUM',
+            type: 'value',
+            alignTicks: true,
+            axisLabel: {
+              color: '#000000A6',
+              formatter: '{value}'
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: '#000000', // #fff 0.2
+                type: [2, 6],
+                dashOffset: 5,
+                opacity: 0.1
+              }
+            },
+            scale: true
+          }
+        ],
+        series: [
+          {
+            name: record?.[0]?.name,
+            type: 'line', // 这里可以是'line'、'bar'、'pie'等，根据图表类型选择
+            data: _seriesData1,
+            symbol: _seriesData1?.length > 1 ? 'none' : 'circle',
+            smooth: true,
+            lineStyle: {
+              width: 1
+            }
+          }
+        ]
+      })
+    }
+    function render() {
+      return renderBasicPanel({
+        title: '净值曲线',
+        content: () => (
+          <BasicSkeleton loading={loading.value}>
+            <div class="px-4 pt-4 pb-2">
+              <div class="flex justify-end gap-2">
+                <RangePicker></RangePicker>
+                <Select value="年">
+                  <Select.Option value="jack">年</Select.Option>
+                  <Select.Option value="lucy">月</Select.Option>
+                </Select>
+              </div>
+              <div ref={chartDom} style="height: 344px;"></div>
+            </div>
+          </BasicSkeleton>
+        )
+      })
+    }
+    return {
+      render,
+      loading
+    }
+  }
+  

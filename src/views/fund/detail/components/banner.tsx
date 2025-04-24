@@ -5,6 +5,12 @@ export default defineComponent({
     components: {
         FundModal
     },
+    props: {
+      hasFund: { // 是否有基金
+        type: Boolean,
+        default: false
+      }
+    },
     setup(props, ctx) {
         const fundModalref = ref(null)
         function openModal() {
@@ -21,6 +27,9 @@ export default defineComponent({
                 </div>
                 <div>
                     <Button onClick={openModal} class='min-w-18 text-#C1272DFF'>申购</Button>
+                    <Button onClick={openModal} class='min-w-18 ml-4'>
+                        <div class=' text-#2FB97BFF'>赎回</div>
+                    </Button>
                 </div>
             </div>
             <FundModal ref={fundModalref}></FundModal>

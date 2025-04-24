@@ -3,6 +3,12 @@ import { Modal, Input, Button, Checkbox, message } from 'ant-design-vue'
 import './fundModal.less'
 
 export default defineComponent({
+  props: {
+    hasFund: { // 是否有基金
+      type: Boolean,
+      default: false
+    }
+  },
   setup(props: any, { emit, expose }: any) {
     const config = reactive({
       visible: false,
