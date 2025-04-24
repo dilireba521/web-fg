@@ -59,7 +59,7 @@ export default defineComponent({
 
     const handleNewsDetail = (item: any) => {
       localStorage.setItem('currentArticleDetail', JSON.stringify(item))
-      go('/newsDetail')
+      go('/newsDetail?source=home')
     }
 
     return () => (

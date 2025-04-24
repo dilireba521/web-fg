@@ -96,7 +96,7 @@ export default defineComponent({
 
     const handleArticleDetail = (item: any) => {
       localStorage.setItem('currentArticleDetail', JSON.stringify(item))
-      go('/newsDetail')
+      go('/newsDetail?source=news')
     }
 
     const handleMouseEnter = (index: number) => {
@@ -313,19 +313,19 @@ export default defineComponent({
             </div>
             <div class="w-full flex justify-between h-80">
               <div
-                class="news-item bg-gray-100 pt-6 pb-4 px-8 flex flex-col justify-between"
+                class="news-item bg-gray-100 flex flex-col justify-between"
                 onClick={() => {
                   handleArticleDetail(firstNews.value)
                 }}
               >
-                <div class="ml-auto text-white">
+                <div class="ml-auto text-white w-104px h-94px flex flex-col justify-center pr-33px" style={{backgroundColor:"rgba(6,6,6,0.2)"}}>
                   <div class="font-h4 text-right">{(firstNews.value as any).releaseDateDate}</div>
                   <div class="font-h7 text-right">
                     {(firstNews.value as any).releaseDateMonth}.
                     {(firstNews.value as any).releaseDateYear}
                   </div>
                 </div>
-                <div class="font-h5 text-left text-white font-color-colorText truncate">
+                <div class="font-h5 text-left text-white font-color-colorText truncate ml-8 mb-4">
                   {(firstNews.value as any).title}
                 </div>
               </div>

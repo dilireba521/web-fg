@@ -15,21 +15,34 @@ export default defineComponent({
     const { go } = useGo()
     const arrNews = ref([])
     const current = ref(1)
-    const pageSize = ref(10)
+    const pageSize = ref(12)
     const total = ref(0)
 
     const handleNewsInfo = async () => {
       try {
         // categoryId:2 新闻资讯, categoryId:3 公司公告
-        const res = await userApi.useGetNewsInfo({ categoryId: 2, pageIndex: current.value })
+        const res = await userApi.useGetNewsInfo(
+          { 
+            categoryId: 2, 
+            pageIndex: current.value,
+            pageSize: pageSize.value
+          }
+        )
         // 获取数据，数据在data的_value中
         let data = res.data.value
         console.log('公司公告数据获取', data)
         if (data && data.retCode == 0) {
           for (let i = 0; i < data.data.length; i++) {
-            data.data[i].releaseDateYear = data.data[i].releaseDate.split('-')[0]
-            data.data[i].releaseDateMonth = data.data[i].releaseDate.split('-')[1]
-            data.data[i].releaseDateDate = data.data[i].releaseDate.split('-')[2]
+            if (data.data[i].releaseDate) {
+              const dateParts = data.data[i].releaseDate.split('-');
+              data.data[i].releaseDateYear = dateParts[0] || '-';
+              data.data[i].releaseDateMonth = dateParts[1] || '-';
+              data.data[i].releaseDateDate = dateParts[2] || '-';
+            } else {
+              data.data[i].releaseDateYear = '-';
+              data.data[i].releaseDateMonth = '-';
+              data.data[i].releaseDateDate = '-';
+            }
           }
           arrNews.value = data.data
           current.value = data.pageIndex || 1
@@ -81,13 +94,13 @@ export default defineComponent({
                   go('/news')
                 }}
               >
-                新闻信息
+                信息资讯
               </a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>投资观察</Breadcrumb.Item>
           </Breadcrumb>
         </div>
-        <div class="w-full min-h-100vh px-80 pt-12 background-colorBgLayout flex flex-col">
+        <div class="w-full min-h-100vh px-80 py-12 background-colorBgLayout flex flex-col">
           <div class="font-h4 font-medium mb-6">投资观察</div>
           <div class="flex flex-wrap w-full">
             {arrNews.value.map((item, index) => (

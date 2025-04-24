@@ -127,7 +127,7 @@ export default defineComponent({
                   <div class="mb-2">提供附带盖章的收入或资产证明文件材料</div>
                   <div class="mb-2 font-bold">机构投资者</div>
                   <div class="mb-5">提供最近一年的机构审计报告或财务报表</div>
-                  <div class="flex items-center" onClick={() => handleDownloadPDF('/path/to/your/pdf/file.pdf', '合格投资者资产证明一览表.pdf')}>
+                  <div class="flex items-center" onClick={() => handleDownloadPDF(investorPDF, '合格投资者资产证明一览表.pdf')}>
                     <img class="w-5 h-5" src={iconAttachment} alt="附件" />
                     <div class="font-color-colorRed">合格投资者资产证明一览表</div>
                   </div>

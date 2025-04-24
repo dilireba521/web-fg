@@ -86,13 +86,13 @@ export default defineComponent({
                   go('/news')
                 }}
               >
-                新闻信息
+                信息资讯
               </a>
             </Breadcrumb.Item>
             <Breadcrumb.Item>资讯公告</Breadcrumb.Item>
           </Breadcrumb>
         </div>
-        <div class="w-full min-h-100vh px-120 pt-12 background-colorBgLayout flex flex-col">
+        <div class="w-full min-h-100vh px-120 py-12 background-colorBgLayout flex flex-col">
           <div class="font-h4 font-medium mb-6">资讯公告</div>
           <div class="flex-1">
             {arrAnnouncement.value.map((item, index) => (
@@ -134,7 +134,7 @@ export default defineComponent({
               </div>
             ))}
           </div>
-          <div class="flex justify-end mt-auto">
+          <div class="flex justify-end mt-2">
             <Pagination
               current={current.value}
               pageSize={pageSize.value}
