@@ -3,6 +3,7 @@ import { WEB_BG_HEAD } from '@/utils/resources'
 import * as userApi from '@/api/user'
 import { useGo } from '@/hooks/web/usePage'
 import { Breadcrumb } from 'ant-design-vue'
+import { useScreenStore } from '@/store/modules/screen'
 import './index.less'
 // antd
 import { Pagination } from 'ant-design-vue'
@@ -10,6 +11,7 @@ import { Pagination } from 'ant-design-vue'
 export default defineComponent({
   setup(props, ctx) {
     const { go } = useGo()
+    const screenStore = useScreenStore()
     const arrAnnouncement = ref([])
     const current = ref(1)
     const pageSize = ref(10)
@@ -25,14 +27,14 @@ export default defineComponent({
         if (data && data.retCode == 0) {
           for (let i = 0; i < data.data.length; i++) {
             if (data.data[i].releaseDate) {
-              const dateParts = data.data[i].releaseDate.split('-');
-              data.data[i].releaseDateYear = dateParts[0] || '-';
-              data.data[i].releaseDateMonth = dateParts[1] || '-';
-              data.data[i].releaseDateDate = dateParts[2] || '-';
+              const dateParts = data.data[i].releaseDate.split('-')
+              data.data[i].releaseDateYear = dateParts[0] || '-'
+              data.data[i].releaseDateMonth = dateParts[1] || '-'
+              data.data[i].releaseDateDate = dateParts[2] || '-'
             } else {
-              data.data[i].releaseDateYear = '-';
-              data.data[i].releaseDateMonth = '-';
-              data.data[i].releaseDateDate = '-';
+              data.data[i].releaseDateYear = '-'
+              data.data[i].releaseDateMonth = '-'
+              data.data[i].releaseDateDate = '-'
             }
           }
           arrAnnouncement.value = data.data
@@ -62,13 +64,15 @@ export default defineComponent({
 
     return () => (
       <div>
+        {!screenStore.isMobile && (
+          <div
+            class="w-full h-80 px-80 py-134px bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-information.png)` }}
+          ></div>
+        )}
         <div
-          class="w-full h-80 px-80 py-134px bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-information.png)` }}
+          class={`w-full h-16 ${screenStore.isMobile ? 'px-6 pt-6' : 'px-85 pt-6 announcement-tab'} pb-18px background-colorBgLayout font-h7 font-color-colorTextTertiary`}
         >
-          <div class="font-h2 text-white">信息资讯</div>
-        </div>
-        <div class="w-full h-16 px-85 pt-6 pb-18px background-colorBgLayout announcement-tab font-h7 font-color-colorTextTertiary">
           {/* 首页 / 新闻信息 / 资讯公告 */}
           <Breadcrumb>
             <Breadcrumb.Item>
@@ -92,58 +96,83 @@ export default defineComponent({
             <Breadcrumb.Item>资讯公告</Breadcrumb.Item>
           </Breadcrumb>
         </div>
-        <div class="w-full min-h-100vh px-120 py-12 background-colorBgLayout flex flex-col">
-          <div class="font-h4 font-medium mb-6">资讯公告</div>
-          <div class="flex-1">
+        {screenStore.isMobile ? (
+          <div class="px-6 pb-30px background-colorBgLayout">
             {arrAnnouncement.value.map((item, index) => (
-              <div
-                class="announcement-item bg-white px-8 py-6 h-40 mb-4 flex"
-                onClick={() => {
-                  handleArticleDetail(item)
-                }}
-              >
-                <div class="h-112px w-110px flex pr-8" style={{ borderRight: '1px solid #979797' }}>
-                  <div class="font-h4 mr-2px font-color-colorText">
-                    {(item as any).releaseDateDate}
-                  </div>
-                  <div class="font-h4 mr-1 font-color-colorTextSecondary">/</div>
-                  <div class="font-h7 font-color-colorTextSecondary">
-                    <div>{(item as any).releaseDateMonth}月</div>
-                    <div>{(item as any).releaseDateYear}</div>
-                  </div>
+              <div class="p-4 background-white flex flex-col mb-2">
+                <div>
+                  <div>{(item as any).title}</div>
+                  <div>{(item as any).label}</div>
                 </div>
-                <div class="flex-1 pl-8 overflow-hidden">
-                  <div class="announcement-item-title truncate mb-2 font-h6 w-full font-color-colorText">
-                    {(item as any).title}
-                  </div>
-                  <div
-                    class="line-clamp-2 font-color-colorTextSecondary mb-4 font-h7 w-full overflow-hidden"
-                    style={{
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden'
-                    }}
-                  >
-                    {(item as any).label}
-                  </div>
-                  <div class="font-h8" style={{ color: '#C1272D' }}>
-                    查看详情
+                <div class="flex justify-between mt-auto">
+                  <div>查看详情</div>
+                  <div>
+                    {(item as any).releaseDateYear}.{(item as any).releaseDateMonth}.
+                    {(item as any).releaseDateDate}
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          <div class="flex justify-end mt-2">
-            <Pagination
-              current={current.value}
-              pageSize={pageSize.value}
-              total={total.value}
-              onChange={handlePageChange}
-              showSizeChanger={false} // 可选：隐藏页码大小选择器
-            />
+        ) : (
+          <div class="w-full min-h-100vh px-120 py-12 background-colorBgLayout flex flex-col">
+            <div class="font-h4 font-medium mb-6">资讯公告</div>
+            <div class="flex-1">
+              {arrAnnouncement.value.map((item, index) => (
+                <div
+                  class="announcement-item bg-white px-8 py-6 h-40 mb-4 flex"
+                  onClick={() => {
+                    handleArticleDetail(item)
+                  }}
+                >
+                  <div
+                    class="h-112px w-110px flex flex-col justify-center pr-8"
+                    style={{ borderRight: '1px solid #979797' }}
+                  >
+                    <div class="flex items-start">
+                      <div class="font-h4 mr-2px font-color-colorText">
+                        {(item as any).releaseDateDate}
+                      </div>
+                      <div class="font-h4 mr-1 font-color-colorTextSecondary">/</div>
+                      <div class="font-h7 font-color-colorTextSecondary">
+                        <div>{(item as any).releaseDateMonth}月</div>
+                        <div>{(item as any).releaseDateYear}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex-1 pl-8 overflow-hidden flex flex-col">
+                    <div class="announcement-item-title truncate mb-2 font-h6 w-full font-color-colorText">
+                      {(item as any).title}
+                    </div>
+                    <div
+                      class="line-clamp-2 font-color-colorTextSecondary mb-4 font-h7 w-full overflow-hidden"
+                      style={{
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                      }}
+                    >
+                      {(item as any).label}
+                    </div>
+                    <div class="font-h8 mt-auto" style={{ color: '#C1272D' }}>
+                      查看详情
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="flex justify-end mt-2">
+              <Pagination
+                current={current.value}
+                pageSize={pageSize.value}
+                total={total.value}
+                onChange={handlePageChange}
+                showSizeChanger={false} // 可选：隐藏页码大小选择器
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     )
   }

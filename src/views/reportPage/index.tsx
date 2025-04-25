@@ -21,27 +21,24 @@ export default defineComponent({
     const handleNewsInfo = async () => {
       try {
         // categoryId:2 新闻资讯, categoryId:3 公司公告
-        const res = await userApi.useGetNewsInfo(
-          { 
-            categoryId: 2, 
-            pageIndex: current.value,
-            pageSize: pageSize.value
-          }
-        )
+        const res = await userApi.useGetNewsInfo({
+          categoryId: 2,
+          pageIndex: current.value,
+          pageSize: pageSize.value
+        })
         // 获取数据，数据在data的_value中
         let data = res.data.value
-        console.log('公司公告数据获取', data)
         if (data && data.retCode == 0) {
           for (let i = 0; i < data.data.length; i++) {
             if (data.data[i].releaseDate) {
-              const dateParts = data.data[i].releaseDate.split('-');
-              data.data[i].releaseDateYear = dateParts[0] || '-';
-              data.data[i].releaseDateMonth = dateParts[1] || '-';
-              data.data[i].releaseDateDate = dateParts[2] || '-';
+              const dateParts = data.data[i].releaseDate.split('-')
+              data.data[i].releaseDateYear = dateParts[0] || '-'
+              data.data[i].releaseDateMonth = dateParts[1] || '-'
+              data.data[i].releaseDateDate = dateParts[2] || '-'
             } else {
-              data.data[i].releaseDateYear = '-';
-              data.data[i].releaseDateMonth = '-';
-              data.data[i].releaseDateDate = '-';
+              data.data[i].releaseDateYear = '-'
+              data.data[i].releaseDateMonth = '-'
+              data.data[i].releaseDateDate = '-'
             }
           }
           arrNews.value = data.data
@@ -71,11 +68,15 @@ export default defineComponent({
 
     return () => (
       <div>
-        <div class="news-item-head w-full h-80 px-80 py-45px text-center">
+        {/* <div class="news-item-head w-full h-80 px-80 py-45px text-center">
           <img class="w-15 h-54px mb-10 block mx-auto" src={rtaLogoGold} alt="" />
           <img class="w-100 h-85px mb-18px block mx-auto" src={rtaEnglish} alt="" />
           <img class="w-162px h-33px block mx-auto" src={rtaChinese} alt="" />
-        </div>
+        </div> */}
+        <div
+          class="w-full h-80 px-80 py-134px bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-information.png)` }}
+        ></div>
         <div class="w-full h-16 px-85 pt-6 pb-18px background-colorBgLayout news-tab font-h7 font-color-colorTextTertiary">
           {/* 首页 / 新闻信息 / 投资观察 */}
           <Breadcrumb>

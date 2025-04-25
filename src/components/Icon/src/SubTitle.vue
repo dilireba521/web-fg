@@ -1,7 +1,7 @@
 <template>
-    <div v-if="screenStore.isMobile" class="sub-title-wrap pl-6 flex" :class="{ 'hidden': isHidden }">
-        <div class="mr-6" v-for="(item, index) in arrTitle" @click="handleClick(index)">
-            <div :class="['item-content', 'font-h7', currentIndex == index ? 'item-active' : 'item-normal']">{{ item }}</div>
+     <div v-if="screenStore.isMobile" class="sub-title-wrap pl-6 flex" :class="{ 'hidden': isHidden }">
+        <div class="mr-6 whitespace-nowrap" v-for="(item, index) in arrTitle" @click="handleClick(index)">
+            <div :class="['item-content', 'font-h5', currentIndex == index ? 'item-active' : 'item-normal']">{{ item }}</div>
         </div>
     </div>
     <div v-else class="w-full h-16 pl-80 sub-title-wrap flex" :class="{ 'hidden': isHidden }">
@@ -85,6 +85,15 @@ const handleClick = (index: number) => {
     top: 0;
     z-index: 100;
     transition: transform 0.2s ease;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.sub-title-wrap::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .hidden {

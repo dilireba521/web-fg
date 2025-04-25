@@ -42,23 +42,26 @@ export default defineComponent({
       } else {
         hireChannel.value = 1
       }
-      handleHireInfo();
+      handleHireInfo()
     }
 
     const handleHireInfo = async () => {
       try {
         // categoryId:1 社会招聘, categoryId:2 校园招聘
-        const res = await userApi.useGetHireInfo({ type:  hireChannel.value, categoryId: selectType.value, })
+        const res = await userApi.useGetHireInfo({
+          type: hireChannel.value,
+          categoryId: selectType.value
+        })
         // 获取数据，数据在data的_value中
         let data = res.data.value
         if (data && data.retCode == 0) {
           // 根据order字段排序，数字越小排越前面
           data.data.sort((a: { order?: number }, b: { order?: number }) => {
             // 如果order字段不存在，则默认为最大值
-            const orderA = a.order !== undefined ? a.order : Number.MAX_VALUE;
-            const orderB = b.order !== undefined ? b.order : Number.MAX_VALUE;
-            return orderA - orderB;
-          });
+            const orderA = a.order !== undefined ? a.order : Number.MAX_VALUE
+            const orderB = b.order !== undefined ? b.order : Number.MAX_VALUE
+            return orderA - orderB
+          })
           jobsNumber.value = data.data.length
           arrHire.value = data.data
         }
@@ -172,7 +175,7 @@ export default defineComponent({
             style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-join.jpg)` }}
           ></div>
         )}
-        <SubTitle arrTitle={arrHireTitle.value}  onItemClick={handleSubTitleClick} />
+        <SubTitle arrTitle={arrHireTitle.value} onItemClick={handleSubTitleClick} />
         {screenStore.isMobile ? (
           <div class="w-full px-6 pt-10 pb-12 background-white">
             <div class="font-bold font-h1 font-color-colorText">
@@ -189,12 +192,18 @@ export default defineComponent({
                   {(item as any).title}
                 </div>
                 <div class="mb-2 font-h6 font-color-colorText">
-                  {(item as any).category.title}｜{(item as any).label}
+                  {(item as any)?.category?.title}
+                  {(item as any)?.label && <span>｜{(item as any)?.label}</span>}
                 </div>
-                <div
+                {/* <div
                   class="line-clamp-2 font-h7 font-color-colorTextSecondary"
                   v-html={(item as any).content}
-                ></div>
+                ></div> */}
+                {(item as any).content && (
+                  <div class="line-clamp-2 font-h7 font-color-colorTextSecondary">
+                    {(item as any).remark}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -247,13 +256,18 @@ export default defineComponent({
                       {(item as any).title}
                     </div>
                     <div class="mb-3 font-h6 font-color-colorText">
-                      {(item as any)?.category?.title} 
+                      {(item as any)?.category?.title}
                       {(item as any)?.label && <span>｜{(item as any)?.label}</span>}
                     </div>
-                    <div
+                    {/* <div
                       class="line-clamp-2 font-h7 font-color-colorTextSecondary"
                       v-html={(item as any).content}
-                    ></div>
+                    ></div> */}
+                    {(item as any).content && (
+                      <div class="line-clamp-2 font-h7 font-color-colorTextSecondary">
+                        {(item as any).remark}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

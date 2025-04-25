@@ -50,7 +50,7 @@
       </div>
     </div>
   </div>
-  <div v-else class="w-full h-669px text-center relative">
+  <div v-else class="w-full h-669px text-center relative bg-cover bg-center bg-no-repeat" :style="{ backgroundImage: `url(${aboutCours})` }">
     <div class="w-full px-80 h-669px pt-24 text-center z-10 relative flex flex-col">
       <div class="font-h3 font-color-colorText text-center font-medium mb-31px">发展历程</div>
       <div class="develop-timeline flex-1 flex">
@@ -102,7 +102,7 @@
         </div>
       </div>
     </div>
-    <img class="absolute top-0 left-0 w-full he-669px" :src="aboutCours" />
+    <!-- <img class="absolute top-0 left-0 w-full he-669px" :src="aboutCours" /> -->
   </div>
 </template>
 <script lang="ts" setup>

@@ -11,7 +11,7 @@ import iconRightGray from '@/assets/icon-right-gray.png'
 import iconRightRed from '@/assets/icon-right-red.png'
 import newsInfo from '@/assets/news-info.png'
 
-const arrNewsTitle = ref(['公司公告', '新闻资讯'])
+const arrNewsTitle = ref(['资讯公告', '投资观察'])
 
 export default defineComponent({
   components: {
@@ -24,13 +24,13 @@ export default defineComponent({
     // 定义各个部分的ref引用
     const companyAnnouncementRef = ref(null)
     const informationRef = ref(null)
-    const arrNews = ref([]) // 新闻资讯
-    const arrAnnouncement = ref([]) // 公司公告
+    const arrNews = ref([]) // 投资观察
+    const arrAnnouncement = ref([]) // 资讯公告
     const firstNews = ref({})
 
     // 当前激活的索引
     const activeIndex = ref(0)
-    // 控制新闻资讯的activeIndex
+    // 控制投资观察的activeIndex
     const activeNewsIndex = ref(-1)
 
     // 处理SubTitle点击事件
@@ -62,30 +62,30 @@ export default defineComponent({
 
     const handleNewsInfo = async (type: string) => {
       try {
-        // categoryId:2 新闻资讯, categoryId:3 公司公告
+        // categoryId:2 投资观察, categoryId:3 咨询公告
         const res = await userApi.useGetNewsInfo({ categoryId: type })
         // 获取数据，数据在data的_value中
         let data = res.data.value
         if (data && data.retCode == 0) {
           for (let i = 0; i < data.data.length; i++) {
             if (data.data[i].releaseDate) {
-              const dateParts = data.data[i].releaseDate.split('-');
-              data.data[i].releaseDateYear = dateParts[0] || '-';
-              data.data[i].releaseDateMonth = dateParts[1] || '-';
-              data.data[i].releaseDateDate = dateParts[2] || '-';
+              const dateParts = data.data[i].releaseDate.split('-')
+              data.data[i].releaseDateYear = dateParts[0] || '-'
+              data.data[i].releaseDateMonth = dateParts[1] || '-'
+              data.data[i].releaseDateDate = dateParts[2] || '-'
             } else {
-              data.data[i].releaseDateYear = '-';
-              data.data[i].releaseDateMonth = '-';
-              data.data[i].releaseDateDate = '-';
+              data.data[i].releaseDateYear = '-'
+              data.data[i].releaseDateMonth = '-'
+              data.data[i].releaseDateDate = '-'
             }
           }
           if (type == '2') {
-            // 新闻资讯
+            // 投资观察
             firstNews.value = data.data[0]
             console.log('信息资讯数据获取', data.data.slice(1, 3))
             arrNews.value = data.data.slice(1, 3)
           } else {
-            // 公司公告
+            // 资讯公告
             arrAnnouncement.value = data.data.slice(0, 4)
           }
         }
@@ -130,12 +130,12 @@ export default defineComponent({
     })
 
     const handleAnnounce = () => {
-      // 跳转到公司公告页面
+      // 跳转到资讯公告页面
       go('/announcement')
     }
 
     const handleNews = () => {
-      // 跳转到公司公告页面
+      // 跳转到资讯公告页面
       go('/reportPage')
     }
 
@@ -166,7 +166,13 @@ export default defineComponent({
             id="company-announcement"
             class="w-full px-6 pt-10 pb-8 background-colorBgLayout"
           >
-            <div class="text-center font-bold font-h1 font-color-colorText mb-6">公司公告</div>
+            <div class="font-bold font-h1 font-color-colorText mb-6 flex justify-between">
+              <div class="font-h3 font-bold text-black">资讯公告</div>
+              <div class="flex items-center" onClick={handleAnnounce}>
+                <div class="font-h5 font-color-colorTextTertiary mr-1">查看全部</div>
+                <img class="w-22px h-22px" src={iconRightGray} />
+              </div>
+            </div>
             {arrAnnouncement.value.map((item, index) => (
               <div
                 class="w-full p-4 background-white mb-2"
@@ -205,7 +211,7 @@ export default defineComponent({
             class="w-full h-618px px-80 py-24 bg-gray-100"
           >
             <div class="mb-12 flex justify-between items-baseline">
-              <div class="font-h3 font-bold text-black">公司公告</div>
+              <div class="font-h3 font-bold text-black">资讯公告</div>
               <div class="flex items-center" onClick={handleAnnounce}>
                 <div class="font-h7 font-color-colorTextTertiary mr-9px">查看全部</div>
                 <img class="w-22px h-22px" src={iconRightGray} />
@@ -220,19 +226,21 @@ export default defineComponent({
                   }}
                 >
                   <div
-                    class="h-112px w-110px flex pr-8"
+                    class="h-112px w-110px flex flex-col justify-center pr-8"
                     style={{ borderRight: '1px solid #979797' }}
                   >
-                    <div class="font-h4 mr-2px font-color-colorText">
-                      {(item as any).releaseDateDate}
-                    </div>
-                    <div class="font-h4 mr-1 font-color-colorTextSecondary">/</div>
-                    <div class="font-h7 font-color-colorTextSecondary">
-                      <div>{(item as any).releaseDateMonth}月</div>
-                      <div>{(item as any).releaseDateYear}</div>
+                    <div class="flex items-start">
+                      <div class="font-h4 mr-2px font-color-colorText">
+                        {(item as any).releaseDateDate}
+                      </div>
+                      <div class="font-h4 mr-1 font-color-colorTextSecondary">/</div>
+                      <div class="font-h7 font-color-colorTextSecondary">
+                        <div>{(item as any).releaseDateMonth}月</div>
+                        <div>{(item as any).releaseDateYear}</div>
+                      </div>
                     </div>
                   </div>
-                  <div class="compny-announcement flex-1 pl-8 overflow-hidden">
+                  <div class="compny-announcement flex-1 pl-8 overflow-hidden flex flex-col">
                     <div class="compny-announcement-title truncate mb-2 font-h6 w-full font-color-colorText">
                       {(item as any).title}
                     </div>
@@ -247,7 +255,7 @@ export default defineComponent({
                     >
                       {(item as any).label}
                     </div>
-                    <div class="font-h8" style={{ color: '#C1272D' }}>
+                    <div class="font-h8 mt-auto" style={{ color: '#C1272D' }}>
                       查看详情
                     </div>
                   </div>
@@ -262,7 +270,13 @@ export default defineComponent({
             id="information"
             class="background-white w-full px-6 pt-10 pb-8"
           >
-            <div class="text-center font-bold font-h1 font-color-colorText mb-6">投资观察</div>
+            <div class="font-bold font-h1 font-color-colorText mb-6 flex justify-between">
+              <div class="font-h3 font-bold text-black">投资观察</div>
+              <div class="flex items-center" onClick={handleNews}>
+                <div class="font-h5 font-color-colorTextTertiary mr-1">查看全部</div>
+                <img class="w-22px h-22px" src={iconRightGray} />
+              </div>
+            </div>
             <div
               class="w-full h-64 px-4 py-3 bg-center bg-no-repeat px-8 py-12 flex flex-col justify-between mb-2"
               style={{ backgroundImage: `url(${newsInfo})` }}
@@ -305,7 +319,7 @@ export default defineComponent({
         ) : (
           <div ref={informationRef} id="information" class="w-full h-602px px-80 py-24 bg-white">
             <div class="mb-12 flex justify-between items-baseline">
-              <div class="font-h3 font-bold text-black">新闻资讯</div>
+              <div class="font-h3 font-bold text-black">投资观察</div>
               <div class="flex items-center" onClick={handleNews}>
                 <div class="font-h7 font-color-colorTextTertiary mr-9px">查看全部</div>
                 <img class="w-22px h-22px" src={iconRightGray} />
@@ -318,7 +332,10 @@ export default defineComponent({
                   handleArticleDetail(firstNews.value)
                 }}
               >
-                <div class="ml-auto text-white w-104px h-94px flex flex-col justify-center pr-33px" style={{backgroundColor:"rgba(6,6,6,0.2)"}}>
+                <div
+                  class="ml-auto text-white w-104px h-94px flex flex-col justify-center pr-33px"
+                  style={{ backgroundColor: 'rgba(6,6,6,0.2)' }}
+                >
                   <div class="font-h4 text-right">{(firstNews.value as any).releaseDateDate}</div>
                   <div class="font-h7 text-right">
                     {(firstNews.value as any).releaseDateMonth}.

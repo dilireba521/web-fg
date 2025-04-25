@@ -40,12 +40,16 @@ export default defineComponent({
               {(dataPosition.value as { title?: string })?.title || ''}
             </div>
             <div class="flex">
-              <div class="hire-detail-label px-3 font-h6 text-centen">
-                {(dataPosition.value as { label?: string })?.label || ''}
-              </div>
-              <div class="hire-detail-label px-3 font-h6 text-centen ml-2">
-                {(dataPosition.value as { category?: { title: string } })?.category?.title || ''}
-              </div>
+              {(dataPosition.value as { category?: { title: string } })?.category?.title && (
+                <div class="hire-detail-label px-3 font-h6 text-centen mr-2">
+                  {(dataPosition.value as { category?: { title: string } })?.category?.title || ''}
+                </div>
+              )}
+              {(dataPosition.value as { label?: string })?.label && (
+                <div class="hire-detail-label px-3 font-h6 text-centen">
+                  {(dataPosition.value as { label?: string })?.label || ''}
+                </div>
+              )}
             </div>
           </div>
         ) : (
@@ -57,12 +61,16 @@ export default defineComponent({
               {(dataPosition.value as { title?: string })?.title || ''}
             </div>
             <div class="mb-6 flex">
-              <div class="hire-detail-label px-4 py-5px font-h7 text-centen">
-                {(dataPosition.value as { label?: string })?.label || ''}
-              </div>
-              <div class="hire-detail-label px-4 py-5px font-h7 text-centen ml-4">
-                {(dataPosition.value as { category?: { title: string } })?.category?.title || ''}
-              </div>
+              {(dataPosition.value as { category?: { title: string } })?.category?.title ? (
+                <div class="hire-detail-label px-4 py-5px font-h7 text-centen mr-4">
+                  {(dataPosition.value as { category?: { title: string } })?.category?.title || ''}
+                </div>
+              ) : null}
+              {(dataPosition.value as { label?: string })?.label ? (
+                <div class="hire-detail-label px-4 py-5px font-h7 text-centen">
+                  {(dataPosition.value as { label?: string })?.label || ''}
+                </div>
+              ) : null}
             </div>
             <div class="font-h7 font-color-colorTextSecondary">
               {(dataPosition.value as { remark?: string })?.remark || ''}

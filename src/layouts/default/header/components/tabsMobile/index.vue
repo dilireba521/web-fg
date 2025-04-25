@@ -103,12 +103,25 @@ const tabsTargets = ref([
     path: '/news/index',
     targets: [
       {
-        label: '公司公告',
+        label: '资讯公告',
         value: 'companyAnnouncementRef'
       },
       {
-        label: '新闻资讯',
+        label: '投资观察',
         value: 'informationRef'
+      }
+    ]
+  },
+  {
+    path: '/hire/index',
+    targets: [
+      {
+        label: '社会招聘',
+        value: '2'
+      },
+      {
+        label: '校园招聘',
+        value: '1'
       }
     ]
   }
