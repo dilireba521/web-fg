@@ -43,7 +43,7 @@ export default defineComponent({
       </div>
       <div class='bg-module'>
         <div class='container'>
-          <TabsVue list={items.value} v-model:active={selectedKey.value} type='black'/>
+          <TabsVue list={items.value} size='small' v-model:active={selectedKey.value} type='black'/>
         </div>
       </div>
       <div>

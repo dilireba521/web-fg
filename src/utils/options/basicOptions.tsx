@@ -58,3 +58,27 @@ export const productNoticeOptions: LabelValueOptions = [
     label: '临时公告'
   }
 ]
+
+// 承受风险等级
+export const riskLevelOptions: LabelValueOptions = [
+  {
+    label: 'C1',
+    value: '1',
+},
+{
+    label: 'C2',
+    value: '2'
+},
+{
+    label: 'C3',
+    value: '3'
+},
+{
+    label: 'C4',
+    value: '4'
+},
+{
+    label: 'C5',
+    value: '5'
+},
+]
