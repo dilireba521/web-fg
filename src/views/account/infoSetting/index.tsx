@@ -1,17 +1,51 @@
-import { defineComponent, onMounted, h, ref } from 'vue'
+import { defineComponent, onMounted, h, ref, defineAsyncComponent } from 'vue'
 import { renderLevel } from './components/modules'
 import { MobileFilled, LockFilled, MailFilled } from '@ant-design/icons-vue'
+import { ClickType } from './enums'
 export default defineComponent({
   setup(props, ctx) {
     onMounted(() => {
       console.log('mounted--info33333')
     })
     const level = ref(1)
+    // 密码
+    const passwordRef = ref()
+    // 手机号
+    const phoneRef = ref()
+    // 邮箱
+    const emailRef = ref()
     onMounted(() => {
       setTimeout(() => {
         level.value = 2
       }, 3000)
     })
+    function onSubmit(params: any) {
+      console.log(params)
+    }
+    const AsyncCom = {
+      Password: defineAsyncComponent(() =>
+        import('./components/modules').then((modules) => modules.Password)
+      ),
+      Phone: defineAsyncComponent(() =>
+        import('./components/modules').then((modules) => modules.Phone)
+      ),
+      Email: defineAsyncComponent(() =>
+        import('./components/modules').then((modules) => modules.Phone)
+      ),
+    }
+    function handleClick(params: any) {
+      switch (params.type) {
+        case ClickType.PASSWORD:
+          passwordRef.value.visible = true
+          break
+        case ClickType.PHONE:
+          phoneRef.value.visible = true
+          break
+        case ClickType.EMAIL:
+          emailRef.value.visible = true
+          break
+      }
+    }
     return () => (
       <div class="bg-black/3 rounded-xs p-12 min-h-665px  mt-6">
         {/* 安全等级 */}
@@ -23,26 +57,29 @@ export default defineComponent({
             <div class="ml-2">密码</div>
           </div>
           <div class="text-xs color-tertiary flex-1">上次登录时间 2024-06-18 15:12:23</div>
-          <div class="color-secondary cursor-pointer">修改</div>
+          <div onClick={() => handleClick({ type: ClickType.PASSWORD })} class="color-secondary cursor-pointer">修改</div>
         </div>
         {/* 手机号码 */}
         <div class="flex h-16 items-center">
           <div class="w-26 flex items-center">
-            <LockFilled class="text-[#888888] text-24px" />
+            <MobileFilled class="text-[#888888] text-24px" />
             <div class="ml-2">手机号码</div>
           </div>
           <div class="text-xs color-tertiary flex-1">未绑定</div>
-          <div class="cursor-pointer text-[#C1272D]">绑定</div>
+          <div onClick={() => handleClick({ type: ClickType.PHONE })} class="cursor-pointer text-[#C1272D]">绑定</div>
         </div>
         {/* 邮箱设置 */}
         <div class="flex h-16 items-center">
           <div class="w-26 flex items-center">
-            <LockFilled class="text-[#888888] text-24px" />
+            <MailFilled class="text-[#888888] text-24px" />
             <div class="ml-2">邮箱设置</div>
           </div>
           <div class="text-xs color-tertiary flex-1">未绑定</div>
-          <div class="cursor-pointer text-[#C1272D]">绑定</div>
+          <div onClick={() => handleClick({ type: ClickType.EMAIL })}  class="cursor-pointer text-[#C1272D]">绑定</div>
         </div>
+        <AsyncCom.Password onSubmit={onSubmit} ref={passwordRef}></AsyncCom.Password>
+        <AsyncCom.Phone onSubmit={onSubmit} ref={phoneRef}></AsyncCom.Phone>
+        <AsyncCom.Email onSubmit={onSubmit} ref={emailRef}></AsyncCom.Email>
       </div>
     )
   }

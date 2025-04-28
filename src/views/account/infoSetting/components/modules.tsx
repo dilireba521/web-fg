@@ -1,7 +1,18 @@
 import { ExclamationCircleFilled, CheckCircleFilled } from '@ant-design/icons-vue'
-
-
-
+import { Modal, Upload, message, Form, Input, Tabs, TabPane, Button } from 'ant-design-vue'
+import { computed, defineComponent, reactive, ref, onMounted, toRaw, watch } from 'vue'
+import { ConfigPropType } from '../enums'
+const modalFooterBtn: any = {
+  class: 'w-74px !ml-4'
+}
+const modalFooterBtn1: any = {
+  class: 'w-74px !ml-4 is-gray'
+}
+const labelCol = {
+  style: {
+    width: '94px'
+  }
+}
 // 安全等级
 export const renderLevel = (level: number) => {
   const list = [
@@ -54,3 +65,260 @@ export const renderLevel = (level: number) => {
   }
 }
 
+// 修改密码
+export const Password = defineComponent({
+  emits: ['submit'],
+  setup(props, { expose, emit }) {
+    const visible = ref(false)
+    const formRef = ref()
+    const formState = reactive({
+      oldPw: '',
+      newPw1: '',
+      newPw2: '',
+      code: ''
+    })
+    const confirmLoading = ref(false)
+    onMounted(() => {
+      console.log('mounted--Password')
+    })
+    function handleOk(params: any) {
+      //   console.log(params)
+      formRef.value.validate().then((res: any) => {
+        confirmLoading.value = true
+        emit('submit', { ...res, action: 'changePassword' })
+      })
+    }
+    const rules = {
+      code: [
+        {
+          required: true,
+          message: '请输入验证码',
+          trigger: 'blur'
+        }
+      ],
+      oldPw: [
+        {
+          required: true,
+          message: '请输入旧密码',
+          trigger: 'blur'
+        }
+      ],
+      newPw1: [
+        {
+          required: true,
+          message: '请输入新密码',
+          trigger: 'blur'
+        }
+      ],
+      newPw2: [
+        {
+          required: true,
+          message: '请输入新密码',
+          trigger: 'blur',
+          validator: (rule: any, value: any) => {
+            if (value === '') {
+              return Promise.reject('两次输入密码不一致')
+            } else if (value !== formState.newPw1) {
+              return Promise.reject('两次输入密码不一致')
+            } else {
+              return Promise.resolve()
+            }
+          }
+        }
+      ]
+    }
+    watch(
+      () => visible.value,
+      (newValue, oldValue) => {
+        if (!newValue) {
+          formRef.value?.resetFields()
+        }
+      }
+    )
+    expose({
+      visible,
+      confirmLoading
+    })
+    return () => {
+      return (
+        <Modal
+          okButtonProps={modalFooterBtn}
+          cancelButtonProps={modalFooterBtn1}
+          onOk={handleOk}
+          width={574}
+          class="modal-white-bg"
+          v-model:open={visible.value}
+        >
+          {{
+            title: () => <div class="font-500">修改密码</div>,
+            default: () => (
+              <Form
+                hideRequiredMark={true}
+                ref={formRef}
+                labelCol={labelCol}
+                model={formState}
+                rules={rules}
+                class="mt-8 mb-12 px-6"
+              >
+                <Form.Item name="oldPw" label="旧密码">
+                  <Input.Password
+                    v-model:value={formState.oldPw}
+                    placeholder="请输入旧密码"
+                  ></Input.Password>
+                </Form.Item>
+                <Form.Item name="newPw1" label="新密码">
+                  <Input.Password
+                    v-model:value={formState.newPw1}
+                    placeholder="请输入新密码"
+                  ></Input.Password>
+                </Form.Item>
+                <Form.Item name="newPw2" label="重复新密码">
+                  <Input.Password
+                    v-model:value={formState.newPw2}
+                    placeholder="请输入新密码"
+                  ></Input.Password>
+                </Form.Item>
+                <Form.Item name="code" label="短信验证码">
+                  <Input.Group compact>
+                    <Input
+                      v-model:value={formState.code}
+                      style="width: calc(100% - 88px)"
+                      placeholder="请输入验证码"
+                    ></Input>
+                    <Button class="w-22 !px-2">获取验证码</Button>
+                  </Input.Group>
+                </Form.Item>
+              </Form>
+            )
+          }}
+        </Modal>
+      )
+    }
+  }
+})
+
+// 手机号
+export const Phone = defineComponent({
+  props: {
+    type: {
+      type: String as unknown as PropType<ConfigPropType>,
+      validator: (value: string) => Object.values(ConfigPropType).includes(value),
+      default: ConfigPropType.BIND
+    }
+  },
+  emits: ['submit'],
+  setup(props, { expose, emit }) {
+    const visible = ref(false)
+    const formRef = ref()
+    const formState = reactive({
+      oldPw: '',
+      newPw1: '',
+      newPw2: '',
+      code: ''
+    })
+    const confirmLoading = ref(false)
+    const title = computed(() => {
+      return props.type === ConfigPropType.BIND ? '绑定手机号' : '更换手机号码'
+    })
+    onMounted(() => {
+      console.log('mounted--Password')
+    })
+    function handleOk(params: any) {
+      //   console.log(params)
+      formRef.value.validate().then((res: any) => {
+        confirmLoading.value = true
+        emit('submit', { ...res, action: 'changePassword' })
+      })
+    }
+    const rules = {
+      code: [
+        {
+          required: true,
+          message: '请输入验证码',
+          trigger: 'blur'
+        }
+      ],
+      oldPw: [
+        {
+          required: true,
+          message: '请输入手机号码',
+          trigger: 'blur'
+        }
+      ],
+      newPw1: [
+        {
+          required: true,
+          message: '请输入新密码',
+          trigger: 'blur'
+        }
+      ],
+    }
+    watch(
+      () => visible.value,
+      (newValue, oldValue) => {
+        if (!newValue) {
+          formRef.value?.resetFields()
+        }
+      }
+    )
+    expose({
+      visible,
+      confirmLoading
+    })
+    return () => {
+      return (
+        <Modal
+          okButtonProps={modalFooterBtn}
+          cancelButtonProps={modalFooterBtn1}
+          onOk={handleOk}
+          width={574}
+          class="modal-white-bg"
+          v-model:open={visible.value}
+        >
+          {{
+            title: () => <div class="font-500">{title.value}</div>,
+            default: () => (
+              <Form
+                hideRequiredMark={true}
+                ref={formRef}
+                labelCol={labelCol}
+                model={formState}
+                rules={rules}
+                class="mt-8 mb-12 px-6"
+              >
+                <Form.Item name="oldPw" label="登录密码">
+                  <Input.Password
+                    v-model:value={formState.oldPw}
+                    placeholder="请输入登录密码"
+                  ></Input.Password>
+                </Form.Item>
+                <Form.Item name="newPw1" label="手机号码">
+                  <Input
+                    v-model:value={formState.newPw1}
+                    placeholder="请输入手机号码"
+                  ></Input>
+                </Form.Item>
+                <Form.Item name="newPw2" label="新手机号码">
+                  <Input
+                    v-model:value={formState.newPw2}
+                    placeholder="请输入新手机号码"
+                  ></Input>
+                </Form.Item>
+                <Form.Item name="code" label="短信验证码">
+                  <Input.Group compact>
+                    <Input
+                      v-model:value={formState.code}
+                      style="width: calc(100% - 88px)"
+                      placeholder="请输入验证码"
+                    ></Input>
+                    <Button class="w-22 !px-2">获取验证码</Button>
+                  </Input.Group>
+                </Form.Item>
+              </Form>
+            )
+          }}
+        </Modal>
+      )
+    }
+  }
+})
