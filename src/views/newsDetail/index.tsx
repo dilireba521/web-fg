@@ -30,8 +30,7 @@ export default defineComponent({
 
     return () => (
       <div>
-        {screenStore.isMobile ? null : (
-          <div class="w-full h-16 px-85 pt-6 pb-18px background-colorBgLayout news-tab font-h7 font-color-colorTextTertiary">
+        <div class={`${screenStore.isMobile?'px-8 py-4':'h-16 px-85 pt-6 pb-18px'} w-full background-colorBgLayout news-tab font-h7 font-color-colorTextTertiary`}>
             {/* 首页 / 新闻信息 / 投资观察 / 文章详情 */}
             <Breadcrumb>
               <Breadcrumb.Item>
@@ -80,11 +79,10 @@ export default defineComponent({
               <Breadcrumb.Item>文章详情</Breadcrumb.Item>
             </Breadcrumb>
           </div>
-        )}
         <div
           class={`w-full background-white ${screenStore.isMobile ? 'px-6 pt-10 pb-8' : 'px-120 pt-24 pb-94px'}`}
         >
-          <div class="w-full mb-16">
+          <div class={`w-full ${screenStore.isMobile ? '' : 'mb-16'}`}>
             <div
               class="font-h3 font-medium mb-6 pb-4"
               style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}

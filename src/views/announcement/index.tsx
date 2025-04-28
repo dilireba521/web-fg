@@ -20,10 +20,13 @@ export default defineComponent({
     const handleNewsInfo = async () => {
       try {
         // categoryId:2 新闻资讯, categoryId:3 公司公告
-        const res = await userApi.useGetNewsInfo({ categoryId: 3, pageIndex: current.value })
+        const res = await userApi.useGetNewsInfo({
+          categoryId: 3,
+          pageIndex: current.value,
+          pageSize: pageSize.value
+        })
         // 获取数据，数据在data的_value中
         let data = res.data.value
-        console.log('公司公告数据获取', data)
         if (data && data.retCode == 0) {
           for (let i = 0; i < data.data.length; i++) {
             if (data.data[i].releaseDate) {
@@ -99,14 +102,19 @@ export default defineComponent({
         {screenStore.isMobile ? (
           <div class="px-6 pb-30px background-colorBgLayout">
             {arrAnnouncement.value.map((item, index) => (
-              <div class="p-4 background-white flex flex-col mb-2">
+              <div
+                class="p-4 background-white flex flex-col mb-2 min-h-144px p-4"
+                onClick={() => {
+                  handleArticleDetail(item)
+                }}
+              >
                 <div>
-                  <div>{(item as any).title}</div>
-                  <div>{(item as any).label}</div>
+                  <div class="text-base font-bold font-color-colorBlack">{(item as any).title}</div>
+                  <div class="font-h5 font-color-colorTextSecondary">{(item as any).label}</div>
                 </div>
                 <div class="flex justify-between mt-auto">
-                  <div>查看详情</div>
-                  <div>
+                  <div class="font-h6 font-color-colorRed">查看详情</div>
+                  <div class="font-h6 font-color-colorTextSecondary">
                     {(item as any).releaseDateYear}.{(item as any).releaseDateMonth}.
                     {(item as any).releaseDateDate}
                   </div>
@@ -115,7 +123,7 @@ export default defineComponent({
             ))}
           </div>
         ) : (
-          <div class="w-full min-h-100vh px-120 py-12 background-colorBgLayout flex flex-col">
+          <div class="w-full min-h-100vh px-120 pt-12 pb-8 background-colorBgLayout flex flex-col">
             <div class="font-h4 font-medium mb-6">资讯公告</div>
             <div class="flex-1">
               {arrAnnouncement.value.map((item, index) => (
@@ -162,17 +170,22 @@ export default defineComponent({
                 </div>
               ))}
             </div>
-            <div class="flex justify-end mt-2">
-              <Pagination
-                current={current.value}
-                pageSize={pageSize.value}
-                total={total.value}
-                onChange={handlePageChange}
-                showSizeChanger={false} // 可选：隐藏页码大小选择器
-              />
-            </div>
           </div>
         )}
+        <div
+          class={`flex justify-end background-colorBgLayout pb-8 ${screenStore.isMobile ? 'px-8' : 'px-120'}`}
+        >
+          <Pagination
+            current={Number(current.value)}
+            pageSize={Number(pageSize.value)}
+            total={Number(total.value)}
+            onChange={(page) => {
+              current.value = page
+              handleNewsInfo()
+            }}
+            showSizeChanger={false}
+          />
+        </div>
       </div>
     )
   }

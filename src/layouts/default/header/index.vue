@@ -1,7 +1,7 @@
 <template>
   <div v-if="screenStore.isMobile">
     <div
-      :style="headerStyle"
+      :style="headerMobileStyle"
       :class="[
         'mobile-header',
         {
@@ -155,6 +155,7 @@ const route = useRoute()
 const router = useRouter()
 const tabType = ref('default')
 const headerStyle = ref({})
+const headerMobileStyle = ref({})
 const isScrollDown = ref(true)
 // 控制弹窗显示
 const showLoginModal = ref(false)
@@ -314,14 +315,14 @@ function handleTouchMove(e: TouchEvent) {
   if (scrollTop <= 1) {
     // 在顶部时，导航栏始终显示
     isScrollDown.value = true
-    headerStyle.value = {
+    headerMobileStyle.value = {
       position: 'absolute'
     }
   } else {
     // 向下滑动（手指向上移动，touchDiff < 0）
     if (touchDiff < -5 && scrollTop > lastScrollTop.value) {
       // 向下滑动，隐藏导航栏
-      headerStyle.value = {
+      headerMobileStyle.value = {
         position: 'fixed',
         transform: 'translateY(-56px)',
         display: isScrollDown.value ? 'none' : 'block'
@@ -331,7 +332,7 @@ function handleTouchMove(e: TouchEvent) {
     else if (touchDiff > 5 && scrollTop < lastScrollTop.value) {
       // 向上滑动，显示导航栏
       isScrollDown.value = false
-      headerStyle.value = {
+      headerMobileStyle.value = {
         transform: 'translateY(0px)',
         position: 'fixed'
       }

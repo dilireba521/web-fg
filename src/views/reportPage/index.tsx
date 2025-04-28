@@ -2,6 +2,7 @@ import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
 import * as userApi from '@/api/user'
 import { useGo } from '@/hooks/web/usePage'
+import { useScreenStore } from '@/store/modules/screen'
 import './index.less'
 // antd
 import { Pagination, Breadcrumb } from 'ant-design-vue'
@@ -12,6 +13,7 @@ import rtaLogoGold from '@/assets/rta-logo-gold.png'
 
 export default defineComponent({
   setup(props, ctx) {
+    const screenStore = useScreenStore()
     const { go } = useGo()
     const arrNews = ref([])
     const current = ref(1)
@@ -73,11 +75,15 @@ export default defineComponent({
           <img class="w-100 h-85px mb-18px block mx-auto" src={rtaEnglish} alt="" />
           <img class="w-162px h-33px block mx-auto" src={rtaChinese} alt="" />
         </div> */}
+        {!screenStore.isMobile && (
+          <div
+            class="w-full h-80 px-80 py-134px bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-information.png)` }}
+          ></div>
+        )}
         <div
-          class="w-full h-80 px-80 py-134px bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-information.png)` }}
-        ></div>
-        <div class="w-full h-16 px-85 pt-6 pb-18px background-colorBgLayout news-tab font-h7 font-color-colorTextTertiary">
+          class={`${screenStore.isMobile ? 'px-8 py-4' : 'h-16 px-85 pt-6 pb-18px news-tab'} w-full background-colorBgLayout font-h7 font-color-colorTextTertiary`}
+        >
           {/* 首页 / 新闻信息 / 投资观察 */}
           <Breadcrumb>
             <Breadcrumb.Item>
@@ -101,13 +107,22 @@ export default defineComponent({
             <Breadcrumb.Item>投资观察</Breadcrumb.Item>
           </Breadcrumb>
         </div>
-        <div class="w-full min-h-100vh px-80 py-12 background-colorBgLayout flex flex-col">
-          <div class="font-h4 font-medium mb-6">投资观察</div>
-          <div class="flex flex-wrap w-full">
+        <div
+          class={`${screenStore.isMobile ? '' : 'min-h-100vh px-80 py-12'} w-full background-colorBgLayout flex flex-col`}
+        >
+          {
+            !screenStore.isMobile && (
+              <div class="font-h4 font-medium mb-6">投资观察</div>
+            )
+          }
+          <div class={`${screenStore.isMobile?'px-8':'flex flex-wrap'} w-full`}>
             {arrNews.value.map((item, index) => (
-              <div class="news-observe-item mb-6 mr-4" onClick={() => handleArticleDetail(item)}>
+              <div
+                class={`${screenStore.isMobile ? 'mb-8' : 'news-observe-item mb-6 mr-4'}`}
+                onClick={() => handleArticleDetail(item)}
+              >
                 <img class="w-full h-231px" src={newsInfo} alt="" />
-                <div class="w-full h-17 news-item-foot background-colorBgLayout px-6 pt-3 pb-2 font-h6 font-color-colorTextSecondary">
+                <div class={`${screenStore.isMobile?'text-base':'px-6 font-h6'} w-full h-17 news-item-foot background-colorBgLayout pt-3 pb-2 font-color-colorTextSecondary`}>
                   <div
                     class="news-item-title line-clamp-2 w-full overflow-hidden"
                     style={{
@@ -123,13 +138,16 @@ export default defineComponent({
               </div>
             ))}
           </div>
-          <div class="flex justify-end mt-auto">
+          <div class={`${screenStore.isMobile?'pb-8':''} flex justify-end mt-auto`}>
             <Pagination
-              current={current.value}
-              pageSize={pageSize.value}
-              total={total.value}
-              onChange={handlePageChange}
-              showSizeChanger={false} // 可选：隐藏页码大小选择器
+              current={Number(current.value)}
+              pageSize={Number(pageSize.value)}
+              total={Number(total.value)}
+              onChange={(page) => {
+                current.value = page
+                handleNewsInfo()
+              }}
+              showSizeChanger={false}
             />
           </div>
         </div>

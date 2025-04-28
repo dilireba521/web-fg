@@ -3,7 +3,12 @@
   <div class="bg-layout">
     <div v-if="screenStore.isMobile" class="px-6 pt-4 pb-6 font-h6 font-color-colorTextTertiary">
       <div>
-        © 北京火山引擎科技有限公司 2025 版权所有 京公网安备11010802032137号 京ICP备20018813号-3
+        © 北京火山引擎科技有限公司 2025 版权所有
+      </div>
+      <div>
+        京公网安备11010802032137号 京ICP备20018813号-3
+      </div>
+      <div>
         营业执照
       </div>
       <div>

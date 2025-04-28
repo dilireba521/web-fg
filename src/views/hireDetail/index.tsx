@@ -25,7 +25,6 @@ export default defineComponent({
         '<span class="mb-4 font-h5 font-color-colorText font-medium">'
       )
       dataJobs.content = content
-      console.log('职位详情页数据', dataPosition.value)
       dataPosition.value = dataJobs
     }
 
@@ -34,8 +33,35 @@ export default defineComponent({
     })
     return () => (
       <div>
+        {
+          screenStore.isMobile && (
+            <div class="px-8 py-4 background-colorBgLayout font-h7 font-color-colorTextTertiary">
+            <Breadcrumb>
+              <Breadcrumb.Item>
+                <a
+                  onClick={() => {
+                    go('/home')
+                  }}
+                >
+                  首页
+                </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <a
+                  onClick={() => {
+                    go('/hire')
+                  }}
+                >
+                  招贤纳士
+                </a>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>招聘信息</Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
+          )
+        }
         {screenStore.isMobile ? (
-          <div class="w-full px6 pt-10 pb-6 background-colorBgLayout">
+          <div class="w-full px6 py-6 background-colorBgLayout">
             <div class="font-h1 text-black font-medium mb-2">
               {(dataPosition.value as { title?: string })?.title || ''}
             </div>
@@ -105,14 +131,13 @@ export default defineComponent({
         {screenStore.isMobile ? (
           <div
             class="w-full px-6 pb-8 background-colorBgLayout"
-            style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}
           >
             <div class="w-full background-white px-4 py-6">
               <div v-html={(dataPosition.value as { content?: string })?.content || ''}></div>
             </div>
           </div>
         ) : (
-          <div class="w-full background-colorBgLayout px-80 pb-12">
+          <div class="w-full background-colorBgLayout px-80 py-12">
             <div class="w-full background-white p-12">
               <div v-html={(dataPosition.value as { content?: string })?.content || ''}></div>
             </div>
