@@ -278,8 +278,8 @@ export default defineComponent({
               </div>
             </div>
             <div
-              class="w-full h-64 px-4 py-3 bg-center bg-no-repeat px-8 py-12 flex flex-col justify-between mb-2"
-              style={{ backgroundImage: `url(${newsInfo})` }}
+              class="w-full h-64 px-4 py-3 bg-center bg-no-repeat px-8 py-12 flex flex-col justify-between mb-2 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${(firstNews.value as any)?.image?.image || newsInfo})` }}
               onClick={() => {
                 handleArticleDetail(firstNews.value)
               }}
@@ -327,7 +327,8 @@ export default defineComponent({
             </div>
             <div class="w-full flex justify-between h-80">
               <div
-                class="news-item bg-gray-100 flex flex-col justify-between"
+                class="news-item bg-gray-100 flex flex-col justify-between bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${(firstNews.value as any)?.image?.image || newsInfo})` }}
                 onClick={() => {
                   handleArticleDetail(firstNews.value)
                 }}
@@ -342,7 +343,7 @@ export default defineComponent({
                     {(firstNews.value as any).releaseDateYear}
                   </div>
                 </div>
-                <div class="font-h5 text-left text-white font-color-colorText truncate ml-8 mb-4">
+                <div class="font-h5 text-left font-color-colorTextWhite truncate ml-8 mb-4">
                   {(firstNews.value as any).title}
                 </div>
               </div>

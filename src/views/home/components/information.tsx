@@ -5,6 +5,7 @@ import './index.less'
 
 // 导入图片资源
 import iconRightRed from '@/assets/icon-right-red.png'
+import newsInfo from '@/assets/news-info.png'
 // 导入API
 import * as userApi from '@/api/user'
 import { first } from 'lodash-es'
@@ -83,7 +84,7 @@ export default defineComponent({
               <div class="info-item-title h-12 font-medium font-h6 mb-4 line-clamp-2">
                 {(firstNews.value as any).title}
               </div>
-              <div class="info-item-img w-full h-244px"></div>
+              <img class="info-item-img w-full h-244px" src={(firstNews.value as any).image?.image || newsInfo} alt="" />
             </div>
           </div>
         ) : (
@@ -108,7 +109,7 @@ export default defineComponent({
                   <div class="info-item-title max-w-296px h-12 font-medium font-h6 mb-16px line-clamp-2">
                     {(item as any).title}
                   </div>
-                  <div class="info-item-img w-296px h-222px"></div>
+                  <img class="info-item-img w-296px h-222px" src={(item as any).image?.image || newsInfo} alt="" />
                 </div>
               ))}
             </div>

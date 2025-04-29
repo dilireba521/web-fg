@@ -121,7 +121,7 @@ export default defineComponent({
                 class={`${screenStore.isMobile ? 'mb-8' : 'news-observe-item mb-6 mr-4'}`}
                 onClick={() => handleArticleDetail(item)}
               >
-                <img class="w-full h-231px" src={newsInfo} alt="" />
+                <img class="w-full h-231px object-cover" src={(item as any).image?.image || newsInfo} alt="" />
                 <div class={`${screenStore.isMobile?'text-base':'px-6 font-h6'} w-full h-17 news-item-foot background-colorBgLayout pt-3 pb-2 font-color-colorTextSecondary`}>
                   <div
                     class="news-item-title line-clamp-2 w-full overflow-hidden"

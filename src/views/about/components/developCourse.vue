@@ -50,7 +50,10 @@
       </div>
     </div>
   </div>
-  <div v-else class="w-full h-669px text-center relative bg-cover bg-center bg-no-repeat" :style="{ backgroundImage: `url(${aboutCours})` }">
+  <div v-else 
+    class="w-full h-669px text-center relative bg-cover bg-center bg-no-repeat" 
+    :style="{ backgroundImage: `url(${currentCours || aboutCours})` }"
+  >
     <div class="w-full px-80 h-669px pt-24 text-center z-10 relative flex flex-col">
       <div class="font-h3 font-color-colorText text-center font-medium mb-31px">发展历程</div>
       <div class="develop-timeline flex-1 flex">
@@ -115,7 +118,7 @@ defineOptions({ name: 'developCourse' })
 
 // 定义年份数据
 const years = ref<string[]>([])
-
+const arrCours = ref<any[]>([])
 // 定义每年的事件数据
 const developEvents = ref<string[]>([])
 
@@ -127,9 +130,11 @@ const props = defineProps({
 })
 const currentIndex = ref(0)
 const screenStore = useScreenStore()
+const currentCours = ref(aboutCours)
 
 const handleYearClick = (index: number) => {
   currentIndex.value = index
+  currentCours.value = arrCours.value[index]?.image?.image || ''
 }
 
 const handleMilestoneInfo = async () => {
@@ -155,6 +160,8 @@ const handleMilestoneInfo = async () => {
         )
         developEvents.value.unshift(content)
       })
+      currentCours.value = data.data[0]?.image?.image || ''
+      arrCours.value = data.data
     }
   } catch (error) {
     console.log(error)
