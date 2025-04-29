@@ -345,6 +345,10 @@ function handleTouchMove(e: TouchEvent) {
 
 // 监听路由变化
 router.afterEach((to, from) => {
+  // 检查是否跳转到首页
+  if (to.path === '/home') {
+    changeTab('default')
+  }
   // 路由变化后，重置导航栏样式
   nextTick(() => {
     // 确保DOM已更新
