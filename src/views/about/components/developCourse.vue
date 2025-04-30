@@ -14,7 +14,10 @@
           class="year-item flex items-center"
           @click="handleYearClick(index)"
         >
-          <div class="year-text min-w-49px text-right" :class="{ active: currentIndex === index }">
+          <div
+            class="year-text min-w-49px text-right custom-font"
+            :class="{ active: currentIndex === index }"
+          >
             {{ year }}
           </div>
           <div class="year-dot" :class="{ active: currentIndex === index }">
@@ -25,8 +28,8 @@
       </div>
 
       <!-- 右侧内容区域 -->
-      <div class="timeline-content flex-1 ml-8">
-        <div class="content-header flex items-center mb-30px">
+      <div class="timeline-content flex-1 ml-8 pb-4">
+        <div class="content-header flex items-center mb-4">
           <div class="current-year text-red-600 font-h1 font-medium ml-auto">
             {{ years[currentIndex] }}
           </div>
@@ -41,7 +44,7 @@
               <div>{{ item.desc }}</div>
             </div> -->
           <div
-            class="max-h-307px mobile-contain-box hide-scrollbar"
+            class="max-h-304px mobile-contain-box hide-scrollbar custom-font"
             v-html="developEvents[currentIndex]"
             @touchmove.stop
             @wheel.stop
@@ -50,9 +53,10 @@
       </div>
     </div>
   </div>
-  <div v-else 
-    class="w-full h-669px text-center relative bg-cover bg-center bg-no-repeat" 
-    :style="{ backgroundImage: `url(${currentCours || aboutCours})` }"
+  <div
+    v-else
+    :class="`w-full h-669px text-center relative bg-cover bg-center bg-no-repeat ${currentCours ? '' : 'background-colorBgLayout'}`"
+    :style="{ backgroundImage: `url(${currentCours})` }"
   >
     <div class="w-full px-80 h-669px pt-24 text-center z-10 relative flex flex-col">
       <div class="font-h3 font-color-colorText text-center font-medium mb-31px">发展历程</div>
@@ -67,7 +71,7 @@
             @click="handleYearClick(index)"
           >
             <div
-              class="year-text min-w-49px text-right"
+              class="year-text min-w-49px text-right custom-font"
               :class="{ active: currentIndex === index }"
             >
               {{ year }}
@@ -99,7 +103,7 @@
               v-html="developEvents[currentIndex]"
               @touchmove.stop
               @wheel.stop
-              class="timeline-content-text hide-scrollbar max-h-395px"
+              class="timeline-content-text hide-scrollbar max-h-395px custom-font font-color-colorTextSecondary"
             ></div>
           </div>
         </div>
@@ -133,6 +137,7 @@ const screenStore = useScreenStore()
 const currentCours = ref(aboutCours)
 
 const handleYearClick = (index: number) => {
+  console.log('点击了年份', index)
   currentIndex.value = index
   currentCours.value = arrCours.value[index]?.image?.image || ''
 }
@@ -148,20 +153,26 @@ const handleMilestoneInfo = async () => {
         // 如果order字段不存在，则默认为最大值
         const orderA = a.order !== undefined ? a.order : Number.MAX_VALUE
         const orderB = b.order !== undefined ? b.order : Number.MAX_VALUE
-        return orderB - orderA
-      })
-      data.data.forEach((item: any) => {
-        years.value.unshift(item.title)
-        let content = item.content
-        // 使用正则表达式为p标签添加类名
-        content = content.replace(
-          /<p>/g,
-          '<p class="mb-20px flex font-h6 font-color-colorTextSecondary">'
-        )
-        developEvents.value.unshift(content)
+        return orderA - orderB
       })
       currentCours.value = data.data[0]?.image?.image || ''
-      arrCours.value = data.data
+      data.data.forEach((item: any) => {
+        years.value.push(item.title)
+        arrCours.value.push(item)
+        let content = item.content
+        // 使用正则表达式为p标签添加类名
+        // content = content.replace(
+        //   /<p>/g,
+        //   '<p class="flex font-h6 font-color-colorTextSecondary custom-font">'
+        // )
+        if (screenStore.isMobile) {
+          content = content.replace(
+            /<span style="font-size:16px">/g,
+            '<span style="font-size:12px;">'
+          )
+        }
+        developEvents.value.push(content)
+      })
     }
   } catch (error) {
     console.log(error)
@@ -172,10 +183,24 @@ onMounted(() => {
   handleMilestoneInfo()
 })
 </script>
+<style></style>
+
 <style scoped lang="less">
 /* 添加滚动内容样式 */
 .timeline-content-text {
   overflow-y: auto; /* 启用垂直滚动 */
+  p {
+    margin-bottom: 32px !important;
+    font-size: 16px !important;
+  }
+  div {
+    margin-bottom: 32px !important;
+    font-size: 16px !important;
+  }
+  span {
+    margin-bottom: 32px !important;
+    font-size: 16px !important;
+  }
 }
 
 /* 隐藏滚动条但保留滚动功能 */
@@ -404,6 +429,22 @@ onMounted(() => {
   .mobile-contain-box {
     overflow: hidden;
     overflow-y: auto;
+    p {
+      margin-bottom: 20px !important;
+      font-size: 12px !important;
+      span {
+        margin-bottom: 20px !important;
+        font-size: 12px !important;
+      }
+    }
+    div {
+      margin-bottom: 20px !important;
+      font-size: 12px !important;
+    }
+    span {
+      margin-bottom: 20px !important;
+      font-size: 12px !important;
+    }
   }
 }
 </style>

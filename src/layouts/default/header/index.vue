@@ -14,7 +14,7 @@
           v-if="tabType == 'default'"
           @click="showMobileMenu = !showMobileMenu"
           class="w-8 h-29px"
-          :src="iconLogoDefault"
+          :src="iconLogoRed"
         />
         <img v-else class="w-8 h-29px" @click="jumpHome" :src="iconLogoRed" />
         <!-- <img class="w-5 h-5" @click="showMobileMenu = !showMobileMenu" :src="mobileHeadMenu" /> -->
@@ -76,12 +76,14 @@
       <MenuVue @changeTab="changeTab"></MenuVue>
       <img v-if="tabType == 'default'" class="rta-logo" :src="iconLogoDefault" alt="" />
       <img @click="jumpHome" v-else class="rta-logo" :src="iconLogoRed" alt="" />
-      <div
-        :class="['investor-login', tabType == 'default' ? 'active-white' : 'active-black']"
-        @click="showLoginModal = true"
-      >
-        投资者登录
-      </div>
+      <Tooltip title="基金管理平台正在开发中" placement="bottom" color="white"
+      :overlayInnerStyle="{ color: 'rgba(0, 0, 0, 0.85)' }">
+        <div
+          :class="['investor-login', tabType == 'default' ? 'active-white' : 'active-black']"
+        >
+          投资者登录
+        </div>
+      </Tooltip>
     </div>
     <!-- 占位 -->
     <div :class="['header-seat', 'w-full', { hidden: tabType == 'default' }]"></div>
@@ -146,6 +148,7 @@ import { useRoute, useRouter } from 'vue-router' // 添加路由相关导入
 import { useGo } from '@/hooks/web/usePage'
 import { useScreenStore } from '@/store/modules/screen'
 import { SvgIcon } from '@/components/Icon'
+import { Tooltip } from 'ant-design-vue' // 添加 Tooltip 导入
 import iconLogoDefault from '@/assets/rta-logo.png'
 import iconLogoRed from '@/assets/rta-logo-red.png'
 import mobileHeadMenu from '@/assets/mobile-head-menu.png'
@@ -346,8 +349,10 @@ function handleTouchMove(e: TouchEvent) {
 // 监听路由变化
 router.afterEach((to, from) => {
   // 检查是否跳转到首页
-  if (to.path === '/home') {
+  if (to.path == '/home' || to.path == '/' || to.path == '/home/index') {
     changeTab('default')
+  }else{
+    changeTab('black')
   }
   // 路由变化后，重置导航栏样式
   nextTick(() => {

@@ -34,7 +34,7 @@ export default defineComponent({
     const handleSubTitleClick = (index: number) => {
       const refs = [investFrameRef, investIdeaRef, investStudyRef, investControlRef]
       if (refs[index]?.value) {
-        ;(refs[index].value as HTMLElement).scrollIntoView({ behavior: 'smooth' })
+        ;(refs[index].value as any).scrollIntoView({ behavior: 'smooth' })
       }
     }
 
@@ -147,8 +147,7 @@ export default defineComponent({
             <div class="font-h1 font-color-colorText mb-6">投资研究</div>
             <div class="font-h5 font-color-colorText mb-4">业务介绍</div>
             <div class="font-color-colorTextSecondary font-h5 mb-8 text-left">
-              我们的研究团队关注全球市场，对宏观经济、市场策略、金融工程、资产配置、股票、大宗商品及外汇进行研究和投资分析，并向国内及国际客户提供研究服务。
-              凭借广泛的覆盖范围、严谨的研究方法、独立客观的态度、透彻前瞻的观点和完善的专业服务体系，研究部积极开展各项工作，全方位打造严谨前瞻性的私募研究品牌。
+              我们的研究团队关注全球市场，对宏观政策、市场经济、资产配置、股票等领域进行研究和投资分析，并向客户提供研究服务。凭借广泛的覆盖范围、严谨的研究方法、独立客观的态度、透彻前瞻的观点和完善的专业服务体系，积极开展各项行研工作，全方位打造严谨前瞻性的私募投研品牌。
             </div>
             <div class="font-h5 font-color-colorText mb-4">研究范围</div>
             <div

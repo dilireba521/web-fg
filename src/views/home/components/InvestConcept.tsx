@@ -40,7 +40,7 @@ export default defineComponent({
         icon: iconDataDriven,
         iconActive: dataDriven,
         title: '风险控制',
-        desc: '通过对冲规避风险资产暴露带来的重大损失，优化投资组合表现。'
+        desc: '采用多元化对冲工具动态监测风险敞口，优化投资组合表现。'
       },
       {
         icon: iconRiskControl,
@@ -77,8 +77,9 @@ export default defineComponent({
             ))}
           </div>
         ) : (
-          <div
-            class={`invest-page w-full min-h-534px pt-24 pb-96px px-320px ${bgColor.value == 'white' ? 'background-white' : 'background-colorBgLayout'}`}
+          <div class="flex items-center justify-center">
+            <div
+            class={`invest-page w-320 min-h-534px ${bgColor.value == 'white' ? 'background-white' : 'background-colorBgLayout'}`}
           >
             <div class="invest-page-title mb-32px">投资理念</div>
             <div class="flex justify-between">
@@ -110,6 +111,7 @@ export default defineComponent({
             >
               {arrInvestConcept[currentHoverIndex.value].desc}
             </div>
+          </div>
           </div>
         )}
       </div>

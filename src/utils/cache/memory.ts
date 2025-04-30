@@ -20,7 +20,7 @@ export class Memory<T = any, V = any> {
     return this.cache
   }
 
-  setCache(cache) {
+  setCache(key: string, cache: any, expire?: number): void {
     this.cache = cache
   }
 
@@ -99,8 +99,8 @@ export class Memory<T = any, V = any> {
 
   clear() {
     Object.keys(this.cache).forEach((key) => {
-      const item = this.cache[key]
-      item.timeoutId && clearTimeout(item.timeoutId)
+      const item = this.cache[key as keyof T]
+      if (item?.timeoutId) clearTimeout(item.timeoutId)
     })
     this.cache = {}
   }

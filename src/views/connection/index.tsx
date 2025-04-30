@@ -3,7 +3,7 @@ import { WEB_BG_HEAD } from '@/utils/resources'
 import { useScreenStore } from '@/store/modules/screen'
 
 import investorPDF from '@/assets/documents/investor-qualification.pdf'
-import rtaLogoRed from '@/assets/rta-logo-red.png'
+import connectAddress from '@/assets/connect-address.png'
 import iconAttachment from '@/assets/icon-attachment.png'
 
 export default defineComponent({
@@ -13,7 +13,10 @@ export default defineComponent({
 
     // 添加下载PDF文件的处理函数
     const handleDownloadPDF = (pdfUrl: string, fileName: string) => {
-      // 创建一个隐藏的a标签
+      // 在新窗口中打开PDF文件
+      window.open(pdfUrl, '_blank');
+      return;
+      // 创建一个隐藏的a标签下载
       const link = document.createElement('a')
       link.href = pdfUrl
       link.target = '_blank' // 在新窗口打开
@@ -27,6 +30,10 @@ export default defineComponent({
       
       // 从文档中移除链接
       document.body.removeChild(link)
+    }
+
+    const handleMobilePDF = (pdfUrl: string, fileName: string) => {
+      window.open(pdfUrl, '_blank');
     }
 
     return () => (
@@ -48,16 +55,16 @@ export default defineComponent({
         )}
         {screenStore.isMobile ? null : (
           <div
-            class="w-full h120 bg-cover bg-center bg-no-repeat px-80 py-24 flex flex-col"
-            style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-recruit.png)` }}
+            class="w-full h120 bg-cover bg-center bg-no-repeat px-80 py-24 flex flex-col justify-center"
+            style={{ backgroundImage: `url(${connectAddress})` }}
           >
-            <div class="font-h4 font-color-colorText mb-6">诺言私募基金有限公司</div>
+            <div class="font-h4 font-color-colorText mb-6">诺言（湖北）私募基金管理有限公司</div>
             <div class="font-h6 font-color-colorTextSecondary">
               <div>地址：厦门市思明区波特曼财富中心</div>
-              <div class="mb-2">电话：0592-8888888</div>
-              <div class="mb-2">邮箱：rta@rta-fund.com</div>
+              <div class="mb-2">电话：0592-5775575</div>
+              <div class="mb-2">邮箱：service@rta-fund.com</div>
             </div>
-            <div class="mt-auto flex">
+            {/* <div class="mt-auto flex">
               <div class="text-center mr-8">
                 <div class="w-24 h-24 background-white mb-2 flex items-center justify-center">
                   <img class="w-20 h-20" src={rtaLogoRed} alt="" />
@@ -70,7 +77,7 @@ export default defineComponent({
                 </div>
                 <div class="font-h7 font-color-colorTextTertiary">微信小程序</div>
               </div>
-            </div>
+            </div> */}
           </div>
         )}
         {screenStore.isMobile ? (
@@ -90,6 +97,10 @@ export default defineComponent({
                 <div class="mb-4">提供附带盖章的收入或资产证明文件材料</div>
                 <div class="font-bold mb-1">机构投资者</div>
                 <div>提供最近一年的机构审计报告或财务报表</div>
+                <div class="flex items-center mt-4" onClick={() => handleMobilePDF(investorPDF, '合格投资者资产证明一览表.pdf')}>
+                    <img class="w-5 h-5" src={iconAttachment} alt="附件" />
+                    <div class="font-color-colorRed">合格投资者资产证明一览表</div>
+                  </div>
               </div>
             </div>
             <div class="p-4 mb-4 w-full min-h-152px mb-4" style={{ background: 'linear-gradient(180deg, #FFF8F8 0%, #FFEEEE 100%)' }}>
@@ -101,9 +112,9 @@ export default defineComponent({
             </div>
           </div>
         ) : (
-          <div class="w-full h-608px px-80 py-24">
+          <div class="w-full px-80 py-24">
             <div class="font-h4 font-color-colorText text-left mb-6">投资者服务</div>
-            <div class="flex justify-between w-full h-50">
+            <div class="flex justify-between w-full">
               <div
                 class={`${serviceBoxClass}`}
                 style={{ background: 'linear-gradient(180deg, #F4F9FF 0%, #EEF6FF 100%)' }}

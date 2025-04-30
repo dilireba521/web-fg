@@ -37,7 +37,7 @@ export default defineComponent({
     const handleSubTitleClick = (index: number) => {
       const refs = [companyAnnouncementRef, informationRef]
       if (refs[index]?.value) {
-        ;(refs[index].value as HTMLElement).scrollIntoView({ behavior: 'smooth' })
+        ;(refs[index].value as any).scrollIntoView({ behavior: 'smooth' })
       }
     }
 
@@ -227,7 +227,7 @@ export default defineComponent({
                 >
                   <div
                     class="h-112px w-110px flex flex-col justify-center pr-8"
-                    style={{ borderRight: '1px solid #979797' }}
+                    style={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
                   >
                     <div class="flex items-start">
                       <div class="font-h4 mr-2px font-color-colorText">
@@ -278,7 +278,7 @@ export default defineComponent({
               </div>
             </div>
             <div
-              class="w-full h-64 px-4 py-3 bg-center bg-no-repeat px-8 py-12 flex flex-col justify-between mb-2 bg-cover bg-center bg-no-repeat"
+              class="w-full h-64 px-4 py-3 bg-center bg-no-repeat py-12 flex flex-col justify-between mb-2 bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: `url(${(firstNews.value as any)?.image?.image || newsInfo})` }}
               onClick={() => {
                 handleArticleDetail(firstNews.value)

@@ -202,7 +202,6 @@ const formatContent = (content: string) => {
   padding: 0 20px;
   display: flex;
   align-items: center;
-  gap: 10px;
   height: 100%;
   margin-right: 0;
   justify-content: center;
@@ -244,7 +243,6 @@ const formatContent = (content: string) => {
     padding: 0 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
     height: 100%;
     margin-right: 0;
     justify-content: center;
@@ -278,7 +276,6 @@ const formatContent = (content: string) => {
     padding: 0 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
     height: 100%;
     margin-right: 0;
     justify-content: center;
@@ -302,7 +299,6 @@ const formatContent = (content: string) => {
     padding: 0 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
     height: 100%;
     margin-right: 0;
     justify-content: center;
@@ -337,7 +333,6 @@ const formatContent = (content: string) => {
     padding: 0 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
     height: 100%;
     margin-right: 0;
     justify-content: center;

@@ -135,7 +135,7 @@ export default defineComponent({
                 >
                   <div
                     class="h-112px w-110px flex flex-col justify-center pr-8"
-                    style={{ borderRight: '1px solid #979797' }}
+                    style={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
                   >
                     <div class="flex items-start">
                       <div class="font-h4 mr-2px font-color-colorText">

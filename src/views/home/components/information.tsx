@@ -88,7 +88,8 @@ export default defineComponent({
             </div>
           </div>
         ) : (
-          <div class="info-page w-full min-h-706px pt-96px pb-120px px-320px">
+          <div class="flex justify-center background-colorBgLayout">
+            <div class="info-page w-full min-h-706px pt-96px pb-120px">
             <div class="mb-40px flex justify-between">
               <div class="font-medium text-black flex font-h3">信息资讯</div>
               <div class="font-h7 font-normal flex" onClick={goInformaton}>
@@ -113,6 +114,7 @@ export default defineComponent({
                 </div>
               ))}
             </div>
+          </div>
           </div>
         )}
       </div>

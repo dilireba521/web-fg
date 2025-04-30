@@ -21,11 +21,11 @@ export default defineComponent({
             </div>
             <div class="mb-2 font-h5 font-color-colorTextTertiary">
               <span class="mr-4">电话</span>
-              <span>0592-8888888</span>
+              <span>0592-5775575</span>
             </div>
             <div class="mb-2 font-h5 font-color-colorTextTertiary">
               <span class="mr-4">邮箱</span>
-              <span>rta@rta-fund.com</span>
+              <span>service@rta-fund.com</span>
             </div>
             <div class="flex mt-6">
               <div class="mr-32px text-center">
@@ -43,7 +43,8 @@ export default defineComponent({
             </div>
           </div>
         ) : (
-          <div class="connect-page w-full min-h-297px pt-64px px-320px flex">
+          <div class="flex items-center justify-center connect-page">
+            <div class="w-320 min-h-297px pt-64px flex">
             <div class="connect-box w-full flex justify-between">
               <div class="flex">
                 <img class="w-96px h-86px mr-96px" src={logoHomeBottom} alt="" />
@@ -55,11 +56,11 @@ export default defineComponent({
                   </div>
                   <div class="connect-info-item font-normal font-h7 mb-16px">
                     <span class="mr-24px">电话</span>
-                    <span>0592-8888888</span>
+                    <span>0592-5775575</span>
                   </div>
                   <div class="connect-info-item font-normal font-h7 mb-16px">
                     <span class="mr-24px">邮箱</span>
-                    <span>rta@rta-fund.com</span>
+                    <span>service@rta-fund.com</span>
                   </div>
                 </div>
               </div>
@@ -78,6 +79,7 @@ export default defineComponent({
                 </div>
               </div>
             </div>
+          </div>
           </div>
         )}
       </div>

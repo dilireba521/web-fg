@@ -25,8 +25,14 @@ export default defineComponent({
     const { go } = useGo()
     const screenStore = useScreenStore()
     const videoRef = ref<HTMLVideoElement | null>(null)
-    let rtaIntro1 = `诺言（湖北）私募基金管理有限公司成立于 2025 年，致力于为多元化的客户群体提供高质量金融增值服务，建立了以数据驱动的基金投资、资产管理和托管等全方位发展的均衡业务结构。`
-    let rtaIntro2 = `公司总部位于厦门，业务涵盖了证券、基金、期货、外汇和大宗商品等多个领域，为国内外企业客户、机构客户、高净值客户提供各类金融服务解决方案，公司将秉持以客户为中心，协助客户实现其资产可持续发展目标。`
+    let rtaIntro1 = `诺言私募基金管理有限公司成立于 2025 年，致力于为多元化的客
+户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和
+全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋
+能策略决策体系结构。`
+    let rtaIntro2 = `公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个
+金融衍生品领域。公司将秉持以客户利益为核心的买方思维，在波动
+市场中持续创造超额收益。协助企业客户、机构客户、高净值客户实
+现其资产可持续发展目标。`
 
     onMounted(() => {
       if (videoRef.value) {
@@ -79,18 +85,21 @@ export default defineComponent({
             )}
           </div>
           {screenStore.isMobile ? (
-            <div class="home-mobile-company h-451px relative px-6 pt-10">
+            <div class="background-colorBgLayout h-451px relative px-6 pt-10">
               <div class="font-h3 font-medium mb-6">走进诺言私募</div>
-              <div class="font-h5 font-color-colorText">
+              <div class="font-h5 font-color-colorText relative z-10">
                 <p class="mb-28px">{rtaIntro1}</p>
                 <p>{rtaIntro2}</p>
               </div>
               <img
-                class="absolute w-324px h-291px bottom-0 left-24px"
+                class="absolute w-324px h-291px bottom-0 left-24px z-1"
                 src={homeMobileCompany}
                 alt=""
               />
-              <div class="flex absolute left-8 bottom-22px items-center" onClick={understandMore}>
+              <div
+                class="flex absolute left-8 bottom-22px items-center z-10"
+                onClick={understandMore}
+              >
                 <div class="font-h5 font-color-colorRed">了解更多</div>
                 <img class="w-22px h-22px ml-4px" src={iconRightRed} alt="了解更多" />
               </div>

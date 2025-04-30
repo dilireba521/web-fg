@@ -247,12 +247,12 @@ export default defineComponent({
                 <div class="font-h3 font-medium mb-10">开启新的工作（{jobsNumber.value}）</div>
                 {arrHire.value.map((item, index) => (
                   <div
-                    class="mb-10 w-full"
+                    class="mb-10 w-full hire-item"
                     onClick={() => {
                       jumpPositionDetail(item)
                     }}
                   >
-                    <div class="mb-2 font-h5 font-medium font-color-colorText">
+                    <div class="hire-item-title mb-2 font-h5 font-medium font-color-colorText">
                       {(item as any).title}
                     </div>
                     <div class="mb-3 font-h6 font-color-colorText">

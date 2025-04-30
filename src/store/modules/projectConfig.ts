@@ -14,10 +14,10 @@ export const useProjectConfigStore = defineStore({
   }),
   getters: {
     getProjectConfig(state): ProjectConfigState {
-      return state?.optionsMap || Persistent.getSession(PROJ_CFG_KEY) || ({} as ProjectConfigState)
+      return state?.optionsMap || Persistent.getSession(PROJ_CFG_KEY as any) || ({} as ProjectConfigState)
     },
     getOptionsMap(state): any {
-      const _mapSession = Persistent.getSession(PROJ_CFG_KEY)?.optionsMap || {}
+      const _mapSession = Persistent.getSession(PROJ_CFG_KEY as any)?.optionsMap || {}
       const _map = state.optionsMap || {}
       return { ..._mapSession, ..._map }
     },
@@ -25,7 +25,7 @@ export const useProjectConfigStore = defineStore({
   actions: {
     setOptionsMap(val: any) {
       this.optionsMap = val ? val : {}
-      Persistent.setSession(PROJ_CFG_KEY, this.$state as any, false, 60 * 60 * 1000)
+      Persistent.setSession(PROJ_CFG_KEY as any, this.$state as any, false, 60 * 60 * 1000)
     },
   }
 })

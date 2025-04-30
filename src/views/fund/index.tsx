@@ -23,7 +23,7 @@ export default defineComponent({
     const handleSubTitleClick = (index: number) => {
       const refs = [applicationProcessRef, subordinateProductsRef]
       if (refs[index]?.value) {
-        ;(refs[index].value as HTMLElement).scrollIntoView({ behavior: 'smooth' })
+        ;(refs[index].value as any).scrollIntoView({ behavior: 'smooth' })
       }
     }
 
@@ -201,16 +201,14 @@ export default defineComponent({
             class="w-full px-6 pt-10 pb-8 background-white"
           >
             <div class="font-h3 font-color-colorText font-bold mb-6 text-center">旗下产品</div>
-            <div class="w-full min-h-50 background-colorBgLayout px-4 py-6">
-              <div class="font-h4 font-color-colorText mb-12 text-center">
-                跳转到RTA基金管理平台查看
-              </div>
+            <div class="w-full min-h-30 background-colorBgLayout px-4 py-8">
               <div
-                class="w-30 h-6 rounded text-white font-h5 mx-auto flex items-center justify-center"
-                style={{ background: '#C1272D' }}
+                class="w-30 h-8 rounded text-white font-h5 mx-auto flex items-center justify-center"
+                style={{ background: 'rgba(193, 39, 45, 0.5)' }}
               >
-                去基金管理平台
+                基金管理平台
               </div>
+              <div class="font-h6 font-color-colorTextSecondary text-center mt-2">正在开发中…</div>
             </div>
           </div>
         ) : (
@@ -220,14 +218,15 @@ export default defineComponent({
             class="w-full h-602px px-80 py-24 bg-white text-center"
           >
             <div class="font-h3 text-black font-bold mb-12">旗下产品</div>
-            <div class="w-full h-80 px-24 bg-gray-100 text-center pt-24">
+            <div class="w-full h-80 px-24 bg-gray-100 text-center flex flex-col justify-center items-center">
               <div class="font-h4 font-color-colorText mb-12">跳转到RTA基金管理平台查看</div>
               <div
                 class="w-40 h-12 rounded text-white font-h6 mx-auto flex items-center justify-center"
-                style={{ background: '#C1272D' }}
+                style={{ background: 'rgba(193, 39, 45, 0.5)' }}
               >
                 去基金管理平台
               </div>
+              <div class="font-h6 font-color-colorTextSecondary text-center mt-4">正在开发中…</div>
             </div>
           </div>
         )}

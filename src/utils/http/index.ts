@@ -55,7 +55,7 @@ function createRequest(opt?: Partial<CreateFetchOptions>) {
             if (ctx.error.code == 20 || ctx.error.name == 'AbortError') {
               return ctx
             }
-            checkStatus(ctx?.response?.status, ctx?.data?.msg || ctx?.response?.statusText)
+            checkStatus(ctx.response?.status ? ctx.response.status : 500, ctx.data?.msg || ctx.response?.statusText || 'Unknown Error')
             console.error(ctx)
             // data = undefined
             return ctx
