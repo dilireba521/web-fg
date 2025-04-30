@@ -261,8 +261,8 @@ export default defineComponent({
             <personalCard />
           </div>
         ) : (
-          <div ref={coreTeamRef} id="core-team" class="flex justify-center">
-            <div class="max-w-480 px-80 py-24 text-center">
+          <div ref={coreTeamRef} id="core-team" class="text-center">
+            <div class="max-w-480 px-80 py-24 text-center mx-auto">
               <div class="font-h3 mb-8 font-medium">核心团队</div>
               <div class="flex flex-wrap">
                 <div class="w-2/4">
