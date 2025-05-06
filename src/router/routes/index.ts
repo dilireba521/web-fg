@@ -2,7 +2,8 @@ import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic'
 import type { RouteRecordRaw } from 'vue-router'
 import { PageEnum } from '@/enums/pageEnum'
 // import { LAYOUT } from '@/router/constant'
-
+// 站内信
+import MailRoute from './otherModules/mail'
 // 公开路由模块
 const basicModules = import.meta.glob('./basicModules/**/*.ts', { eager: true })
 export const routebasicModuleList: RouteRecordRaw[] = []
@@ -34,5 +35,6 @@ export const LoginRoute: RouteRecordRaw = {
     title: '登录'
   }
 }
+
 // 未经许可的基本路由
-export const basicRoutes = [RootRoute, LoginRoute, ...routebasicModuleList, PAGE_NOT_FOUND_ROUTE]
+export const basicRoutes = [RootRoute, LoginRoute, ...routebasicModuleList, MailRoute,PAGE_NOT_FOUND_ROUTE]

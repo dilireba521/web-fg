@@ -9,6 +9,10 @@
         @change="change"
       ></TabsVue>
     </div>
+    <div class="absolute right-6 top-0 h-14 flex items-center">
+      <!-- 通知 -->
+      <NoticeVue></NoticeVue>
+    </div>
   </div>
   <!-- 面包屑 -->
   <BreadCrumbVue :breadcrumb="breadcrumb"></BreadCrumbVue>
@@ -22,6 +26,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { routebasicModuleList } from '@/router/routes'
 import LogoImg from '@/assets/icons/logo.svg'
 import BreadCrumbVue from './components/breadcrumb.vue'
+import NoticeVue from './components/notice.vue'
 
 const { go } = useGo()
 
@@ -98,7 +103,7 @@ function sortRoutes(routes: RouteRecordRaw[]) {
 .header {
   height: 56px;
   background: rgba(0, 0, 0, 0.8);
-
+  box-shadow: 0px 1px 0px 0px rgba(0,0,0,0.1);
   &.black {
     background: rgba(255, 255, 255, 0.8);
   }
