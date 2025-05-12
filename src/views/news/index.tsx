@@ -2,7 +2,7 @@ import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
 import { useGo } from '@/hooks/web/usePage'
 import './index.less'
-import { SubTitle } from '@/components/Icon'
+import { SubTitle,BackgroundHeader } from '@/components/Icon'
 import * as userApi from '@/api/user'
 import { useScreenStore } from '@/store/modules/screen'
 import { useRoute } from 'vue-router'
@@ -15,7 +15,8 @@ const arrNewsTitle = ref(['资讯公告', '投资观察'])
 
 export default defineComponent({
   components: {
-    SubTitle
+    SubTitle,
+    BackgroundHeader
   },
   setup(props, ctx) {
     const screenStore = useScreenStore()
@@ -141,20 +142,10 @@ export default defineComponent({
 
     return () => (
       <div>
-        {screenStore.isMobile ? (
-          <div
-            class="w-full h-390px bg-cover bg-center bg-no-repeat px-8 py-12"
-            style={{ backgroundImage: `url(${WEB_BG_HEAD}/mobile-head-news.png)` }}
-          >
-            {/* <div class="font-color-colorText" style={{ fontSize: '32px' }}>
-              信息资讯
-            </div> */}
-          </div>
-        ) : (
-          <div class="w-full h-120">
-            <img class="w-full h120" src={`${WEB_BG_HEAD}/head-news.png`} />
-          </div>
-        )}
+        <BackgroundHeader 
+          backgroundImage={`${WEB_BG_HEAD}/head-news.png`}
+          mobileBackgroundImage={`${WEB_BG_HEAD}/mobile-head-news.png`}
+        />
         <SubTitle
           arrTitle={arrNewsTitle.value}
           activeIndex={activeIndex.value}
@@ -180,7 +171,7 @@ export default defineComponent({
                   handleArticleDetail(item)
                 }}
               >
-                <div class="truncate mb-2 text-base font-color-colorText font-bold">
+                <div class="truncate mb-2 text-base custom-font font-color-colorText font-bold">
                   {(item as any).title}
                 </div>
                 <div
@@ -205,62 +196,60 @@ export default defineComponent({
             ))}
           </div>
         ) : (
-          <div
-            ref={companyAnnouncementRef}
-            id="company-announcement"
-            class="w-full h-618px px-80 py-24 bg-gray-100"
-          >
-            <div class="mb-12 flex justify-between items-baseline">
-              <div class="font-h3 font-bold text-black">资讯公告</div>
-              <div class="flex items-center" onClick={handleAnnounce}>
-                <div class="font-h7 font-color-colorTextTertiary mr-9px">查看全部</div>
-                <img class="w-22px h-22px" src={iconRightGray} />
-              </div>
-            </div>
-            <div class="w-full flex flex-wrap justify-between">
-              {arrAnnouncement.value.map((item, index) => (
-                <div
-                  class="news-item bg-white px-8 py-6 h-40 mb-4 flex"
-                  onClick={() => {
-                    handleArticleDetail(item)
-                  }}
-                >
-                  <div
-                    class="h-112px w-110px flex flex-col justify-center pr-8"
-                    style={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
-                  >
-                    <div class="flex items-start">
-                      <div class="font-h4 mr-2px font-color-colorText">
-                        {(item as any).releaseDateDate}
-                      </div>
-                      <div class="font-h4 mr-1 font-color-colorTextSecondary">/</div>
-                      <div class="font-h7 font-color-colorTextSecondary">
-                        <div>{(item as any).releaseDateMonth}月</div>
-                        <div>{(item as any).releaseDateYear}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="compny-announcement flex-1 pl-8 overflow-hidden flex flex-col">
-                    <div class="compny-announcement-title truncate mb-2 font-h6 w-full font-color-colorText">
-                      {(item as any).title}
-                    </div>
-                    <div
-                      class="line-clamp-2 font-color-colorTextSecondary mb-4 font-h7 w-full overflow-hidden"
-                      style={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden'
-                      }}
-                    >
-                      {(item as any).label}
-                    </div>
-                    <div class="font-h8 mt-auto" style={{ color: '#C1272D' }}>
-                      查看详情
-                    </div>
-                  </div>
+          <div ref={companyAnnouncementRef} id="company-announcement" class="w-full bg-gray-100">
+            <div class="max-w-480 h-618px px-80 py-24 mx-auto">
+              <div class="mb-12 flex justify-between items-baseline">
+                <div class="font-h3 font-bold text-black">资讯公告</div>
+                <div class="flex items-center" onClick={handleAnnounce}>
+                  <div class="font-h7 font-color-colorTextTertiary mr-9px">查看全部</div>
+                  <img class="w-22px h-22px" src={iconRightGray} />
                 </div>
-              ))}
+              </div>
+              <div class="w-full flex flex-wrap justify-between">
+                {arrAnnouncement.value.map((item, index) => (
+                  <div
+                    class="news-item bg-white px-8 py-6 h-40 mb-4 flex"
+                    onClick={() => {
+                      handleArticleDetail(item)
+                    }}
+                  >
+                    <div
+                      class="h-112px w-110px flex flex-col justify-center pr-8"
+                      style={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
+                    >
+                      <div class="flex items-start">
+                        <div class="font-h4 mr-2px font-color-colorText">
+                          {(item as any).releaseDateDate}
+                        </div>
+                        <div class="font-h4 mr-1 font-color-colorTextSecondary">/</div>
+                        <div class="font-h7 font-color-colorTextSecondary">
+                          <div>{(item as any).releaseDateMonth}月</div>
+                          <div>{(item as any).releaseDateYear}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="compny-announcement flex-1 pl-8 overflow-hidden flex flex-col">
+                      <div class="compny-announcement-title truncate mb-2 font-h6 w-full font-color-colorText">
+                        {(item as any).title}
+                      </div>
+                      <div
+                        class="line-clamp-2 font-color-colorTextSecondary mb-4 font-h7 w-full overflow-hidden"
+                        style={{
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden'
+                        }}
+                      >
+                        {(item as any).label}
+                      </div>
+                      <div class="font-h8 mt-auto" style={{ color: '#C1272D' }}>
+                        查看详情
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -279,7 +268,9 @@ export default defineComponent({
             </div>
             <div
               class="w-full h-64 px-4 py-3 bg-center bg-no-repeat py-12 flex flex-col justify-between mb-2 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${(firstNews.value as any)?.image?.image || newsInfo})` }}
+              style={{
+                backgroundImage: `url(${(firstNews.value as any)?.image?.image || newsInfo})`
+              }}
               onClick={() => {
                 handleArticleDetail(firstNews.value)
               }}
@@ -289,7 +280,7 @@ export default defineComponent({
                 {(firstNews.value as any).releaseDateMonth}.
                 {(firstNews.value as any).releaseDateDate}
               </div>
-              <div class="font-bold text-base font-color-colorTextWhite truncate">
+              <div class="font-bold text-base custom-font font-color-colorTextWhite truncate">
                 {(firstNews.value as any).title}
               </div>
             </div>
@@ -300,7 +291,7 @@ export default defineComponent({
                   handleArticleDetail(item)
                 }}
               >
-                <div class="line-clamp-2 font-bold text-base font-color-colorText mb-3">
+                <div class="line-clamp-2 font-bold text-base custom-font font-color-colorText mb-3">
                   {(item as any).title}
                 </div>
                 <div class="line-clamp-3 font-h5 font-color-colorTextSecondary mb-4">
@@ -317,69 +308,72 @@ export default defineComponent({
             ))}
           </div>
         ) : (
-          <div ref={informationRef} id="information" class="w-full h-602px px-80 py-24 bg-white">
-            <div class="mb-12 flex justify-between items-baseline">
-              <div class="font-h3 font-bold text-black">投资观察</div>
-              <div class="flex items-center" onClick={handleNews}>
-                <div class="font-h7 font-color-colorTextTertiary mr-9px">查看全部</div>
-                <img class="w-22px h-22px" src={iconRightGray} />
+          <div ref={informationRef} id="information" class="w-full bg-white">
+            <div class="max-w-480 h-602px px-80 py-24 mx-auto">
+              <div class="mb-12 flex justify-between items-baseline">
+                <div class="font-h3 font-bold text-black">投资观察</div>
+                <div class="flex items-center" onClick={handleNews}>
+                  <div class="font-h7 font-color-colorTextTertiary mr-9px">查看全部</div>
+                  <img class="w-22px h-22px" src={iconRightGray} />
+                </div>
               </div>
-            </div>
-            <div class="w-full flex justify-between h-80">
-              <div
-                class="news-item bg-gray-100 flex flex-col justify-between bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${(firstNews.value as any)?.image?.image || newsInfo})` }}
-                onClick={() => {
-                  handleArticleDetail(firstNews.value)
-                }}
-              >
+              <div class="w-full flex justify-between h-80">
                 <div
-                  class="ml-auto text-white w-104px h-94px flex flex-col justify-center pr-33px"
-                  style={{ backgroundColor: 'rgba(6,6,6,0.2)' }}
+                  class="news-item-first bg-gray-100 flex flex-col justify-between bg-cover bg-center bg-no-repeat"
+                  style={{
+                    backgroundImage: `url(${(firstNews.value as any)?.image?.image || newsInfo})`
+                  }}
+                  onClick={() => {
+                    handleArticleDetail(firstNews.value)
+                  }}
                 >
-                  <div class="font-h4 text-right">{(firstNews.value as any).releaseDateDate}</div>
-                  <div class="font-h7 text-right">
-                    {(firstNews.value as any).releaseDateMonth}.
-                    {(firstNews.value as any).releaseDateYear}
-                  </div>
-                </div>
-                <div class="font-h5 text-left font-color-colorTextWhite truncate ml-8 mb-4">
-                  {(firstNews.value as any).title}
-                </div>
-              </div>
-              <div class="news-item bg-white flex justify-between">
-                {arrNews.value.map((item, index) => (
                   <div
-                    class="news-item-container news-item h-full bg-gray-100 px-8 pt-6 pb-8 flex flex-col"
-                    onMouseenter={() => handleMouseEnter(index)}
-                    onMouseleave={() => handleMouseEnter(-1)}
-                    onClick={() => {
-                      handleArticleDetail(item)
-                    }}
+                    class="ml-auto text-white w-104px h-94px flex flex-col justify-center pr-33px"
+                    style={{ backgroundColor: 'rgba(6,6,6,0.2)' }}
                   >
-                    <div class="news-item-title line-clamp-2 font-h6 mb-6">
-                      {(item as any).title}
-                    </div>
-                    <div class="line-clamp-3 font-h7 font-color-colorTextSecondary">
-                      {(item as any).label}
-                    </div>
-                    <div class="mt-auto flex justify-between items-end">
-                      <div>
-                        <div class="font-h4 font-color-colorTextSecondary">
-                          {(item as any).releaseDateDate}
-                        </div>
-                        <div class="font-h7 font-color-colorTextSecondary">
-                          {(item as any).releaseDateYear}.{(item as any).releaseDateMonth}
-                        </div>
-                      </div>
-                      {activeNewsIndex.value === index ? (
-                        <img class="w-22px h-22px" src={iconRightRed} />
-                      ) : (
-                        <img class="w-22px h-22px" src={iconRightGray} />
-                      )}
+                    <div class="font-h4 text-right">{(firstNews.value as any).releaseDateDate}</div>
+                    <div class="font-h7 text-right">
+                      {(firstNews.value as any).releaseDateYear}.{(firstNews.value as any).releaseDateMonth}
                     </div>
                   </div>
-                ))}
+                  <div class="news-item-first-title font-h5 text-left font-color-colorTextWhite truncate ml-8 mb-4">
+                    {(firstNews.value as any).title}
+                  </div>
+                </div>
+                <div class="news-item bg-white flex justify-between">
+                  {arrNews.value.map((item, index) => (
+                    <div
+                      class="news-item-container news-item h-full bg-gray-100 px-8 pt-6 pb-8 flex flex-col"
+                      onMouseenter={() => handleMouseEnter(index)}
+                      onMouseleave={() => handleMouseEnter(-1)}
+                      onClick={() => {
+                        handleArticleDetail(item)
+                      }}
+                    >
+                      <div class="news-item-title line-clamp-2 font-h6 mb-6">
+                        {(item as any).title}
+                      </div>
+                      <div class="line-clamp-3 font-h7 font-color-colorTextSecondary">
+                        {(item as any).label}
+                      </div>
+                      <div class="mt-auto flex justify-between items-end">
+                        <div>
+                          <div class="font-h4 font-color-colorTextSecondary">
+                            {(item as any).releaseDateDate}
+                          </div>
+                          <div class="font-h7 font-color-colorTextSecondary">
+                            {(item as any).releaseDateYear}.{(item as any).releaseDateMonth}
+                          </div>
+                        </div>
+                        {activeNewsIndex.value === index ? (
+                          <img class="w-22px h-22px" src={iconRightRed} />
+                        ) : (
+                          <img class="w-22px h-22px" src={iconRightGray} />
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <div v-else>
+  <div v-else class="max-w-480">
     <div class="font-h3 font-bold font-color-colorText mb-12 text-center">申购流程</div>
     <div class="step-nav flex-wrap mb-4">
       <div

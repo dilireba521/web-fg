@@ -5,7 +5,8 @@
       :class="[
         'mobile-header',
         {
-          black: tabType == 'black'
+          black: tabType == 'black',
+          'ios-fixed': isIOS && !isAtTop
         }
       ]"
     >
@@ -22,7 +23,7 @@
           <SvgIcon
             v-if="tabType == 'black'"
             @click="showMobileMenu = false"
-            name="icon-closed"
+            name="icon-closed-solid"
             width="20"
             height="20"
             color="black"
@@ -40,7 +41,7 @@
           <SvgIcon
             v-if="tabType == 'black'"
             @click="showMobileMenu = true"
-            name="icon-menu"
+            name="icon-menu-solid"
             width="20"
             height="20"
             color="black"
@@ -232,17 +233,28 @@ watch(
   () => showMobileMenu.value,
   (newVal) => {
     if (newVal) {
-      scrollPosition = window.pageYOffset || document.documentElement.scrollTop
+      // 菜单打开时，确保导航栏显示
+      headerMobileStyle.value = {
+        transform: 'translateY(0px)',
+        position: 'fixed',
+        transition: 'transform 0.2s ease',
+        top: '0px',
+        left: '0px',
+        width: '100%',
+        zIndex: '999'
+      }
+      
       document.body.style.overflow = 'hidden'
-      document.body.style.position = 'fixed'
-      document.body.style.width = '100%'
-      document.body.style.top = `-${scrollPosition}px`
+      // document.body.style.position = 'fixed'
+      // document.body.style.width = '100%'
+      // scrollPosition = window.pageYOffset || document.documentElement.scrollTop
+      // document.body.style.top = `-${scrollPosition}px`
     } else {
       document.body.style.overflow = ''
       document.body.style.position = ''
       document.body.style.width = ''
       document.body.style.top = ''
-      window.scrollTo(0, scrollPosition)
+      // window.scrollTo(0, scrollPosition)
     }
   }
 )
@@ -295,6 +307,20 @@ function handleWheel(e: WheelEvent) {
   headerStyle.value = _style
 }
 
+// 添加iOS检测
+const isIOS = ref(false)
+const isAtTop = ref(true)
+// 添加一个变量来跟踪是否正在滚动到顶部
+const isScrollingToTop = ref(false)
+// 添加一个定时器变量
+let topScrollTimer: number | null = null;
+
+// 检测是否为iOS设备
+const checkIOSDevice = () => {
+  const userAgent = window.navigator.userAgent.toLowerCase()
+  isIOS.value = /iphone|ipad|ipod/.test(userAgent)
+}
+
 // 移动端监听滑动事件
 // 添加触摸事件相关变量
 const touchStartY = ref(0)
@@ -304,6 +330,12 @@ const lastScrollTop = ref(0)
 // 处理触摸开始事件
 function handleTouchStart(e: TouchEvent) {
   touchStartY.value = e.touches[0].clientY
+  
+  // 清除之前的定时器
+  if (topScrollTimer !== null) {
+    clearTimeout(topScrollTimer)
+    topScrollTimer = null
+  }
 }
 
 // 处理触摸移动事件
@@ -311,39 +343,86 @@ function handleTouchMove(e: TouchEvent) {
   touchEndY.value = e.touches[0].clientY
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop
   
+  // 更新是否在顶部的状态 - 使用更宽松的条件
+  isAtTop.value = scrollTop < 5
+  
   // 计算触摸方向和距离
   const touchDiff = touchEndY.value - touchStartY.value
   
-  // 判断滑动方向
-  if (scrollTop <= 1) {
+  // 判断滑动方向 - 降低阈值，提高灵敏度
+  if (isAtTop.value) {
     // 在顶部时，导航栏始终显示
     isScrollDown.value = true
     headerMobileStyle.value = {
-      position: 'absolute'
+      position: 'absolute',
+      top: '0px',
+      left: '0px',
+      width: '100%',
+      zIndex: '999'
     }
+    // 重置滚动到顶部的状态
+    isScrollingToTop.value = false
   } else {
-    // 向下滑动（手指向上移动，touchDiff < 0）
-    if (touchDiff < -5 && scrollTop > lastScrollTop.value) {
+    // 向下滑动（手指向上移动，touchDiff < 0）- 降低阈值，提高灵敏度
+    if (touchDiff < -3 && scrollTop > lastScrollTop.value) {
       // 向下滑动，隐藏导航栏
+      isScrollingToTop.value = false
       headerMobileStyle.value = {
         position: 'fixed',
         transform: 'translateY(-56px)',
-        display: isScrollDown.value ? 'none' : 'block'
+        transition: 'transform 0.2s ease', // 加快过渡速度
+        top: '0px',
+        left: '0px',
+        width: '100%',
+        zIndex: '999'
       }
     } 
-    // 向上滑动（手指向下移动，touchDiff > 0）
-    else if (touchDiff > 5 && scrollTop < lastScrollTop.value) {
+    // 向上滑动（手指向下移动，touchDiff > 0）- 降低阈值，提高灵敏度
+    else if (touchDiff > 3 && scrollTop < lastScrollTop.value) {
       // 向上滑动，显示导航栏
       isScrollDown.value = false
+      // 检测是否正在快速滚动到顶部
+      if (scrollTop < 100 && lastScrollTop.value - scrollTop > 15) {
+        isScrollingToTop.value = true
+      }
+      
       headerMobileStyle.value = {
         transform: 'translateY(0px)',
-        position: 'fixed'
+        position: 'fixed',
+        transition: 'transform 0.2s ease', // 加快过渡速度
+        top: '0px',
+        left: '0px',
+        width: '100%',
+        zIndex: '999'
       }
     }
   }
   
   // 更新上次滚动位置
   lastScrollTop.value = scrollTop
+}
+
+// 添加触摸结束事件处理
+function handleTouchEnd() {
+  // 如果检测到正在快速滚动到顶部，设置一个定时器来确保导航栏显示
+  if (isScrollingToTop.value) {
+    topScrollTimer = window.setTimeout(() => {
+      const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop
+      if (currentScrollTop < 5) {
+        // 已经到达顶部，确保导航栏显示
+        headerMobileStyle.value = {
+          position: 'absolute',
+          top: '0px',
+          left: '0px',
+          width: '100%',
+          zIndex: '999'
+        }
+        isScrollDown.value = true
+        isAtTop.value = true
+      }
+      isScrollingToTop.value = false
+    }, 300) // 300ms 足够等待惯性滚动完成
+  }
 }
 
 // 监听路由变化
@@ -380,11 +459,68 @@ onMounted(() => {
   // 确保 screen store 已初始化
   screenStore.init()
   
+  // 检测iOS设备
+  checkIOSDevice()
+  
   // 根据设备类型添加不同的事件监听
   if (screenStore.isMobile) {
     // 移动设备添加触摸事件监听
-    document.addEventListener('touchstart', handleTouchStart)
-    document.addEventListener('touchmove', handleTouchMove)
+    document.addEventListener('touchstart', handleTouchStart, { passive: true })
+    document.addEventListener('touchmove', handleTouchMove, { passive: true })
+    document.addEventListener('touchend', handleTouchEnd, { passive: true })
+    
+    // 添加滚动事件监听，更新isAtTop状态和处理导航栏显隐
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+      const newIsAtTop = scrollTop < 5
+      
+      // 如果滚动状态发生变化，更新导航栏样式
+      if (newIsAtTop !== isAtTop.value) {
+        isAtTop.value = newIsAtTop
+        
+        // 如果已经到达顶部，确保导航栏显示
+        if (isAtTop.value) {
+          headerMobileStyle.value = {
+            position: 'absolute',
+            top: '0px',
+            left: '0px',
+            width: '100%',
+            zIndex: '999'
+          }
+          isScrollDown.value = true
+        }
+      }
+      
+      // 检测滚动方向，更新导航栏显隐状态
+      if (!isAtTop.value) {
+        if (scrollTop > lastScrollTop.value + 5) {
+          // 向下滚动，隐藏导航栏
+          headerMobileStyle.value = {
+            position: 'fixed',
+            transform: 'translateY(-56px)',
+            transition: 'transform 0.2s ease',
+            top: '0px',
+            left: '0px',
+            width: '100%',
+            zIndex: '999'
+          }
+        } else if (scrollTop < lastScrollTop.value - 5) {
+          // 向上滚动，显示导航栏
+          headerMobileStyle.value = {
+            transform: 'translateY(0px)',
+            position: 'fixed',
+            transition: 'transform 0.2s ease',
+            top: '0px',
+            left: '0px',
+            width: '100%',
+            zIndex: '999'
+          }
+        }
+      }
+      
+      // 更新上次滚动位置
+      lastScrollTop.value = scrollTop
+    }, { passive: true })
   } else {
     // 桌面设备添加滚轮事件监听
     document.addEventListener('wheel', handleWheel)
@@ -401,7 +537,15 @@ onUnmounted(() => {
   document.removeEventListener('wheel', handleWheel)
   document.removeEventListener('touchstart', handleTouchStart)
   document.removeEventListener('touchmove', handleTouchMove)
+  document.removeEventListener('touchend', handleTouchEnd)
+  window.removeEventListener('scroll', () => {})
   
+  // 清除定时器
+  if (topScrollTimer !== null) {
+    clearTimeout(topScrollTimer)
+    topScrollTimer = null
+  }
+
   // 确保在组件卸载时恢复页面滚动
   document.body.style.overflow = ''
   document.body.style.position = ''
@@ -560,7 +704,7 @@ onUnmounted(() => {
   flex-direction: column;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  max-height: 90vh; // 限制最大高度，确保在小屏幕上也能看到
+  max-height: 80vh; // 限制最大高度，确保在小屏幕上也能看到
 }
 
 .modal-body {
@@ -592,12 +736,25 @@ onUnmounted(() => {
   height: 56px;
   z-index: 999;
   background: rgba(0, 0, 0, 0.8);
-  transition: all 0.2s linear;
+  transition: transform 0.2s ease-out; /* 使用ease-out提供更自然的过渡 */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform; /* 提示浏览器优化变换性能 */
 
   &.black {
     background: rgba(255, 255, 255, 1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    // background-color: red;
+  }
+  
+  &.ios-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
 
   .rta-logo {

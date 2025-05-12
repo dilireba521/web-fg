@@ -1,7 +1,7 @@
 import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
 import stepNav from './components/stepNav.vue'
-import { SubTitle } from '@/components/Icon'
+import { SubTitle,BackgroundHeader } from '@/components/Icon'
 import { useScreenStore } from '@/store/modules/screen'
 import { useRoute } from 'vue-router'
 
@@ -10,7 +10,8 @@ const arrFundTitle = ref(['申赎流程', '旗下产品'])
 export default defineComponent({
   components: {
     stepNav,
-    SubTitle
+    SubTitle,
+    BackgroundHeader
   },
   setup(props, ctx) {
     const screenStore = useScreenStore()
@@ -94,20 +95,10 @@ export default defineComponent({
 
     return () => (
       <div>
-        {screenStore.isMobile ? (
-          <div
-            class="w-full h-390px pt-12 pl-8 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${WEB_BG_HEAD}/mobile-head-fund.png)` }}
-          >
-            {/* <div class="font-color-colorText" style={{ fontSize: '32px' }}>
-              基金产品
-            </div> */}
-          </div>
-        ) : (
-          <div class="w-full h-120">
-            <img class="w-full h120" src={`${WEB_BG_HEAD}/head-fund.png`} alt="" />
-          </div>
-        )}
+        <BackgroundHeader 
+          backgroundImage={`${WEB_BG_HEAD}/head-fund.png`}
+          mobileBackgroundImage={`${WEB_BG_HEAD}/mobile-head-fund.png`}
+        />
         <SubTitle
           arrTitle={arrFundTitle.value}
           activeIndex={activeIndex.value}
@@ -121,9 +112,11 @@ export default defineComponent({
           <div
             ref={applicationProcessRef}
             id="application-process"
-            class="w-full h-1042px px-80 py-24 bg-white"
+            class="flex items-center justify-center bg-white  max-w-480 mx-auto"
           >
-            <stepNav currentStep={currentStep} />
+            <div class="px-80 h-1042px py-24">
+              <stepNav currentStep={currentStep} />
+            </div>
           </div>
         )}
         {screenStore.isMobile ? (
@@ -138,7 +131,7 @@ export default defineComponent({
               ]
               return (
                 <div class="w-full min-h-30 p-4 mb-2" style={{ background: backgrounds[index] }}>
-                  <div class="text-base font-color-colorText font-bold mb-4 text-center">
+                  <div class="text-base custom-font font-color-colorText font-bold mb-4 text-center">
                     {item.title}
                   </div>
                   <div class="font-h5 font-color-colorTextSecondary text-left">{item.desc}</div>
@@ -147,50 +140,54 @@ export default defineComponent({
             })}
           </div>
         ) : (
-          <div class="w-full h-490px px-80 py-24 text-center bg-slate-200">
-            <div class="font-h3 text-black font-bold mb-12">赎回流程</div>
-            <div class="flex">
-              {redemptionProcess.value.map((item, index) => {
-                const backgrounds = [
-                  'linear-gradient(180deg, #F4F9FF 0%, #EEF6FF 100%)',
-                  'linear-gradient(180deg, #F7F8FF 0%, #EEF0FF 100%)',
-                  'linear-gradient(180deg, #FFF8F8 0%, #FFEEEE 100%)',
-                  'linear-gradient(180deg, #F1FDF6 0%, #DEFAE9 100%)'
-                ]
-                // 判断是否为最后一个元素
-                const isLastItem = index === redemptionProcess.value.length - 1
-                return (
-                  <div class="w-1/4 h-52 relative">
-                    <div
-                      class="px-20 h-full pt-8"
-                      style={{
-                        background: backgrounds[index],
-                        borderRight: isLastItem ? 'none' : '1px dashed #979797'
-                      }}
-                    >
-                      <div class="font-h6 font-color-colorText font-bold mb-8">{item.title}</div>
-                      <div class="font-h7 font-color-colorTextSecondary text-left">{item.desc}</div>
-                    </div>
-                    <div class="absolute h-full w-16 top-0 right--8">
-                      {!isLastItem && (
-                        <div class="relative h-full flex items-center z-10">
-                          <div class="w-16 h-0.5 bg-gray-400"></div>
-                          <div
-                            class="absolute right-0"
-                            style={{
-                              width: 0,
-                              height: 0,
-                              borderTop: '8px solid transparent',
-                              borderBottom: '8px solid transparent',
-                              borderLeft: '12px solid #9ca3af'
-                            }}
-                          ></div>
+          <div class="bg-slate-200">
+            <div class="max-w-480 h-490px px-80 py-24 text-center mx-auto">
+              <div class="font-h3 text-black font-bold mb-12">赎回流程</div>
+              <div class="flex">
+                {redemptionProcess.value.map((item, index) => {
+                  const backgrounds = [
+                    'linear-gradient(180deg, #F4F9FF 0%, #EEF6FF 100%)',
+                    'linear-gradient(180deg, #F7F8FF 0%, #EEF0FF 100%)',
+                    'linear-gradient(180deg, #FFF8F8 0%, #FFEEEE 100%)',
+                    'linear-gradient(180deg, #F1FDF6 0%, #DEFAE9 100%)'
+                  ]
+                  // 判断是否为最后一个元素
+                  const isLastItem = index === redemptionProcess.value.length - 1
+                  return (
+                    <div class="w-1/4 h-52 relative">
+                      <div
+                        class="px-20 h-full pt-8"
+                        style={{
+                          background: backgrounds[index],
+                          borderRight: isLastItem ? 'none' : '1px dashed #979797'
+                        }}
+                      >
+                        <div class="font-h6 font-color-colorText font-bold mb-8">{item.title}</div>
+                        <div class="font-h7 font-color-colorTextSecondary text-left">
+                          {item.desc}
                         </div>
-                      )}
+                      </div>
+                      <div class="absolute h-full w-16 top-0 right--8">
+                        {!isLastItem && (
+                          <div class="relative h-full flex items-center z-10">
+                            <div class="w-15 h-0.5 bg-gray-400"></div>
+                            <div
+                              class="absolute right-0"
+                              style={{
+                                width: 0,
+                                height: 0,
+                                borderTop: '8px solid transparent',
+                                borderBottom: '8px solid transparent',
+                                borderLeft: '12px solid #9ca3af'
+                              }}
+                            ></div>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
           </div>
         )}
@@ -215,7 +212,7 @@ export default defineComponent({
           <div
             ref={subordinateProductsRef}
             id="subordinate-products"
-            class="w-full h-602px px-80 py-24 bg-white text-center"
+            class="max-w-480 h-602px px-80 py-24 bg-white text-center mx-auto"
           >
             <div class="font-h3 text-black font-bold mb-12">旗下产品</div>
             <div class="w-full h-80 px-24 bg-gray-100 text-center flex flex-col justify-center items-center">

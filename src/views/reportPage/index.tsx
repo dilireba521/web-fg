@@ -77,14 +77,15 @@ export default defineComponent({
         </div> */}
         {!screenStore.isMobile && (
           <div
-            class="w-full h-80 px-80 py-134px bg-cover bg-center bg-no-repeat"
+            class="w-full h-80 px-80 py-134px bg-cover bg-no-repeat"
             style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-information.png)` }}
           ></div>
         )}
         <div
-          class={`${screenStore.isMobile ? 'px-8 py-4' : 'h-16 px-85 pt-6 pb-18px news-tab'} w-full background-colorBgLayout font-h7 font-color-colorTextTertiary`}
+          class={`${screenStore.isMobile ? '' : 'news-tab'} w-full background-colorBgLayout font-h7 font-color-colorTextTertiary`}
         >
-          {/* 首页 / 新闻信息 / 投资观察 */}
+          <div class={`max-w-480 mx-auto ${screenStore.isMobile ? 'px-8 py-4' : 'h-16 px-80 pt-6 pb-18px'}`}>
+            {/* 首页 / 新闻信息 / 投资观察 */}
           <Breadcrumb>
             <Breadcrumb.Item>
               <a
@@ -106,49 +107,54 @@ export default defineComponent({
             </Breadcrumb.Item>
             <Breadcrumb.Item>投资观察</Breadcrumb.Item>
           </Breadcrumb>
+          </div>
         </div>
-        <div
-          class={`${screenStore.isMobile ? '' : 'min-h-100vh px-80 py-12'} w-full background-colorBgLayout flex flex-col`}
-        >
-          {
-            !screenStore.isMobile && (
-              <div class="font-h4 font-medium mb-6">投资观察</div>
-            )
-          }
-          <div class={`${screenStore.isMobile?'px-8':'flex flex-wrap'} w-full`}>
-            {arrNews.value.map((item, index) => (
-              <div
-                class={`${screenStore.isMobile ? 'mb-8' : 'news-observe-item mb-6 mr-4'}`}
-                onClick={() => handleArticleDetail(item)}
-              >
-                <img class="w-full h-231px object-cover" src={(item as any).image?.image || newsInfo} alt="" />
-                <div class={`${screenStore.isMobile?'text-base':'px-6 font-h6'} w-full h-17 news-item-foot background-colorBgLayout pt-3 pb-2 font-color-colorTextSecondary`}>
+        <div class="background-colorBgLayout w-full">
+          <div
+            class={`${screenStore.isMobile ? '' : 'min-h-100vh px-80 py-12 max-w-480 mx-auto'} flex flex-col`}
+          >
+            {!screenStore.isMobile && <div class="font-h4 font-medium mb-6">投资观察</div>}
+            <div class={`${screenStore.isMobile ? 'px-8' : 'flex flex-wrap'} w-full`}>
+              {arrNews.value.map((item, index) => (
+                <div
+                  class={`${screenStore.isMobile ? 'mb-8' : 'news-observe-item mb-6 mr-4'}`}
+                  onClick={() => handleArticleDetail(item)}
+                >
+                  <img
+                    class="w-full h-231px object-cover"
+                    src={(item as any).image?.image || newsInfo}
+                    alt=""
+                  />
                   <div
-                    class="news-item-title line-clamp-2 w-full overflow-hidden"
-                    style={{
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden'
-                    }}
+                    class={`${screenStore.isMobile ? 'text-base custom-font' : 'px-2 font-h6'} w-full h-17 news-item-foot background-colorBgLayout pt-3 pb-2 font-color-colorTextSecondary`}
                   >
-                    {(item as { title: string }).title}
+                    <div
+                      class="news-item-title line-clamp-2 w-full overflow-hidden"
+                      style={{
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                      }}
+                    >
+                      {(item as { title: string }).title}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-          <div class={`${screenStore.isMobile?'pb-8':''} flex justify-end mt-auto`}>
-            <Pagination
-              current={Number(current.value)}
-              pageSize={Number(pageSize.value)}
-              total={Number(total.value)}
-              onChange={(page) => {
-                current.value = page
-                handleNewsInfo()
-              }}
-              showSizeChanger={false}
-            />
+              ))}
+            </div>
+            <div class={`${screenStore.isMobile ? 'pb-8' : ''} flex justify-end mt-auto`}>
+              <Pagination
+                current={Number(current.value)}
+                pageSize={Number(pageSize.value)}
+                total={Number(total.value)}
+                onChange={(page) => {
+                  current.value = page
+                  handleNewsInfo()
+                }}
+                showSizeChanger={false}
+              />
+            </div>
           </div>
         </div>
       </div>

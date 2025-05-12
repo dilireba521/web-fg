@@ -1,11 +1,47 @@
-.news-item{
-    width: calc((100% - 16px)/2);
+.news-item {
+  width: calc((100% - 16px) / 2);
 }
 
-.compny-announcement:hover .compny-announcement-title{
-    color: @colorPrimary1;
+.news-item-first {
+  width: calc((100% - 16px) / 2);
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease;
+    z-index: 0; // 改为0，确保在内容下方但可见
+  }
+
+  &:hover {
+    &::before {
+      transform: scale(1.1);
+    }
+  }
+
+  // 确保内容在伪元素之上
+  > * {
+    position: relative;
+    z-index: 1;
+  }
 }
 
-.news-item-container:hover .news-item-title{
-    color: @colorPrimary1;
+.news-item-first:hover .news-item-first-title {
+  color: @colorPrimary1;
+}
+
+.compny-announcement:hover .compny-announcement-title {
+  color: @colorPrimary1;
+}
+
+.news-item-container:hover .news-item-title {
+  color: @colorPrimary1;
 }

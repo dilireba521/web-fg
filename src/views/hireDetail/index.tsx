@@ -33,9 +33,8 @@ export default defineComponent({
     })
     return () => (
       <div>
-        {
-          screenStore.isMobile && (
-            <div class="px-8 py-4 background-colorBgLayout font-h7 font-color-colorTextTertiary">
+        {screenStore.isMobile && (
+          <div class="px-8 py-4 background-colorBgLayout font-h7 font-color-colorTextTertiary">
             <Breadcrumb>
               <Breadcrumb.Item>
                 <a
@@ -58,8 +57,7 @@ export default defineComponent({
               <Breadcrumb.Item>招聘信息</Breadcrumb.Item>
             </Breadcrumb>
           </div>
-          )
-        }
+        )}
         {screenStore.isMobile ? (
           <div class="w-full px6 py-6 background-colorBgLayout">
             <div class="font-h1 text-black font-medium mb-2">
@@ -80,9 +78,10 @@ export default defineComponent({
           </div>
         ) : (
           <div
-            class="w-full h-80 bg-cover px-80 pt-20 bg-center bg-no-repeat"
+            class="w-full h-80 bg-cover bg-no-repeat"
             style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-recruit.png)` }}
           >
+            <div class="max-w-480 mx-auto px-80 pt-20">
             <div class="font-h2 text-black font-medium mb-4">
               {(dataPosition.value as { title?: string })?.title || ''}
             </div>
@@ -101,10 +100,12 @@ export default defineComponent({
             <div class="font-h7 font-color-colorTextSecondary">
               {(dataPosition.value as { remark?: string })?.remark || ''}
             </div>
+            </div>
           </div>
         )}
         {screenStore.isMobile ? null : (
-          <div class="w-full h-16 px-85 pt-6 pb-18px background-colorBgLayout news-tab font-h7 font-color-colorTextTertiary">
+          <div class="w-full h-16 background-colorBgLayout news-tab font-h7 font-color-colorTextTertiary">
+            <div class="max-w-480 mx-auto px-80 pt-6 pb-18px">
             <Breadcrumb>
               <Breadcrumb.Item>
                 <a
@@ -126,20 +127,24 @@ export default defineComponent({
               </Breadcrumb.Item>
               <Breadcrumb.Item>招聘信息</Breadcrumb.Item>
             </Breadcrumb>
+            </div>
           </div>
         )}
         {screenStore.isMobile ? (
-          <div
-            class="w-full px-6 pb-8 background-colorBgLayout"
-          >
+          <div class="w-full px-6 pb-8 background-colorBgLayout">
             <div class="w-full background-white px-4 py-6">
-              <div v-html={(dataPosition.value as { content?: string })?.content || ''}></div>
+              <div class="rich-text-mobile" v-html={(dataPosition.value as { content?: string })?.content || ''}></div>
             </div>
           </div>
         ) : (
-          <div class="w-full background-colorBgLayout px-80 py-12">
-            <div class="w-full background-white p-12">
-              <div v-html={(dataPosition.value as { content?: string })?.content || ''}></div>
+          <div class="background-colorBgLayout w-full">
+            <div class="max-w-480 px-80 py-12 mx-auto">
+              <div class="w-full background-white p-12">
+                <div
+                  class="rich-text-style"
+                  v-html={(dataPosition.value as { content?: string })?.content || ''}
+                ></div>
+              </div>
             </div>
           </div>
         )}

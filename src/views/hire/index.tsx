@@ -1,6 +1,6 @@
 import { defineComponent, ref, onMounted, onUnmounted, reactive, watch } from 'vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
-import { SubTitle } from '@/components/Icon'
+import { SubTitle,BackgroundHeader } from '@/components/Icon'
 import * as userApi from '@/api/user'
 import { useScreenStore } from '@/store/modules/screen'
 import './index.less'
@@ -20,7 +20,8 @@ interface HireType {
 
 export default defineComponent({
   components: {
-    SubTitle
+    SubTitle,
+    BackgroundHeader
   },
   setup(props, ctx) {
     const screenStore = useScreenStore()
@@ -159,27 +160,15 @@ export default defineComponent({
 
     return () => (
       <div>
-        {screenStore.isMobile ? (
-          <div
-            class="w-full h-390px bg-cover bg-center bg-no-repeat px-8 py-12"
-            style={{ backgroundImage: `url(${WEB_BG_HEAD}/mobile-head-join.png)` }}
-          >
-            {/* <div class="font-color-colorText" style={{ fontSize: '32px' }}>
-              <div>RECRUIT</div>
-              <div>TALENTED PEOPLE</div>
-            </div> */}
-          </div>
-        ) : (
-          <div
-            class="w-full h-120 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-join.jpg)` }}
-          ></div>
-        )}
+        <BackgroundHeader 
+          backgroundImage={`${WEB_BG_HEAD}/head-join.jpg`}
+          mobileBackgroundImage={`${WEB_BG_HEAD}/mobile-head-join.png`}
+        />
         <SubTitle arrTitle={arrHireTitle.value} onItemClick={handleSubTitleClick} />
         {screenStore.isMobile ? (
           <div class="w-full px-6 pt-10 pb-12 background-white">
             <div class="font-bold font-h1 font-color-colorText">
-              开启新的工作（{jobsNumber.value}）
+              在招岗位（{jobsNumber.value}）
             </div>
             {arrHire.value.map((item, index) => (
               <div
@@ -208,71 +197,75 @@ export default defineComponent({
             ))}
           </div>
         ) : (
-          <div class="w-full px-80 pt-24 flex background-colorBgLayout min-h-100vh flex-col">
-            <div class="flex w-full">
-              <div class="hire-type-box w-304px min-h-100vh pr-8">
-                <div class="hire-type-clear flex justify-between py-4">
-                  <div class="font-h7 font-color-colorTextSecondary">筛选</div>
-                  <div class="font-h7 font-color-colorTextTertiary" onClick={handleClearSelectType}>
-                    清除
+          <div class="background-colorBgLayout w-full">
+            <div class="max-w-480 px-80 pt-24 flex min-h-100vh flex-col mx-auto">
+              <div class="flex w-full">
+                <div class="hire-type-box w-304px min-h-100vh pr-8">
+                  <div class="hire-type-clear flex justify-between py-4">
+                    <div class="font-h7 font-color-colorTextSecondary">筛选</div>
+                    <div
+                      class="font-h7 font-color-colorTextTertiary"
+                      onClick={handleClearSelectType}
+                    >
+                      清除
+                    </div>
+                  </div>
+                  <div class="pt-6">
+                    <div class="font-h6 font-medium font-color-colorText mb-6">职位类别</div>
+                    {arrHireTYpe.value.map((item: any) => (
+                      <div class="py-2 flex items-center">
+                        {selectType.value == item.id ? (
+                          <img
+                            onClick={() => {
+                              hadleSelect(item)
+                            }}
+                            class="w-4 h-4"
+                            src={iconSelected}
+                          />
+                        ) : (
+                          <img
+                            onClick={() => {
+                              hadleSelect(item)
+                            }}
+                            class="w-4 h-4"
+                            src={iconEmptySelect}
+                          />
+                        )}
+                        <div class="ml-2 font-h7 font-medium">{item.title}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div class="pt-6">
-                  <div class="font-h6 font-medium font-color-colorText mb-6">职位类别</div>
-                  {arrHireTYpe.value.map((item: any) => (
-                    <div class="py-2 flex items-center">
-                      {selectType.value == item.id ? (
-                        <img
-                          onClick={() => {
-                            hadleSelect(item)
-                          }}
-                          class="w-4 h-4"
-                          src={iconSelected}
-                        />
-                      ) : (
-                        <img
-                          onClick={() => {
-                            hadleSelect(item)
-                          }}
-                          class="w-4 h-4"
-                          src={iconEmptySelect}
-                        />
+                <div class="pl-8 w-full">
+                  <div class="font-h3 font-medium mb-10">在招岗位（{jobsNumber.value}）</div>
+                  {arrHire.value.map((item, index) => (
+                    <div
+                      class="mb-10 w-full hire-item"
+                      onClick={() => {
+                        jumpPositionDetail(item)
+                      }}
+                    >
+                      <div class="hire-item-title mb-2 font-h5 font-medium font-color-colorText">
+                        {(item as any).title}
+                      </div>
+                      <div class="mb-3 font-h6 font-color-colorText">
+                        {(item as any)?.category?.title}
+                        {(item as any)?.label && <span>｜{(item as any)?.label}</span>}
+                      </div>
+                      {/* <div
+                      class="line-clamp-2 font-h7 font-color-colorTextSecondary"
+                      v-html={(item as any).content}
+                    ></div> */}
+                      {(item as any).content && (
+                        <div class="line-clamp-2 font-h7 font-color-colorTextSecondary">
+                          {(item as any).remark}
+                        </div>
                       )}
-                      <div class="ml-2 font-h7 font-medium">{item.title}</div>
                     </div>
                   ))}
                 </div>
               </div>
-              <div class="pl-8 w-full">
-                <div class="font-h3 font-medium mb-10">开启新的工作（{jobsNumber.value}）</div>
-                {arrHire.value.map((item, index) => (
-                  <div
-                    class="mb-10 w-full hire-item"
-                    onClick={() => {
-                      jumpPositionDetail(item)
-                    }}
-                  >
-                    <div class="hire-item-title mb-2 font-h5 font-medium font-color-colorText">
-                      {(item as any).title}
-                    </div>
-                    <div class="mb-3 font-h6 font-color-colorText">
-                      {(item as any)?.category?.title}
-                      {(item as any)?.label && <span>｜{(item as any)?.label}</span>}
-                    </div>
-                    {/* <div
-                      class="line-clamp-2 font-h7 font-color-colorTextSecondary"
-                      v-html={(item as any).content}
-                    ></div> */}
-                    {(item as any).content && (
-                      <div class="line-clamp-2 font-h7 font-color-colorTextSecondary">
-                        {(item as any).remark}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* <div class="flex justify-end mt-auto">
+              {/* <div class="flex justify-end mt-auto">
               <Pagination
                 current={current.value}
                 pageSize={pageSize.value}
@@ -281,6 +274,7 @@ export default defineComponent({
                 showSizeChanger={false} // 可选：隐藏页码大小选择器
               />
             </div> */}
+            </div>
           </div>
         )}
       </div>

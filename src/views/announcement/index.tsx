@@ -69,14 +69,15 @@ export default defineComponent({
       <div>
         {!screenStore.isMobile && (
           <div
-            class="w-full h-80 px-80 py-134px bg-cover bg-center bg-no-repeat"
+            class="w-full h-80 bg-cover bg-no-repeat"
             style={{ backgroundImage: `url(${WEB_BG_HEAD}/head-information.png)` }}
           ></div>
         )}
         <div
-          class={`w-full h-16 ${screenStore.isMobile ? 'px-6 pt-6' : 'px-85 pt-6 announcement-tab'} pb-18px background-colorBgLayout font-h7 font-color-colorTextTertiary`}
+          class={`w-full h-16 ${screenStore.isMobile ? '' : 'announcement-tab'} background-colorBgLayout font-h7 font-color-colorTextTertiary`}
         >
-          {/* 首页 / 新闻信息 / 资讯公告 */}
+          <div class={`max-w-480 mx-auto ${screenStore.isMobile ? 'px-6 pt-6':'px-80 pt-6 pb-18px'}`}>
+            {/* 首页 / 新闻信息 / 资讯公告 */}
           <Breadcrumb>
             <Breadcrumb.Item>
               <a
@@ -98,6 +99,7 @@ export default defineComponent({
             </Breadcrumb.Item>
             <Breadcrumb.Item>资讯公告</Breadcrumb.Item>
           </Breadcrumb>
+          </div>
         </div>
         {screenStore.isMobile ? (
           <div class="px-6 pb-30px background-colorBgLayout">
@@ -109,7 +111,7 @@ export default defineComponent({
                 }}
               >
                 <div>
-                  <div class="text-base font-bold font-color-colorBlack">{(item as any).title}</div>
+                  <div class="text-base custom-font font-bold font-color-colorBlack">{(item as any).title}</div>
                   <div class="font-h5 font-color-colorTextSecondary">{(item as any).label}</div>
                 </div>
                 <div class="flex justify-between mt-auto">
@@ -123,68 +125,72 @@ export default defineComponent({
             ))}
           </div>
         ) : (
-          <div class="w-full min-h-100vh px-120 pt-12 pb-8 background-colorBgLayout flex flex-col">
-            <div class="font-h4 font-medium mb-6">资讯公告</div>
-            <div class="flex-1">
-              {arrAnnouncement.value.map((item, index) => (
-                <div
-                  class="announcement-item bg-white px-8 py-6 h-40 mb-4 flex"
-                  onClick={() => {
-                    handleArticleDetail(item)
-                  }}
-                >
+          <div class="w-full background-colorBgLayout">
+            <div class="min-h-100vh max-w-480 mx-auto px-120 pt-12 pb-8 flex flex-col">
+              <div class="font-h4 font-medium mb-6">资讯公告</div>
+              <div class="flex-1">
+                {arrAnnouncement.value.map((item, index) => (
                   <div
-                    class="h-112px w-110px flex flex-col justify-center pr-8"
-                    style={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
+                    class="announcement-item bg-white px-8 py-6 h-40 mb-4 flex"
+                    onClick={() => {
+                      handleArticleDetail(item)
+                    }}
                   >
-                    <div class="flex items-start">
-                      <div class="font-h4 mr-2px font-color-colorText">
-                        {(item as any).releaseDateDate}
-                      </div>
-                      <div class="font-h4 mr-1 font-color-colorTextSecondary">/</div>
-                      <div class="font-h7 font-color-colorTextSecondary">
-                        <div>{(item as any).releaseDateMonth}月</div>
-                        <div>{(item as any).releaseDateYear}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex-1 pl-8 overflow-hidden flex flex-col">
-                    <div class="announcement-item-title truncate mb-2 font-h6 w-full font-color-colorText">
-                      {(item as any).title}
-                    </div>
                     <div
-                      class="line-clamp-2 font-color-colorTextSecondary mb-4 font-h7 w-full overflow-hidden"
-                      style={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden'
-                      }}
+                      class="h-112px w-110px flex flex-col justify-center pr-8"
+                      style={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
                     >
-                      {(item as any).label}
+                      <div class="flex items-start">
+                        <div class="font-h4 mr-2px font-color-colorText">
+                          {(item as any).releaseDateDate}
+                        </div>
+                        <div class="font-h4 mr-1 font-color-colorTextSecondary">/</div>
+                        <div class="font-h7 font-color-colorTextSecondary">
+                          <div>{(item as any).releaseDateMonth}月</div>
+                          <div>{(item as any).releaseDateYear}</div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="font-h8 mt-auto" style={{ color: '#C1272D' }}>
-                      查看详情
+                    <div class="flex-1 pl-8 overflow-hidden flex flex-col">
+                      <div class="announcement-item-title truncate mb-2 font-h6 w-full font-color-colorText">
+                        {(item as any).title}
+                      </div>
+                      <div
+                        class="line-clamp-2 font-color-colorTextSecondary mb-4 font-h7 w-full overflow-hidden"
+                        style={{
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden'
+                        }}
+                      >
+                        {(item as any).label}
+                      </div>
+                      <div class="font-h8 mt-auto" style={{ color: '#C1272D' }}>
+                        查看详情
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         )}
-        <div
-          class={`flex justify-end background-colorBgLayout pb-8 ${screenStore.isMobile ? 'px-8' : 'px-120'}`}
-        >
-          <Pagination
-            current={Number(current.value)}
-            pageSize={Number(pageSize.value)}
-            total={Number(total.value)}
-            onChange={(page) => {
-              current.value = page
-              handleNewsInfo()
-            }}
-            showSizeChanger={false}
-          />
+        <div class="background-colorBgLayout w-full">
+          <div
+            class={`flex justify-end pb-8 ${screenStore.isMobile ? 'px-8' : 'px-120 max-w-480 mx-auto'}`}
+          >
+            <Pagination
+              current={Number(current.value)}
+              pageSize={Number(pageSize.value)}
+              total={Number(total.value)}
+              onChange={(page) => {
+                current.value = page
+                handleNewsInfo()
+              }}
+              showSizeChanger={false}
+            />
+          </div>
         </div>
       </div>
     )

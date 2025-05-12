@@ -25,14 +25,8 @@ export default defineComponent({
     const { go } = useGo()
     const screenStore = useScreenStore()
     const videoRef = ref<HTMLVideoElement | null>(null)
-    let rtaIntro1 = `诺言私募基金管理有限公司成立于 2025 年，致力于为多元化的客
-户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和
-全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋
-能策略决策体系结构。`
-    let rtaIntro2 = `公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个
-金融衍生品领域。公司将秉持以客户利益为核心的买方思维，在波动
-市场中持续创造超额收益。协助企业客户、机构客户、高净值客户实
-现其资产可持续发展目标。`
+    let rtaIntro1 = `诺言私募基金管理有限公司成立于 2025 年，致力于为多元化的客户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋能策略决策体系结构。`
+    let rtaIntro2 = `公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个金融衍生品领域。公司将秉持以客户利益为核心的买方思维，在波动市场中持续创造超额收益。协助企业客户、机构客户、高净值客户实现其资产可持续发展目标。`
 
     onMounted(() => {
       if (videoRef.value) {
@@ -108,11 +102,11 @@ export default defineComponent({
             <div class="w-full min-h-800px pt-160px pb-281px justify-center flex">
               <div>
                 <div class="home-intro-title font-medium font-h2 mb-32px">走进诺言私募</div>
-                <div class="home-intro-content max-w-720px font-normal text-xl mb-57px">
+                <div class="home-intro-content max-w-720px font-normal text-xl custom-font mb-57px font-h5">
                   <p class="mb-28px">{rtaIntro1}</p>
                   <p>{rtaIntro2}</p>
                 </div>
-                <div class="home-intro-more text-sm font-normal flex" onClick={understandMore}>
+                <div class="home-intro-more text-sm custom-font font-normal flex" onClick={understandMore}>
                   <div>了解更多</div>
                   <img class="w-22px h-22px ml-4px" src={iconRightRed} alt="了解更多" />
                 </div>

@@ -55,10 +55,10 @@
   </div>
   <div
     v-else
-    :class="`w-full h-669px text-center relative bg-cover bg-center bg-no-repeat ${currentCours ? '' : 'background-colorBgLayout'}`"
+    :class="`w-full text-center relative bg-cover bg-no-repeat ${currentCours ? '' : 'background-colorBgLayout'}`"
     :style="{ backgroundImage: `url(${currentCours})` }"
   >
-    <div class="w-full px-80 h-669px pt-24 text-center z-10 relative flex flex-col">
+    <div class="max-w-480 mx-auto px-80 h-669px pt-24 text-center z-10 relative flex flex-col">
       <div class="font-h3 font-color-colorText text-center font-medium mb-31px">发展历程</div>
       <div class="develop-timeline flex-1 flex">
         <!-- 左侧年份列表 -->
@@ -84,7 +84,7 @@
         </div>
 
         <!-- 右侧内容区域 -->
-        <div class="timeline-content flex-1 ml-42 flex flex-col">
+        <div class="timeline-content flex-1 ml-42 flex flex-col w-195">
           <div class="content-header flex items-center mb-30px">
             <div class="current-year text-red-600 text-4xl font-medium mr-20px">
               {{ years[currentIndex] }}
@@ -183,9 +183,7 @@ onMounted(() => {
   handleMilestoneInfo()
 })
 </script>
-<style></style>
-
-<style scoped lang="less">
+<style>
 /* 添加滚动内容样式 */
 .timeline-content-text {
   overflow-y: auto; /* 启用垂直滚动 */
@@ -203,6 +201,29 @@ onMounted(() => {
   }
 }
 
+.mobile-contain-box {
+  overflow: hidden;
+  overflow-y: auto;
+  p {
+    margin-bottom: 20px !important;
+    font-size: 12px !important;
+    span {
+      margin-bottom: 20px !important;
+      font-size: 12px !important;
+    }
+  }
+  div {
+    margin-bottom: 20px !important;
+    font-size: 12px !important;
+  }
+  span {
+    margin-bottom: 20px !important;
+    font-size: 12px !important;
+  }
+}
+</style>
+
+<style scoped lang="less">
 /* 隐藏滚动条但保留滚动功能 */
 .hide-scrollbar {
   -ms-overflow-style: none; /* IE 和 Edge */

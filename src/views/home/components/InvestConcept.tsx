@@ -70,16 +70,16 @@ export default defineComponent({
               <div class="flex w-full min-h-27 items-center mb-2 background-white p-4">
                 <img class="w-8 h-8 mr-4" src={item.icon} />
                 <div class="flex flex-col h-full justify-between">
-                  <div class="text-base font-color-colorText mb-2">{item.title}</div>
+                  <div class="text-base custom-font font-color-colorText mb-2">{item.title}</div>
                   <div class="font-h5 font-color-colorTextSecondary">{item.desc}</div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div class="flex items-center justify-center">
+          <div class={`flex items-center justify-center ${bgColor.value == 'white' ? 'background-white' : 'background-colorBgLayout'}`}>
             <div
-            class={`invest-page w-320 min-h-534px ${bgColor.value == 'white' ? 'background-white' : 'background-colorBgLayout'}`}
+            class={`invest-page w-320 min-h-534px flex flex-col justify-center`}
           >
             <div class="invest-page-title mb-32px">投资理念</div>
             <div class="flex justify-between">

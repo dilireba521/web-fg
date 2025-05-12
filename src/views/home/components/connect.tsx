@@ -44,7 +44,7 @@ export default defineComponent({
           </div>
         ) : (
           <div class="flex items-center justify-center connect-page">
-            <div class="w-320 min-h-297px pt-64px flex">
+            <div class="w-320 h-297px pt-64px flex">
             <div class="connect-box w-full flex justify-between">
               <div class="flex">
                 <img class="w-96px h-86px mr-96px" src={logoHomeBottom} alt="" />
@@ -64,7 +64,7 @@ export default defineComponent({
                   </div>
                 </div>
               </div>
-              <div class="flex">
+              <div class="flex pt-12">
                 <div class="mr-32px text-center">
                   <div class="w-96px h-96px bg-white text-center flex justify-center items-center">
                     <div class="w-80px h-80px" style={{ backgroundColor: '#f5f5f5' }}></div>

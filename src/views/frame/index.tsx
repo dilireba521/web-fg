@@ -1,5 +1,5 @@
 import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue'
-import { SubTitle } from '@/components/Icon'
+import { SubTitle,BackgroundHeader } from '@/components/Icon'
 import './index.less'
 import InvestConcept from '@/views/home/components/InvestConcept'
 import { WEB_BG_HEAD } from '@/utils/resources'
@@ -19,7 +19,8 @@ const riskControlCurrent = ref('left')
 export default defineComponent({
   components: {
     SubTitle,
-    InvestConcept
+    InvestConcept,
+    BackgroundHeader
   },
 
   setup(props, ctx) {
@@ -97,24 +98,16 @@ export default defineComponent({
 
     return () => (
       <div>
-        {screenStore.isMobile ? (
-          <div
-            class="w-full h-390px pt-12 pl-8 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${WEB_BG_HEAD}/mobile-head-invest.png)` }}
-          >
-            {/* <div class="font-color-colorText" style={{ fontSize: '32px' }}>
-              <div class="mb-1">INVESTMENT</div>
-              <div>FRAMEWORK</div>
-            </div> */}
-          </div>
-        ) : (
-          <div class="w-full relative">
-            <img class="w-full h-480px" src={`${WEB_BG_HEAD}/head-invest.png`} alt="关于我们" />
-            <div class="font-h3 font-normal absolute top-219px left-80 text-left">
-              INVESTMENT FRAMEWORK
+        <BackgroundHeader 
+          backgroundImage={`${WEB_BG_HEAD}/head-invest.png`}
+          mobileBackgroundImage={`${WEB_BG_HEAD}/mobile-head-invest.png`}
+        >
+          {screenStore.isMobile ? null : (
+            <div class="font-h3 font-normal pt-219px pl-80 text-left">
+                INVESTMENT FRAMEWORK
             </div>
-          </div>
-        )}
+          )}
+        </BackgroundHeader>
         <SubTitle
           arrTitle={arrAboutCatalogue.value}
           activeIndex={activeIndex.value}
@@ -127,7 +120,7 @@ export default defineComponent({
             class="w-full h-75 pt-10 px-6 flex flex-col items-center"
           >
             <div class="font-h3 font-bold font-color-colorText text-center mb-6">投资框架</div>
-            <img class="w-78 h-50" src={investFramework} alt="投资框架" />
+            <img class="w-65 h-50" src={investFramework} alt="投资框架" />
           </div>
         ) : (
           <div ref={investFrameRef} id="invest-frame" class="w-full h-895px text-center pt-24">
@@ -147,48 +140,47 @@ export default defineComponent({
             <div class="font-h1 font-color-colorText mb-6">投资研究</div>
             <div class="font-h5 font-color-colorText mb-4">业务介绍</div>
             <div class="font-color-colorTextSecondary font-h5 mb-8 text-left">
-              我们的研究团队关注全球市场，对宏观政策、市场经济、资产配置、股票等领域进行研究和投资分析，并向客户提供研究服务。凭借广泛的覆盖范围、严谨的研究方法、独立客观的态度、透彻前瞻的观点和完善的专业服务体系，积极开展各项行研工作，全方位打造严谨前瞻性的私募投研品牌。
+              我们的研究团队关注各类市场，对宏观政策、市场经济、资产配置、股票等领域进行研究和投资分析，并向客户提供研究服务。凭借广泛的覆盖范围、严谨的研究方法、独立客观的态度、透彻前瞻的观点和完善的专业服务体系，积极开展各项行研工作，全方位打造严谨前瞻性的私募投研品牌。
             </div>
             <div class="font-h5 font-color-colorText mb-4">研究范围</div>
             <div
               class="font-h5 font-bold font-color-colorText p-4 text-left mb-2"
               style={{ background: 'linear-gradient( 180deg, #F4F9FF 0%, #EEF6FF 100%)' }}
             >
-              宏观经济（全球）·大宗商品（全球）·资产配置
+              宏观经济·大宗商品·资产配置
             </div>
             <div
               class="font-h5 font-bold font-color-colorText p-4 text-left"
               style={{ background: 'linear-gradient( 180deg, #FFF8F8 0%, #FFEEEE 100%)' }}
             >
-              投资策略（全球）·量化策略·外汇（全球）
+              投资策略·量化策略·外汇
             </div>
           </div>
         ) : (
           <div
             ref={investStudyRef}
             id="invest-study"
-            class="w-full px-80 py-24 background-white text-center"
+            class="w-full px-80 py-24 background-white text-center max-w-480 mx-auto"
           >
             <div class="font-h3 font-bold font-color-colorBlack mb-34px">投资研究</div>
             <div class="w-full h-425px px-30 py-12 text-center background-lightBlue">
               <div class="font-h4 font-bold font-color-colorBlack mb-6">业务介绍</div>
               <div class="max-w-200 font-h6 font-color-colorTextSecondary text-left mx-auto mb-16">
-                我们的研究团队关注全球市场，对宏观政策、市场经济、资产配置、股票等领域进行研究和投资分析，并向国内及国际客户提供研究服务。
-                凭借广泛的覆盖范围、严谨的研究方法、独立客观的态度、透彻前瞻的观点和完善的专业服务体系，行研中心积极开展各项工作，全方位打造严谨前瞻性的私募研究品牌。
+              我们的研究团队关注各类市场，对宏观政策、市场经济、资产配置、股票等领域进行研究和投资分析，并向客户提供研究服务。凭借广泛的覆盖范围、严谨的研究方法、独立客观的态度、透彻前瞻的观点和完善的专业服务体系，积极开展各项行研工作，全方位打造严谨前瞻性的私募投研品牌。
               </div>
               <div class="research-scope-container mx-auto">
                 <div class="research-title font-h4 font-color-colorBlack">研究范围</div>
                 <div class="research-line">
-                  <div class="research-item font-h5 font-color-colorText top">宏观经济（全球）</div>
+                  <div class="research-item font-h5 font-color-colorText top">宏观经济</div>
                   <div class="research-item font-h5 font-color-colorText bottom">
-                    大宗商品（全球）
+                    大宗商品
                   </div>
                   <div class="research-item font-h5 font-color-colorText top">资产配置</div>
                   <div class="research-item font-h5 font-color-colorText bottom">
-                    投资策略（全球）
+                    投资策略
                   </div>
                   <div class="research-item font-h5 font-color-colorText top">量化策略</div>
-                  <div class="research-item font-h5 font-color-colorText bottom">外汇（全球）</div>
+                  <div class="research-item font-h5 font-color-colorText bottom">外汇</div>
                 </div>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue'
 import './idnex.less'
-import { SubTitle } from '@/components/Icon'
+import { SubTitle,BackgroundHeader } from '@/components/Icon'
 import personalCard from './components/personalCard.vue'
 import DevelopCourse from './components/developCourse.vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
@@ -16,7 +16,8 @@ export default defineComponent({
   components: {
     SubTitle,
     personalCard,
-    DevelopCourse
+    DevelopCourse,
+    BackgroundHeader
   },
 
   setup(props, ctx) {
@@ -28,6 +29,32 @@ export default defineComponent({
     const developCourseRef = ref(null)
     const coreTeamRef = ref(null)
     const partnerRef = ref(null)
+    const arrTeamCoreInfo = ref([
+      [
+        {
+          title: '总经理',
+          name: '',
+          img: ''
+        },
+        {
+          title: '基金经理',
+          name: '',
+          img: ''
+        }
+      ],
+      [
+        {
+          title: '基金经理',
+          name: '',
+          img: ''
+        },
+        {
+          title: '基金经理',
+          name: '',
+          img: ''
+        }
+      ]
+    ])
 
     // 当前激活的索引
     const activeIndex = ref(0)
@@ -72,6 +99,7 @@ export default defineComponent({
 
     // 组件挂载时添加滚动监听
     onMounted(() => {
+      console.log('父组件数据:', arrTeamCoreInfo.value)
       window.addEventListener('scroll', handleScroll)
       // 初始化时执行一次，确保初始状态正确
       handleScroll()
@@ -84,19 +112,19 @@ export default defineComponent({
 
     return () => (
       <div>
-        {screenStore.isMobile ? (
-          <div
-            class="w-full h-390px pt-24 pl-8 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${WEB_BG_HEAD}/mobile-head-about.png)` }}
-          >
-            <img class="w-170px h-58px" src={aboutRtaFund} />
-          </div>
-        ) : (
-          <div class="w-full relative">
-            <img class="w-full h-480px" src={`${WEB_BG_HEAD}/head-about.png`} alt="关于我们" />
-            <img class="w-60 h-82px absolute top-199px left-80" src={aboutRtaFund} />
-          </div>
-        )}
+        {/* 页面头图组件 */}
+        <BackgroundHeader 
+          backgroundImage={`${WEB_BG_HEAD}/head-about.png`}
+          mobileBackgroundImage={`${WEB_BG_HEAD}/mobile-head-about.png`}
+        >
+          {screenStore.isMobile ? (
+            <div class="pt-24 pl-8">
+              <img class="w-170px h-58px" src={aboutRtaFund} />
+            </div>
+          ) : (
+            <img class="w-60 h-82px mt-199px ml-80" src={aboutRtaFund} />
+          )}
+        </BackgroundHeader>
         <SubTitle
           arrTitle={arrAboutCatalogue.value}
           activeIndex={activeIndex.value}
@@ -107,14 +135,10 @@ export default defineComponent({
           <div ref={companyIntroRef} id="company-intro" class="pt-10 px-6 pb-8 background-white">
             <div class="font-h1 font-medium mb-6 font-color-colorText text-center">公司介绍</div>
             <div class="font-h5 font-color-colorTextSecondary mb-4">
-              诺言私募基金管理有限公司成立于 2025 年，致力于为多元化的客
-              户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和
-              全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋 能策略决策体系结构。
+              诺言私募基金管理有限公司成立于 2025年，致力于为多元化的客户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋能策略决策体系结构。
             </div>
             <div class="font-h5 font-color-colorTextSecondary">
-              公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个
-              金融衍生品领域。公司将秉持以客户利益为核心的买方思维，在波动
-              市场中持续创造超额收益。协助企业客户、机构客户、高净值客户实 现其资产可持续发展目标。
+              公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个金融衍生品领域。公司将秉持以客户利益为核心的买方思维，在波动市场中持续创造超额收益。协助企业客户、机构客户、高净值客户实现其资产可持续发展目标。
             </div>
           </div>
         ) : (
@@ -125,15 +149,10 @@ export default defineComponent({
               style={{ fontSize: '18px' }}
             >
               <div class="mb-7">
-                诺言私募基金管理有限公司成立于 2025 年，致力于为多元化的客
-                户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和
-                全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋 能策略决策体系结构。
+                诺言私募基金管理有限公司成立于 2025年，致力于为多元化的客户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋能策略决策体系结构。
               </div>
               <div>
-                公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个
-                金融衍生品领域。公司将秉持以客户利益为核心的买方思维，在波动
-                市场中持续创造超额收益。协助企业客户、机构客户、高净值客户实
-                现其资产可持续发展目标。
+                公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个金融衍生品领域。公司将秉持以客户利益为核心的买方思维，在波动市场中持续创造超额收益。协助企业客户、机构客户、高净值客户实现其资产可持续发展目标。
               </div>
             </div>
           </div>
@@ -162,27 +181,27 @@ export default defineComponent({
               <img class="w-326px h-69px absolute bottom-0 right-0" src={iconRtaLarge} alt="" />
             </div>
             <div class="font-h5 w-full">
-              <div class="font-h5 font-color-colorText mb-4 text-center">发展指引</div>
+              <div class="font-h5 font-color-colorText mb-4 text-center">价值基石</div>
               <div class="mobile-develo-guid-blue h-54px flex items-center mb-2 font-color-colorTextSecondary px-4">
-                坚持党的领导，为公司发展提供坚强政治保障
+                客户优先，持续创造业务价值
               </div>
               <div class="mobile-develo-guid-blue h-54px flex items-center mb-2 font-color-colorTextSecondary px-4">
-                坚持践行国家战略和经营宗旨
+                专业为本，深耕挖掘行业潜力
               </div>
               <div class="mobile-develo-guid-puerple h-54px flex items-center font-color-colorTextSecondary mb-2 px-4">
-                坚持以客户为中心、与客户共成长的经营方针
+                合规为基，构建动态风控体系
               </div>
               <div class="mobile-develo-guid-puerple h-54px flex items-center font-color-colorTextSecondary mb-2 px-4">
-                坚持合规经营、严控风险的经营理念
+                长期主义，贯彻践行投资理念
               </div>
               <div class="mobile-develo-guid-puerple h-54px flex items-center font-color-colorTextSecondary mb-2 px-4">
-                坚持创新、保持坚韧的进取精神
+                前沿精神，引领激发团队创新
               </div>
               <div class="mobile-develo-guid-pink h-54px flex items-center mb-2 font-color-colorTextSecondary px-4">
-                坚持以人为本、市场化管理的人才强企战略
+                数据驱动，提升投资管理效能
               </div>
               <div class="mobile-develo-guid-pink h-54px flex items-center font-color-colorTextSecondary px-4">
-                坚持和发扬公司的优秀企业文化和传统
+                不忘初心，营造私募健康生态
               </div>
             </div>
           </div>
@@ -209,33 +228,33 @@ export default defineComponent({
                 <img class="w-946px h-50 absolute top-0 right-0" src={iconRtaLarge} alt="" />
               </div>
               <div class="text-center">
-                <div class="font-h5 font-color-colorText font-normal mb-5">发展指引</div>
+                <div class="font-h5 font-color-colorText font-normal mb-5">价值基石</div>
                 <div class="font-color-colorTextSecondary text-center font-h5">
                   <div class="flex justify-between items-center mb-4">
                     <div class="develo-guid-blue h-22 flex items-center justify-center">
-                      坚持党的领导，为公司发展提供坚强政治保障
+                      客户优先，持续创造业务价值
                     </div>
                     <div class="develo-guid-blue h-22 flex items-center justify-center">
-                      坚持践行国家战略和经营宗旨
+                      专业为本，深耕挖掘行业潜力
                     </div>
                   </div>
                   <div class="flex justify-between items-center mb-4">
                     <div class="develo-guid-puerple h-22 flex items-center justify-center">
-                      坚持以客户为中心、与客户共成长的经营方针
+                      合规为基，构建动态风控体系
                     </div>
                     <div class="develo-guid-puerple h-22 flex items-center justify-center">
-                      坚持合规经营、严控风险的经营理念
+                      长期主义，贯彻践行投资理念
                     </div>
                     <div class="develo-guid-puerple h-22 flex items-center justify-center">
-                      坚持创新、保持坚韧的进取精神
+                      前沿精神，引领激发团队创新
                     </div>
                   </div>
                   <div class="flex justify-between items-center">
                     <div class="develo-guid-pink h-22 flex items-center justify-center">
-                      坚持以人为本、市场化管理的人才强企战略
+                      数据驱动，提升投资管理效能
                     </div>
                     <div class="develo-guid-pink h-22 flex items-center justify-center">
-                      坚持和发扬公司的优秀企业文化和传统
+                      不忘初心，营造私募健康生态
                     </div>
                   </div>
                 </div>
@@ -249,28 +268,26 @@ export default defineComponent({
           id="develop-course"
           class="flex justify-center background-colorBgLayout"
         >
-          <div class="max-w-480">
-            <developCourse />
-          </div>
+          <developCourse />
         </div>
         {/* 核心团队 */}
         {screenStore.isMobile ? (
           <div ref={coreTeamRef} id="core-team" class="w-full pt-10 px-6 pb-8 text-center">
             <div class="font-h3 mb-6 font-medium font-color-colorText">核心团队</div>
-            <personalCard />
-            <personalCard />
+            {arrTeamCoreInfo.value.map((item, index) => (
+              <personalCard arrPersonInfo={item} />
+            ))}
           </div>
         ) : (
           <div ref={coreTeamRef} id="core-team" class="text-center">
             <div class="max-w-480 px-80 py-24 text-center mx-auto">
               <div class="font-h3 mb-8 font-medium">核心团队</div>
               <div class="flex flex-wrap">
-                <div class="w-2/4">
-                  <personalCard />
-                </div>
-                <div class="w-2/4">
-                  <personalCard />
-                </div>
+                {arrTeamCoreInfo.value.map((item, index) => (
+                  <div class="w-2/4">
+                    <personalCard arrPersonInfo={item} />
+                  </div>
+                ))}
               </div>
             </div>
           </div>

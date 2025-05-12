@@ -30,13 +30,22 @@ export default defineComponent({
 
     return () => (
       <div>
-        <div class={`${screenStore.isMobile?'px-8 py-4':'h-16 px-85 pt-6 pb-18px'} w-full background-colorBgLayout news-tab font-h7 font-color-colorTextTertiary`}>
+        <div
+          class={`w-full background-colorBgLayout news-tab font-h7 font-color-colorTextTertiary`}
+        >
+          <div
+            class={`max-w-480 mx-auto ${screenStore.isMobile ? 'px-8 py-4' : 'h-16 px-80 pt-6 pb-18px'}`}
+          >
             {/* 首页 / 新闻信息 / 投资观察 / 文章详情 */}
             <Breadcrumb>
               <Breadcrumb.Item>
                 <a
-                  onClick={() => {
-                    go('/home')
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setTimeout(() => {
+                      go('/home');
+                    }, 50);
                   }}
                 >
                   首页
@@ -45,8 +54,12 @@ export default defineComponent({
               {sourcePage.value !== 'home' && (
                 <Breadcrumb.Item>
                   <a
-                    onClick={() => {
-                      go('/news')
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setTimeout(() => {
+                        go('/news');
+                      }, 50);
                     }}
                   >
                     信息资讯
@@ -57,8 +70,12 @@ export default defineComponent({
                 articleType.value == '3' ? (
                   <Breadcrumb.Item>
                     <a
-                      onClick={() => {
-                        go('/announcement')
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setTimeout(() => {
+                          go('/announcement');
+                        }, 50);
                       }}
                     >
                       资讯公告
@@ -67,8 +84,12 @@ export default defineComponent({
                 ) : (
                   <Breadcrumb.Item>
                     <a
-                      onClick={() => {
-                        go('/reportPage')
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setTimeout(() => {
+                          go('/reportPage');
+                        }, 50);
                       }}
                     >
                       投资观察
@@ -79,23 +100,29 @@ export default defineComponent({
               <Breadcrumb.Item>文章详情</Breadcrumb.Item>
             </Breadcrumb>
           </div>
-        <div
-          class={`w-full background-white ${screenStore.isMobile ? 'px-6 pt-10 pb-8' : 'px-120 pt-24 pb-94px'}`}
-        >
-          <div class={`w-full ${screenStore.isMobile ? '' : 'mb-16'}`}>
-            <div
-              class="font-h3 font-medium mb-6 pb-4"
-              style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}
-            >
-              <div>{(dataArticle.value as any).title}</div>
-              <div class="mt-6 font-h7 font-color-colorTextSecondary">
-                {(dataArticle.value as any).releaseDateYear}.
-                {(dataArticle.value as any).releaseDateMonth}.
-                {(dataArticle.value as any).releaseDateDate}
+        </div>
+        <div class="w-full background-white">
+          <div
+            class={`${screenStore.isMobile ? 'px-6 pt-10 pb-8' : 'px-120 pt-24 pb-94px max-w-480 mx-auto'}`}
+          >
+            <div class={`w-full ${screenStore.isMobile ? '' : 'mb-16'}`}>
+              <div
+                class="font-h3 font-medium mb-6 pb-4"
+                style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}
+              >
+                <div>{(dataArticle.value as any).title}</div>
+                <div class="mt-6 font-h7 font-color-colorTextSecondary">
+                  {(dataArticle.value as any).releaseDateYear}.
+                  {(dataArticle.value as any).releaseDateMonth}.
+                  {(dataArticle.value as any).releaseDateDate}
+                </div>
               </div>
             </div>
+            <div
+              class={`${screenStore.isMobile ? 'rich-text-mobile' : 'rich-text-style '}`}
+              v-html={(dataArticle.value as any).content}
+            ></div>
           </div>
-          <div v-html={(dataArticle.value as any).content}></div>
         </div>
       </div>
     )

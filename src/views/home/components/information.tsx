@@ -29,14 +29,14 @@ export default defineComponent({
         if (data && data.retCode == 0) {
           for (let i = 0; i < data.data.length; i++) {
             if (data.data[i].releaseDate) {
-              const dateParts = data.data[i].releaseDate.split('-');
-              data.data[i].releaseDateYear = dateParts[0] || '-';
-              data.data[i].releaseDateMonth = dateParts[1] || '-';
-              data.data[i].releaseDateDate = dateParts[2] || '-';
+              const dateParts = data.data[i].releaseDate.split('-')
+              data.data[i].releaseDateYear = dateParts[0] || '-'
+              data.data[i].releaseDateMonth = dateParts[1] || '-'
+              data.data[i].releaseDateDate = dateParts[2] || '-'
             } else {
-              data.data[i].releaseDateYear = '-';
-              data.data[i].releaseDateMonth = '-';
-              data.data[i].releaseDateDate = '-';
+              data.data[i].releaseDateYear = '-'
+              data.data[i].releaseDateMonth = '-'
+              data.data[i].releaseDateDate = '-'
             }
           }
           newsData.value = data.data.slice(0, 4)
@@ -74,47 +74,66 @@ export default defineComponent({
                 <img class="w-22px h-22px ml-4px" src={iconRightRed} alt="了解更多" />
               </div>
             </div>
-            <div class="info-item w-full pt-23px" onClick={()=>{handleNewsDetail(firstNews.value )}}>
+            <div
+              class="info-item w-full pt-23px"
+              onClick={() => {
+                handleNewsDetail(firstNews.value)
+              }}
+            >
               <div class="info-item-type font-normal font-h8 mb-1">
                 {(firstNews.value as any).category?.name || '未分类'}
               </div>
               <div class="info-item-date font-normal font-h6 mb-6">
                 {formatDate((firstNews.value as any)?.releaseDate || '')}
               </div>
-              <div class="info-item-title h-12 font-medium font-h6 mb-4 line-clamp-2">
+              <div class="info-item-title h-12 font-medium text-base custom-font mb-4 line-clamp-2">
                 {(firstNews.value as any).title}
               </div>
-              <img class="info-item-img w-full h-244px" src={(firstNews.value as any).image?.image || newsInfo} alt="" />
+              <img
+                class="info-item-img w-full h-244px"
+                src={(firstNews.value as any).image?.image || newsInfo}
+                alt=""
+              />
             </div>
           </div>
         ) : (
           <div class="flex justify-center background-colorBgLayout">
-            <div class="info-page w-full min-h-706px pt-96px pb-120px">
-            <div class="mb-40px flex justify-between">
-              <div class="font-medium text-black flex font-h3">信息资讯</div>
-              <div class="font-h7 font-normal flex" onClick={goInformaton}>
-                <div class="mr-4px info-more">了解更多</div>
-                <img class="w-22px h-22px ml-4px" src={iconRightRed} alt="了解更多" />
+            <div class="info-page w-full pt-96px pb-120px">
+              <div class="mb-40px flex justify-between">
+                <div class="font-medium text-black flex font-h3">信息资讯</div>
+                <div class="font-h7 font-normal flex" onClick={goInformaton}>
+                  <div class="mr-4px info-more">了解更多</div>
+                  <img class="w-22px h-22px ml-4px" src={iconRightRed} alt="了解更多" />
+                </div>
+              </div>
+              <div class="flex flex-wrap">
+                {newsData.value.map((item, index) => (
+                  <div
+                    key={index}
+                    class="info-item mr-8"
+                    onClick={() => {
+                      handleNewsDetail(item)
+                    }}
+                  >
+                    <div class="info-item-line w-296px h-2px mb-22px"></div>
+                    <div class="info-item-type font-normal font-h8 mb-4px">
+                      {(item as any).category?.name || '未分类'}
+                    </div>
+                    <div class="info-item-date font-normal font-h6 mb-32px">
+                      {formatDate((item as any)?.releaseDate || '')}
+                    </div>
+                    <div class="info-item-title max-w-296px h-12 font-medium font-h6 mb-16px line-clamp-2">
+                      {(item as any).title}
+                    </div>
+                    <img
+                      class="info-item-img w-296px h-222px"
+                      src={(item as any).image?.image || newsInfo}
+                      alt=""
+                    />
+                  </div>
+                ))}
               </div>
             </div>
-            <div class="flex flex-wrap justify-between">
-              {newsData.value.map((item, index) => (
-                <div key={index} class="info-item mb-30px" onClick={()=>{handleNewsDetail(item)}}>
-                  <div class="info-item-line w-296px h-2px mb-22px"></div>
-                  <div class="info-item-type font-normal font-h8 mb-4px">
-                    {(item as any).category?.name || '未分类'}
-                  </div>
-                  <div class="info-item-date font-normal font-h6 mb-32px">
-                    {formatDate((item as any)?.releaseDate || '')}
-                  </div>
-                  <div class="info-item-title max-w-296px h-12 font-medium font-h6 mb-16px line-clamp-2">
-                    {(item as any).title}
-                  </div>
-                  <img class="info-item-img w-296px h-222px" src={(item as any).image?.image || newsInfo} alt="" />
-                </div>
-              ))}
-            </div>
-          </div>
           </div>
         )}
       </div>
