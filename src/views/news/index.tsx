@@ -197,7 +197,7 @@ export default defineComponent({
           </div>
         ) : (
           <div ref={companyAnnouncementRef} id="company-announcement" class="w-full bg-gray-100">
-            <div class="max-w-480 h-618px px-80 py-24 mx-auto">
+            <div class="max-w-480 px-80 py-24 mx-auto">
               <div class="mb-12 flex justify-between items-baseline">
                 <div class="font-h3 font-bold text-black">资讯公告</div>
                 <div class="flex items-center" onClick={handleAnnounce}>
@@ -267,7 +267,7 @@ export default defineComponent({
               </div>
             </div>
             <div
-              class="w-full h-64 px-4 py-3 bg-center bg-no-repeat py-12 flex flex-col justify-between mb-2 bg-cover bg-center bg-no-repeat"
+              class="w-full h-64 bg-center bg-no-repeat flex flex-col justify-between mb-2 bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: `url(${(firstNews.value as any)?.image?.image || newsInfo})`
               }}
@@ -275,12 +275,12 @@ export default defineComponent({
                 handleArticleDetail(firstNews.value)
               }}
             >
-              <div class="font-color-colorTextWhite font-h6 ml-auto">
+              <div class="font-color-colorTextWhite font-h6 invest-bg pt-4 pr-4 pb-3 pl-2 ml-auto">
                 {(firstNews.value as any).releaseDateYear}.
                 {(firstNews.value as any).releaseDateMonth}.
                 {(firstNews.value as any).releaseDateDate}
               </div>
-              <div class="font-bold text-base custom-font font-color-colorTextWhite truncate">
+              <div class="font-bold text-base custom-font font-color-colorTextWhite invest-bg px-4 py-3 truncate">
                 {(firstNews.value as any).title}
               </div>
             </div>
@@ -328,15 +328,14 @@ export default defineComponent({
                   }}
                 >
                   <div
-                    class="ml-auto text-white w-104px h-94px flex flex-col justify-center pr-33px"
-                    style={{ backgroundColor: 'rgba(6,6,6,0.2)' }}
+                    class="ml-auto text-white w-104px h-94px flex flex-col justify-center pr-33px invest-bg"
                   >
                     <div class="font-h4 text-right">{(firstNews.value as any).releaseDateDate}</div>
                     <div class="font-h7 text-right">
                       {(firstNews.value as any).releaseDateYear}.{(firstNews.value as any).releaseDateMonth}
                     </div>
                   </div>
-                  <div class="news-item-first-title font-h5 text-left font-color-colorTextWhite truncate ml-8 mb-4">
+                  <div class="news-item-first-title font-h5 invest-bg text-left font-color-colorTextWhite truncate px-8 py-4">
                     {(firstNews.value as any).title}
                   </div>
                 </div>

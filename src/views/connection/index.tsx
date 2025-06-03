@@ -1,11 +1,12 @@
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { WEB_BG_HEAD } from '@/utils/resources'
 import { useScreenStore } from '@/store/modules/screen'
-import { SubTitle,BackgroundHeader } from '@/components/Icon'
+import { SubTitle,BackgroundHeader,MapView } from '@/components/Icon'
 
-import investorPDF from '@/assets/documents/investor-qualification.pdf'
+import investorPDF from '@/assets/documents/合格投资者资产证明一览表.pdf'
 import connectAddress from '@/assets/connect-address.png'
 import iconAttachment from '@/assets/icon-attachment.png'
+import connectionMap from '@/assets/connection-map-bg.png'
 
 export default defineComponent({
   components: {
@@ -103,30 +104,21 @@ export default defineComponent({
         {screenStore.isMobile ? null : (
           <div
             ref={contactUsRef} id="contact-us"
-            class="w-full bg-cover bg-no-repeat"
-            style={{ backgroundImage: `url(${connectAddress})` }}
+            class="w-full bg-cover bg-no-repeat bg-layout"
+            // style={{ backgroundImage: `url(${connectAddress})` }}
           >
-            <div class="max-w-480 mx-auto h120 px-80 py-24 flex flex-col justify-center">
-              <div class="font-h4 font-color-colorText mb-6">诺言（湖北）私募基金管理有限公司</div>
-              <div class="font-h6 font-color-colorTextSecondary">
-                <div>地址：厦门市思明区波特曼财富中心</div>
-                <div class="mb-2">电话：0592-5775575</div>
-                <div class="mb-2">邮箱：service@rta-fund.com</div>
-              </div>
-              {/* <div class="mt-auto flex">
-              <div class="text-center mr-8">
-                <div class="w-24 h-24 background-white mb-2 flex items-center justify-center">
-                  <img class="w-20 h-20" src={rtaLogoRed} alt="" />
+            <div class="mx-auto max-w-480 h-592px py-24 px-80 flex justify-between relative">
+              <div class='text-left h36 w-80 pt-8 flex flex-col justify-center'>
+                <div class="font-h5 font-color-colorText mb-6">诺言（湖北）私募基金管理有限公司</div>
+                <div class="font-h6 font-color-colorTextSecondary">
+                  <div class="mb-2">地址：厦门市思明区波特曼财富中心</div>
+                  <div class="mb-2">电话：0592-5775575</div>
+                  <div>邮箱：service@rta-fund.com</div>
                 </div>
-                <div class="font-h7 font-color-colorTextTertiary">微信公众号</div>
               </div>
-              <div class="text-center">
-                <div class="w-24 h-24 background-white mb-2 flex items-center justify-center">
-                  <img class="w-20 h-20" src={rtaLogoRed} alt="" />
-                </div>
-                <div class="font-h7 font-color-colorTextTertiary">微信小程序</div>
+              <div class='w-224'>
+                <MapView class='relative' />
               </div>
-            </div> */}
             </div>
           </div>
         )}
@@ -205,9 +197,9 @@ export default defineComponent({
                 >
                   <div class="font-h6 font-color-colorText mb-4">如何证明合格投资者身份？</div>
                   <div class="font-h8 font-color-colorTextSecondary">
-                    <div class="mb-2 font-bold">个人投资者</div>
-                    <div class="mb-2">提供附带盖章的收入或资产证明文件材料</div>
-                    <div class="mb-2 font-bold">机构投资者</div>
+                    <div class="mb-1 font-bold">个人投资者</div>
+                    <div class="mb-5">提供附带盖章的收入或资产证明文件材料</div>
+                    <div class="mb-1 font-bold">机构投资者</div>
                     <div class="mb-5">提供最近一年的机构审计报告或财务报表</div>
                     <div
                       class="flex items-center"
@@ -222,7 +214,7 @@ export default defineComponent({
                   class={`${serviceBoxClass}`}
                   style={{ background: 'linear-gradient(180deg, #FFF8F8 0%, #FFEEEE 100%)' }}
                 >
-                  <div class="font-h6 font-color-colorText mb-8">基金管理平台</div>
+                  <div class="font-h6 font-color-colorText mb-15">基金管理平台</div>
                   <div class="font-h8 font-color-colorTextSecondary text-center">
                     <div class="mb-2">基金管理平台</div>
                     <div>（域名）</div>

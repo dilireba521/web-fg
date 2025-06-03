@@ -27,7 +27,7 @@ export default defineComponent({
               <span class="mr-4">邮箱</span>
               <span>service@rta-fund.com</span>
             </div>
-            <div class="flex mt-6">
+            {/* <div class="flex mt-6">
               <div class="mr-32px text-center">
                 <div class="w-24 h-24 bg-white text-center flex justify-center items-center">
                   <div class="w-20 h-20" style={{ backgroundColor: '#f5f5f5' }}></div>
@@ -40,7 +40,7 @@ export default defineComponent({
                 </div>
                 <div class="connect-code-text mt-8px font-normal font-h5">微信公众号</div>
               </div>
-            </div>
+            </div> */}
           </div>
         ) : (
           <div class="flex items-center justify-center connect-page">
@@ -64,7 +64,7 @@ export default defineComponent({
                   </div>
                 </div>
               </div>
-              <div class="flex pt-12">
+              {/* <div class="flex pt-12">
                 <div class="mr-32px text-center">
                   <div class="w-96px h-96px bg-white text-center flex justify-center items-center">
                     <div class="w-80px h-80px" style={{ backgroundColor: '#f5f5f5' }}></div>
@@ -77,7 +77,7 @@ export default defineComponent({
                   </div>
                   <div class="connect-code-text mt-8px font-normal font-h7">微信小程序</div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           </div>

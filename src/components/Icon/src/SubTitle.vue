@@ -104,7 +104,7 @@ const handleClick = (index: number) => {
   box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 999;
   transition: transform 0.2s ease;
   overflow-x: auto;
   overflow-y: hidden;

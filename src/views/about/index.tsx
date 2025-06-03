@@ -10,7 +10,7 @@ import { useRoute } from 'vue-router'
 import iconRtaLarge from '@/assets/about-rta-large.svg'
 import aboutRtaFund from '@/assets/about-rta-fund.svg'
 
-const arrAboutCatalogue = ref(['公司介绍', '企业文化', '发展历程', '核心团队']) // '合作机构'
+const arrAboutCatalogue = ref(['公司介绍', '企业文化', '发展历程']) // '合作机构'，'核心团队'
 
 export default defineComponent({
   components: {
@@ -55,6 +55,8 @@ export default defineComponent({
         }
       ]
     ])
+    let rtaIntro1 = `诺言私募基金管理有限公司成立于2025年，是一家专注于为多元化投资者提供专业服务的机构。公司构建了宏观经济与微观产业深度融合的研究体系，并配备全周期的风险管理能力，建立了以数据为驱动、量化模型为核心的投资决策体系。`
+    let rtaIntro2 = `公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个金融衍生品领域。公司秉持以投资者长期利益为导向的专业买方视角，致力于在复杂市场环境中挖掘投资机会，助力机构投资者、企业客户及高净值个人实现其资产的长期增值目标。`
 
     // 当前激活的索引
     const activeIndex = ref(0)
@@ -135,10 +137,10 @@ export default defineComponent({
           <div ref={companyIntroRef} id="company-intro" class="pt-10 px-6 pb-8 background-white">
             <div class="font-h1 font-medium mb-6 font-color-colorText text-center">公司介绍</div>
             <div class="font-h5 font-color-colorTextSecondary mb-4">
-              诺言私募基金管理有限公司成立于 2025年，致力于为多元化的客户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋能策略决策体系结构。
+              {rtaIntro1}
             </div>
             <div class="font-h5 font-color-colorTextSecondary">
-              公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个金融衍生品领域。公司将秉持以客户利益为核心的买方思维，在波动市场中持续创造超额收益。协助企业客户、机构客户、高净值客户实现其资产可持续发展目标。
+              {rtaIntro2}
             </div>
           </div>
         ) : (
@@ -149,10 +151,10 @@ export default defineComponent({
               style={{ fontSize: '18px' }}
             >
               <div class="mb-7">
-                诺言私募基金管理有限公司成立于 2025年，致力于为多元化的客户群体提供高质量金融增值服务，依托自主构建的宏微观研究框架和全天候风控能力，建立了以数据驱动的基金投资、科学稳健的量化赋能策略决策体系结构。
+                {rtaIntro1}
               </div>
               <div>
-                公司总部位于厦门，业务涵盖了股票、债券、期货、期权等多个金融衍生品领域。公司将秉持以客户利益为核心的买方思维，在波动市场中持续创造超额收益。协助企业客户、机构客户、高净值客户实现其资产可持续发展目标。
+                {rtaIntro2}
               </div>
             </div>
           </div>
@@ -172,9 +174,9 @@ export default defineComponent({
             </div>
             <div class="relative h-110px mb-8">
               {/* 文本内容放在单独的容器中，不受背景透明度影响 */}
-              <div class="ml-2 pt-4 font-color-colorText absolute z-10">
+              <div class="mx-2 pt-4 font-color-colorText absolute z-10">
                 <div class="font-h5 mb-3">企业愿景</div>
-                <div class="font-h4">打造亿级管理规模，成就国内卓越私募</div>
+                <div class="font-h4">承载专业深度，拓展稳健广度，为客户构筑穿越周期的财富韧性</div>
               </div>
               {/* 背景容器单独设置透明度 */}
               <div class="compny-wish-wrapper w-full h-110px absolute top-0 left-0"></div>
@@ -221,7 +223,7 @@ export default defineComponent({
                 {/* 文本内容放在单独的容器中，不受背景透明度影响 */}
                 <div class="ml-20 pt-12 font-color-colorText absolute z-10">
                   <div class="font-h5 mb-6">企业愿景</div>
-                  <div class="font-h4">打造亿级管理规模，成就国内卓越私募</div>
+                  <div class="font-h4">承载专业深度，拓展稳健广度，为客户构筑穿越周期的财富韧性</div>
                 </div>
                 {/* 背景容器单独设置透明度 */}
                 <div class="compny-wish-wrapper w-full h-50 absolute top-0 left-0"></div>
@@ -271,7 +273,7 @@ export default defineComponent({
           <developCourse />
         </div>
         {/* 核心团队 */}
-        {screenStore.isMobile ? (
+        {/* {screenStore.isMobile ? (
           <div ref={coreTeamRef} id="core-team" class="w-full pt-10 px-6 pb-8 text-center">
             <div class="font-h3 mb-6 font-medium font-color-colorText">核心团队</div>
             {arrTeamCoreInfo.value.map((item, index) => (
@@ -291,7 +293,7 @@ export default defineComponent({
               </div>
             </div>
           </div>
-        )}
+        )} */}
         {/* 合作机构 */}
         {/* {screenStore.isMobile ? (
           <div

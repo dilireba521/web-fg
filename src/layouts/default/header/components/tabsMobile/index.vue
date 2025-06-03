@@ -55,14 +55,14 @@ const tabsTargets = ref([
         label: '发展历程',
         value: 'developCourseRef'
       },
-      {
-        label: '核心团队',
-        value: 'coreTeamRef'
-      },
-      {
-        label: '合作机构',
-        value: 'partnerRef'
-      }
+      // {
+      //   label: '核心团队',
+      //   value: 'coreTeamRef'
+      // },
+      // {
+      //   label: '合作机构',
+      //   value: 'partnerRef'
+      // }
     ]
   },
   {
