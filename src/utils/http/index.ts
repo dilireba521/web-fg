@@ -25,7 +25,7 @@ function createRequest(opt?: Partial<CreateFetchOptions>) {
             // 设置token
             if (userStore.getToken) {
               // @ts-ignore
-              options.headers.Token = userStore.getToken
+              options.headers.AUTHORIZATION  = userStore.getToken
             }
             // 给 get 请求加上时间戳参数，避免从缓存中拿数据。
             if (options.method == 'GET') {

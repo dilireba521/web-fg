@@ -13,6 +13,7 @@
       <!-- 通知 -->
       <NoticeVue></NoticeVue>
     </div>
+    
   </div>
   <!-- 面包屑 -->
   <BreadCrumbVue :breadcrumb="breadcrumb"></BreadCrumbVue>

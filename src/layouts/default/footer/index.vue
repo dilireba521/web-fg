@@ -1,15 +1,38 @@
 <template>
-    <div class="bg-layout mt-12">
-        <div class="container pt-16 pb-8">
-            <div class="font-h7 text-black/45 text-center">© 北京火山引擎科技有限公司 2025 版权所有 服务条款 隐私政策 更多协议
-                京公网安备11010802032137号 京ICP备20018813号-3 营业执照 增值电信业务经营许可证京B2-20202418，A2.B1.B2-20202637
-                网络文化经营许可证：京网文（2023）4872-140号</div>
+    <Connect />
+    <div class="bg-layout">
+      <!-- <div v-if="screenStore.isMobile" class="px-6 pt-4 pb-6 font-h6 font-color-colorTextTertiary">
+        <div>
+          © 诺言（湖北）私募基金管理有限公司 2025 版权所有
         </div>
-
+        <div class="flex items-center" @click="jumpVerification">
+          <img class="w-4 h-4 mr-2" :src="certificateIcon">
+          <div>鄂ICP备2025111413号</div>
+        </div>
+      </div> -->
+      <div class="container pt-8 pb-8">
+        <div class="font-h7 text-black/45 text-center">
+          <div>© 诺言（湖北）私募基金管理有限公司 2025 版权所有</div>
+          <div class="certificate-item flex items-center justify-center cursor-pointer" @click="jumpVerification">
+            <img class="w-4 h-4 mr-2" :src="certificateIcon">
+            <div class="certificate-conten">鄂ICP备2025111413号</div>
+          </div>
+        </div>
+      </div>
     </div>
-
-
-</template>
-<script setup>
-</script>
-<style lang="less" scoped></style>
+  </template>
+  <script setup>
+  import Connect from '@/views/home/components/connect'
+//   import { useScreenStore } from '@/store/modules/screen'
+  import certificateIcon from '@/assets/certificate-logo.png'
+//   const screenStore = useScreenStore()
+  const jumpVerification = () => {
+    window.open('https://beian.miit.gov.cn')
+  }
+  </script>
+  <style lang="less" scoped>
+  .certificate-item:hover .certificate-conten{
+    color: @colorPrimary1;
+  }
+  </style>
+  

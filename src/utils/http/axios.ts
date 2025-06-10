@@ -10,7 +10,7 @@ export function uploadImg<T = unknown>(url: string, data?: any) {
   return instance.post<T>(url, data, {
     headers: {
       'Content-Type': 'multipart/form-data',
-      Token: userStore.getToken
+      'AUTHORIZATION': userStore.getToken
     }
   })
 }
@@ -21,7 +21,7 @@ export function download<T = unknown>(url: string, data?: any) {
     responseType: 'blob',
     headers: {
       'Content-Type': 'multipart/form-data',
-      Token: userStore.getToken
+      'AUTHORIZATION': userStore.getToken
     }
   })
 }

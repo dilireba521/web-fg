@@ -11,7 +11,16 @@ import { configSvgIconsPlugin } from './vite-config/svgSprite'
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    host: true
+    host: true,
+    proxy: {
+      '/fundApi': {
+        target: 'http://192.168.0.43:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(new RegExp(`^/fundApi`), ''),
+        // only https
+        // secure: false
+      },
+    }
   },
   plugins: [vue(), vueJsx(), UnoCSS(), vueDevTools(), configSvgIconsPlugin({ isBuild: true })],
   resolve: {

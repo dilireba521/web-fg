@@ -1,7 +1,7 @@
 import { useGet, usePost } from '@/utils/http'
 
 enum Api {
-    USER_INFO = '/user/info'
+    USER_INFO = '/web/userinfo/'
 }
 
 export const useGetUserInfo = (params?: any) => useGet(Api.USER_INFO, params)

@@ -1,0 +1,133 @@
+.info-page {
+  background: #f5f5f5;
+  max-width: 1280px;
+  // box-shadow: 0px -1px 0px 0px rgba(0,0,0,0.1);
+}
+
+.info-item {
+  .info-item-line {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+  }
+
+  .info-item-type {
+    color: rgba(0, 0, 0, 0.45);
+    line-height: 16px;
+  }
+
+  .info-item-date {
+    color: rgba(0, 0, 0, 0.65);
+    line-height: 24px;
+    text-align: left;
+  }
+
+  .info-item-title {
+    color: rgba(0, 0, 0, 0.88);
+    line-height: 24px;
+    text-align: left;
+  }
+
+  .info-item-img {
+    background: white;
+  }
+}
+
+.info-item:last-child {
+  margin-right: 0;
+}
+
+.info-more {
+  color: rgba(@colorPrimary1, 0.88);
+}
+
+.info-item:hover .info-item-line {
+  background-color: rgba(@colorPrimary1, 1);
+}
+
+.invest-item {
+  background: rgb(@colorBgLayout, 1);
+}
+
+.invest-item-active {
+  background: rgba(@colorPrimary1, 1);
+}
+
+.invest-page-title {
+  font-size: 32px;
+  color: #000000;
+  line-height: 42px;
+  text-align: center;
+}
+
+.invest-item-active .invest-item-title {
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 28px;
+}
+
+.invest-item-title {
+  color: rgba(@colorText, 0.88);
+  line-height: 28px;
+}
+
+.invest-item-target {
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 16px solid rgba(@colorBgLayout, 1);
+  margin: auto;
+  margin-top: 40px;
+}
+
+.item-target-gray {
+  border-bottom: 16px solid rgba(@colorBgLayout, 1);
+}
+
+.item-target-white {
+  border-bottom: 16px solid rgba(@colorWhite, 1);
+}
+
+.invest-item-desc {
+  color: @colorTextSecondary;
+  text-align: left;
+}
+
+.connect-title {
+  color: @colorText;
+  text-align: left;
+  font-style: normal;
+}
+
+.connect-info-item {
+  color: @colorTextTertiary;
+}
+
+.connect-box {
+  border-bottom: rgba(0, 0, 0, 0.1) solid 1px;
+}
+
+.connect-page {
+  background-color: @colorBgLayout;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.connect-code-text {
+  color: @colorTextTertiary;
+}
+
+// 响应式布局相关
+@media screen and (max-width: 768px) {
+  #app {
+    min-width: unset; // 移除最小宽度限制，使其在移动设备上可以正常显示
+  }
+
+  .info-item {
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+  }
+
+  .connect-mobile-box {
+    border-bottom: rgba(0, 0, 0, 0.1) solid 1px;
+    border-top: rgba(0, 0, 0, 0.1) solid 1px;
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.1);
+  }
+}
