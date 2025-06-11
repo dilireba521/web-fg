@@ -119,6 +119,7 @@ export default defineComponent({
               size="large"
               class="w-full"
               type="primary"
+              html-type="submit"
             >
               登录
             </Button>

@@ -12,6 +12,8 @@
     <div class="absolute right-6 top-0 h-14 flex items-center">
       <!-- 通知 -->
       <NoticeVue></NoticeVue>
+      <!-- 用户 -->
+      <UserVue></UserVue>
     </div>
     
   </div>
@@ -28,6 +30,7 @@ import { routebasicModuleList } from '@/router/routes'
 import LogoImg from '@/assets/icons/logo.svg'
 import BreadCrumbVue from './components/breadcrumb.vue'
 import NoticeVue from './components/notice.vue'
+import UserVue from './components/user.vue'
 
 const { go } = useGo()
 

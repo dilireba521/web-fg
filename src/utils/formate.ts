@@ -34,3 +34,7 @@ export function limitDecimalPlaces(value: any) {
   let reg = /^(\-)*(\d+)\.(\d\d).*$/
   return String(value).replace(reg, '$1$2.$3')
 }
+// 电话号码格式化
+export function formatPhone(phone: any) {
+  return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+}

@@ -1,9 +1,12 @@
 <template>
-  <div>
-    <Dropdown :trigger="['contextmenu']">
-      <Badge size="small" :count="6">
+  <div class="cursor-pointer h-full flex justify-center items-center w-10 text-center hover:bg-dark/4">
+    <Dropdown>
+      <div class="  h-full flex justify-center items-center w-full">
+        <Badge size="small" :count="6">
         <BellOutlined class="cursor-pointer" :style="{ fontSize: '24px' }" />
       </Badge>
+      </div>
+     
       <template #overlay>
         <div class="notice-cont">
           <Tabs :tabBarGutter="24" size="small">

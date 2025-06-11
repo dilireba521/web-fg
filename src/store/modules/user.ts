@@ -75,15 +75,13 @@ export const useUserStore = defineStore('user', {
       await this.setToken(undefined)
       this.setUserInfo(null)
       this.resetState()
-      router.replace('/')
+      router.replace('/login')
     },
     confirmLoginOut() {
       Modal.confirm({
         title: () => h('span', { class: 'text-primary' }, '确定要退出登录吗？'),
         centered: true,
         cancelButtonProps: {
-          class: 'is-gray',
-          type: 'primary'
         },
         onOk: async () => {
           this.loginOut()

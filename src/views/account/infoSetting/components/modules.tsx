@@ -2,6 +2,7 @@ import { ExclamationCircleFilled, CheckCircleFilled } from '@ant-design/icons-vu
 import { Modal, Upload, message, Form, Input, Tabs, TabPane, Button } from 'ant-design-vue'
 import { computed, defineComponent, reactive, ref, onMounted, toRaw, watch } from 'vue'
 import { ConfigPropType } from '../enums'
+import { usePostChangePas } from '@/api/user'
 const modalFooterBtn: any = {
   class: 'w-74px !ml-4'
 }
@@ -72,15 +73,14 @@ export const Password = defineComponent({
     const visible = ref(false)
     const formRef = ref()
     const formState = reactive({
-      oldPw: '',
-      newPw1: '',
+      password1: '',
+      password2: '',
       newPw2: '',
       code: ''
     })
     const confirmLoading = ref(false)
-    onMounted(() => {
-      console.log('mounted--Password')
-    })
+  
+    
     function handleOk(params: any) {
       //   console.log(params)
       formRef.value.validate().then((res: any) => {
@@ -91,19 +91,19 @@ export const Password = defineComponent({
     const rules = {
       code: [
         {
-          required: true,
+          required: false,
           message: '请输入验证码',
           trigger: 'blur'
         }
       ],
-      oldPw: [
+      password1: [
         {
           required: true,
           message: '请输入旧密码',
           trigger: 'blur'
         }
       ],
-      newPw1: [
+      password2: [
         {
           required: true,
           message: '请输入新密码',
@@ -113,12 +113,11 @@ export const Password = defineComponent({
       newPw2: [
         {
           required: true,
-          message: '请输入新密码',
           trigger: 'blur',
           validator: (rule: any, value: any) => {
             if (value === '') {
               return Promise.reject('两次输入密码不一致')
-            } else if (value !== formState.newPw1) {
+            } else if (value !== formState.password2) {
               return Promise.reject('两次输入密码不一致')
             } else {
               return Promise.resolve()
@@ -160,15 +159,15 @@ export const Password = defineComponent({
                 rules={rules}
                 class="mt-8 mb-12 px-6"
               >
-                <Form.Item name="oldPw" label="旧密码">
+                <Form.Item name="password1" label="旧密码">
                   <Input.Password
-                    v-model:value={formState.oldPw}
+                    v-model:value={formState.password1}
                     placeholder="请输入旧密码"
                   ></Input.Password>
                 </Form.Item>
-                <Form.Item name="newPw1" label="新密码">
+                <Form.Item name="password2" label="新密码">
                   <Input.Password
-                    v-model:value={formState.newPw1}
+                    v-model:value={formState.password2}
                     placeholder="请输入新密码"
                   ></Input.Password>
                 </Form.Item>

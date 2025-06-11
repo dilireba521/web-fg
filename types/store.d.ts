@@ -1,4 +1,5 @@
 export interface UserInfo {
+  email?: string
   phone?: string
   name?: string
   addressTrc20?: string
@@ -6,4 +7,5 @@ export interface UserInfo {
   isBinding: boolean
   loginTime?: string
   active?: string
+  noticeConfig?: any
 }
