@@ -3,6 +3,10 @@ import { Modal, Upload, message, Form, Input, Tabs, TabPane, Button } from 'ant-
 import { computed, defineComponent, reactive, ref, onMounted, toRaw, watch } from 'vue'
 import { ConfigPropType } from '../enums'
 import { usePostChangePas } from '@/api/user'
+import { useApiBasic } from '@/utils/hook/useApi'
+import { useInterval } from '@vueuse/core'
+import { useUserStore } from '@/store/modules/user'
+
 const modalFooterBtn: any = {
   class: 'w-74px !ml-4'
 }
@@ -70,8 +74,23 @@ export const renderLevel = (level: number) => {
 export const Password = defineComponent({
   emits: ['submit'],
   setup(props, { expose, emit }) {
+    const userStore = useUserStore()
     const visible = ref(false)
     const formRef = ref()
+
+    const _count = 10
+    const counterMsg = ref(_count)
+    const { resume, pause } = useInterval(1000, {
+      controls: true,
+      immediate: false,
+      callback: (count: number) => {
+        counterMsg.value--
+        if (counterMsg.value < 0) {
+          counterMsg.value = _count
+          pause()
+        }
+      }
+    })
     const formState = reactive({
       password1: '',
       password2: '',
@@ -79,13 +98,13 @@ export const Password = defineComponent({
       code: ''
     })
     const confirmLoading = ref(false)
-  
-    
+
     function handleOk(params: any) {
       //   console.log(params)
       formRef.value.validate().then((res: any) => {
         confirmLoading.value = true
-        emit('submit', { ...res, action: 'changePassword' })
+        // emit('submit', { ...res, action: 'changePassword' })
+        changePasswordFn(res)
       })
     }
     const rules = {
@@ -96,28 +115,28 @@ export const Password = defineComponent({
           trigger: 'blur'
         }
       ],
+      // password1: [
+      //   {
+      //     required: true,
+      //     message: '请输入旧密码',
+      //     trigger: 'blur'
+      //   }
+      // ],
       password1: [
-        {
-          required: true,
-          message: '请输入旧密码',
-          trigger: 'blur'
-        }
-      ],
-      password2: [
         {
           required: true,
           message: '请输入新密码',
           trigger: 'blur'
         }
       ],
-      newPw2: [
+      password2: [
         {
           required: true,
           trigger: 'blur',
           validator: (rule: any, value: any) => {
             if (value === '') {
               return Promise.reject('两次输入密码不一致')
-            } else if (value !== formState.password2) {
+            } else if (value !== formState.password1) {
               return Promise.reject('两次输入密码不一致')
             } else {
               return Promise.resolve()
@@ -134,6 +153,28 @@ export const Password = defineComponent({
         }
       }
     )
+    function changePasswordFn(params: any) {
+      const { counter } = useInterval(1000, { controls: true })
+      useApiBasic({
+        apiFn: usePostChangePas(params) as any,
+        successFn: (data: any) => {
+          visible.value = false
+          message.warning({
+            content: () => `请勿操作，${5 - counter.value > 0 ? 5 - counter.value : 0}秒后自动退出`,
+            key: 'Changepw',
+            duration: 5,
+            onClose: () => {
+              userStore.loginOut()
+            }
+          })
+        }
+      })
+    }
+    // 获取短信验证码
+    function getCode() {
+      counterMsg.value--
+      resume()
+    }
     expose({
       visible,
       confirmLoading
@@ -159,21 +200,21 @@ export const Password = defineComponent({
                 rules={rules}
                 class="mt-8 mb-12 px-6"
               >
-                <Form.Item name="password1" label="旧密码">
+                {/* <Form.Item name="password1" label="旧密码">
                   <Input.Password
                     v-model:value={formState.password1}
                     placeholder="请输入旧密码"
                   ></Input.Password>
-                </Form.Item>
-                <Form.Item name="password2" label="新密码">
+                </Form.Item> */}
+                <Form.Item name="password1" label="新密码">
                   <Input.Password
-                    v-model:value={formState.password2}
+                    v-model:value={formState.password1}
                     placeholder="请输入新密码"
                   ></Input.Password>
                 </Form.Item>
-                <Form.Item name="newPw2" label="重复新密码">
+                <Form.Item name="password2" label="重复新密码">
                   <Input.Password
-                    v-model:value={formState.newPw2}
+                    v-model:value={formState.password2}
                     placeholder="请输入新密码"
                   ></Input.Password>
                 </Form.Item>
@@ -181,10 +222,20 @@ export const Password = defineComponent({
                   <Input.Group compact>
                     <Input
                       v-model:value={formState.code}
-                      style="width: calc(100% - 88px)"
+                      style={{
+                        width: `calc(100% - 120px)`
+                      }}
                       placeholder="请输入验证码"
                     ></Input>
-                    <Button class="w-22 !px-2">获取验证码</Button>
+                    <Button
+                      disabled={counterMsg.value != _count}
+                      onClick={getCode}
+                      class='w-30 text-center !px-0'
+                    >
+                      {counterMsg.value != _count
+                        ? counterMsg.value + '秒后重新获取'
+                        : '获取验证码'}
+                    </Button>
                   </Input.Group>
                 </Form.Item>
               </Form>
@@ -250,7 +301,7 @@ export const Phone = defineComponent({
           message: '请输入新密码',
           trigger: 'blur'
         }
-      ],
+      ]
     }
     watch(
       () => visible.value,
@@ -292,16 +343,10 @@ export const Phone = defineComponent({
                   ></Input.Password>
                 </Form.Item>
                 <Form.Item name="newPw1" label="手机号码">
-                  <Input
-                    v-model:value={formState.newPw1}
-                    placeholder="请输入手机号码"
-                  ></Input>
+                  <Input v-model:value={formState.newPw1} placeholder="请输入手机号码"></Input>
                 </Form.Item>
                 <Form.Item name="newPw2" label="新手机号码">
-                  <Input
-                    v-model:value={formState.newPw2}
-                    placeholder="请输入新手机号码"
-                  ></Input>
+                  <Input v-model:value={formState.newPw2} placeholder="请输入新手机号码"></Input>
                 </Form.Item>
                 <Form.Item name="code" label="短信验证码">
                   <Input.Group compact>

@@ -13,7 +13,8 @@ export function createPermissionGuard(router: Router) {
   const userStore = useUserStoreWithOut()
   router.beforeEach(async (to, from, next) => {
     const token = userStore.getToken
-    console.log('token', token, to.path,whitePathList)
+    // console.log('token', token, to.path,whitePathList)
+    console.log('useUserStoreWithOut=====', to, from)
 
     // get userinfo while last fetch time is empty
     if (token && userStore.getLastUpdateTime === 0) {

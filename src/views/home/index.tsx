@@ -6,6 +6,7 @@ import Info from './components/info'
 
 export default defineComponent({
   setup(props, ctx) {
+
     return () => <div>
       <Banner />
       {/* 平台简介 */}

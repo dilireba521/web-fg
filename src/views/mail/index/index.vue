@@ -1,5 +1,5 @@
 <template>
-  <div class="w-936px m-auto pt-16">
+  <div class="w-936px min-h-120 m-auto pt-16">
     <Tabs :tabBarGutter="24" size="small">
       <Tabs.TabPane key="1">
         <template #tab
@@ -16,7 +16,7 @@
     </Tabs>
   </div>
 </template>
-<script lang="jsx" setup>
+<script lang="tsx" setup>
 import { ref } from 'vue'
 import { Badge, Tabs, Empty } from 'ant-design-vue'
 import { Review } from './components/modules'

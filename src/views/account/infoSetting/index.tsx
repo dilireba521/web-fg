@@ -4,9 +4,7 @@ import { MobileFilled, LockFilled, MailFilled } from '@ant-design/icons-vue'
 import { ClickType } from './enums'
 import { useUserStore } from '@/store/modules/user'
 import { formatPhone } from '@/utils/formate'
-import { usePostChangePas } from '@/api/user'
 import { useApiBasic } from '@/utils/hook/useApi'
-import { useInterval } from '@vueuse/core'
 import { message } from 'ant-design-vue'
 export default defineComponent({
   setup(props, ctx) {
@@ -35,11 +33,6 @@ export default defineComponent({
     
     function onSubmit(params: any) {
       console.log(params)
-      switch (params.action){
-        case 'changePassword':
-          changePasswordFn(params)
-          break;
-      }
     }
     const AsyncCom = {
       Password: defineAsyncComponent(() =>
@@ -65,27 +58,7 @@ export default defineComponent({
           break
       }
     }
-    function changePasswordFn(params: any){
-      const { counter } = useInterval(1000, { controls: true })
-      useApiBasic({
-        apiFn: usePostChangePas(params) as any,
-        successFn:(data:any)=>{
-          passwordRef.value.visible = false
-          message.warning({
-            content: () =>
-              `请勿操作，${5 - counter.value > 0 ? 5 - counter.value : 0}秒后自动退出`,
-            key: 'Changepw',
-            duration: 5,
-            onClose: () => {
-              userStore.loginOut()
-            }
-          })
-        },
-        errorFn:()=>{
-          message.error('修改失败')
-        }
-      })
-    }
+    
     return () => (
       <div class="bg-black/3 rounded-xs p-12 min-h-665px  mt-6">
         {/* 安全等级 */}
@@ -99,7 +72,7 @@ export default defineComponent({
           <div class="text-xs color-tertiary flex-1">上次登录时间 2024-06-18 15:12:23</div>
           <div
             onClick={() => handleClick({ type: ClickType.PASSWORD })}
-            class="color-secondary cursor-pointer"
+            class="color-secondary cursor-pointer hover:text-[#C1272D]"
           >
             修改
           </div>
@@ -113,7 +86,7 @@ export default defineComponent({
           <div class="text-xs color-tertiary flex-1">{userInfo?.phone ? formatPhone(userInfo?.phone) : '未绑定'}</div>
           <div
             onClick={() => handleClick({ type: ClickType.PHONE })}
-            class="cursor-pointer text-[#C1272D]"
+            class="cursor-pointer color-secondary hover:text-[#C1272D]"
           >
             {userInfo?.phone ? '修改' :'绑定'}
           </div>
@@ -127,7 +100,7 @@ export default defineComponent({
           <div class="text-xs color-tertiary flex-1">{userInfo?.email || '未绑定'}</div>
           <div
             onClick={() => handleClick({ type: ClickType.EMAIL })}
-            class="cursor-pointer text-[#C1272D]"
+            class="cursor-pointer color-secondary hover:text-[#C1272D]"
           >
             {userInfo?.email ? '修改' :'绑定'}
           </div>

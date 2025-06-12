@@ -1,16 +1,21 @@
-import { defineComponent, reactive, watch, ref } from 'vue'
+import { defineComponent, reactive, watch, ref, toRaw } from 'vue'
 import Banner from './components/banner'
 import { Form, Input, List, Button, message, Tree, RangePicker } from 'ant-design-vue'
 import { BasicButtonForm } from '@/components/button'
 import { fundTypeOptions } from '@/utils/options/basicOptions'
 import { BasicList } from '@/components/list'
+import { useGetNews } from '@/api/news'
+import { formatToDate } from '@/utils/dateUtil'
+import { useGo } from '@/hooks/web/usePage'
 
 export default defineComponent({
   setup(props, ctx) {
+    const { go } = useGo()
     const labelCol = { style: { width: '78px' } }
     const searchInfo = reactive({
-      typeId: [],
-      queryInfo: ''
+      timeRang: null,
+      fundType: null,
+      queryString: ''
     })
     const searchOptions = {
       man: fundTypeOptions
@@ -26,29 +31,16 @@ export default defineComponent({
     // 列表
     const listRef = ref()
     const loading = ref(false)
-    const dataSource = ref([
-      {
-        id: 1
-      },
-      {
-        id: 2
-      }
-    ])
+    
     // 树
     const treeData = ref([
       {
-        title: 'parent 1',
-        key: '0-0',
-        children: [
-          {
-            title: 'leaf 1-0',
-            key: '0-0-0'
-          },
-          {
-            title: 'leaf 1-1',
-            key: '0-0-1'
-          }
-        ]
+        title: '定期公告',
+        key: '定期公告',
+      },
+      {
+        title: '临时公告',
+        key: '临时公告',
       }
     ])
     function renderItem(name: string, value: string) {
@@ -58,6 +50,15 @@ export default defineComponent({
           <div>{value}</div>
         </div>
       )
+    }
+    function beforeFetch(params: any) {
+      if (params.timeRang?.length > 0) {
+        params.beginDate = formatToDate(params.timeRang[0]) + ' 00:00:00'
+        params.endDate = formatToDate(params.timeRang[1]) + ' 23:59:59'
+      }
+    }
+    function handleClickSearch() {
+      listRef.value?.fetch({ searchInfo: toRaw(searchInfo) })
     }
     return () => (
       <div>
@@ -71,42 +72,55 @@ export default defineComponent({
               <div class="color-secondary">筛选</div>
               <div class="color-tertiary cursor-pointer">清除</div>
             </div>
-            <div class="leading-14 mt-2">文件类型</div>
-            <Tree treeData={treeData.value} defaultExpandAll={true} selectable={false} blockNode={true} checkable></Tree>
+            <div class="leading-14 mt-2">公告类型</div>
+            <Tree
+              treeData={treeData.value}
+              defaultExpandAll={true}
+              selectable={false}
+              blockNode={true}
+              v-model:checkedKeys={searchInfo.fundType}
+              checkable
+            ></Tree>
           </div>
-          <div class="flex-1 pl-8">
+          <div class="flex-1 pl-8 pb-10">
             <Form class="my-3" layout="inline" labelCol={labelCol}>
               <Form.Item>
-                <RangePicker />
+                <RangePicker v-model:value={searchInfo.timeRang} />
               </Form.Item>
               <Form.Item>
                 <Input
                   class="w-[332px]"
-                  v-model:value={searchInfo.queryInfo}
+                  v-model:value={searchInfo.queryString}
                   placeholder="输入基金名称/关键字"
                 />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" class="w-74px">
+                <Button onClick={() => handleClickSearch()} type="primary" class="w-74px">
                   查询
                 </Button>
               </Form.Item>
             </Form>
             <BasicList
+              api={useGetNews}
               ref={listRef}
               loading={loading.value}
               isHandle={true}
               split={false}
-              dataSource={dataSource.value}
+              beforeFetch={beforeFetch}
               searchInfo={searchInfo}
             >
               {{
-                renderItem: () => {
+                renderItem: ({ item }) => {
                   return (
-                    <List.Item class="!p-6 bg-black/3 mb-1 cursor-pointer hover:bg-[#C1272D1A] hover:text-[#C1272D]">
+                    <List.Item
+                      onClick={() => {
+                        go(`/info/detail/?id=${item?.id}`)
+                      }}
+                      class="!p-6 bg-black/3 mb-1 cursor-pointer hover:bg-[#C1272D1A] hover:text-[#C1272D]"
+                    >
                       <div class="w-full flex items-center justify-between">
-                        <div class="font-h6 truncate">经典CTA-2号私募投资基金</div>
-                        <div class="color-tertiary">2025-03-06</div>
+                        <div class="font-h6 truncate">{item?.title}</div>
+                        <div class="color-tertiary">{item?.createTime}</div>
                       </div>
                     </List.Item>
                   )

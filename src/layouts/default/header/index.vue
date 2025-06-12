@@ -9,7 +9,7 @@
         @change="change"
       ></TabsVue>
     </div>
-    <div class="absolute right-6 top-0 h-14 flex items-center">
+    <div class="absolute right-0 pr-6 top-0 h-14 flex items-center bg-white ">
       <!-- 通知 -->
       <NoticeVue></NoticeVue>
       <!-- 用户 -->
