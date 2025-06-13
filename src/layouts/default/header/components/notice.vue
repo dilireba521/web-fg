@@ -1,7 +1,9 @@
 <template>
-  <div class="cursor-pointer h-full flex justify-center items-center w-10 text-center hover:bg-dark/4">
-    <Dropdown>
-      <div class="  h-full flex justify-center items-center w-full">
+  <div
+    class="cursor-pointer h-full flex justify-center items-center w-10 text-center hover:bg-dark/4"
+  >
+    <Dropdown :destroyPopupOnHide="true" :forceRender="false">
+      <div class="h-full flex justify-center items-center w-full">
         <Badge size="small" :count="countAll">
           <BellOutlined class="cursor-pointer" :style="{ fontSize: '24px' }" />
         </Badge>
@@ -12,7 +14,9 @@
           <Tabs v-model:activeKey="activeKey" :tabBarGutter="24" size="small">
             <Tabs.TabPane v-for="item in tabs" :key="item.key">
               <template #tab>
-                <Badge size="small" class="text-inherit" :count="item.count">{{ item.label }}</Badge>
+                <Badge size="small" class="text-inherit" :count="item.count">{{
+                  item.label
+                }}</Badge>
               </template>
               <component :is="renderReview(item)"></component>
             </Tabs.TabPane>
@@ -36,11 +40,11 @@ const userStore = useUserStore()
 const userInfo = userStore.getUserInfo
 const { options } = useNoticeCategory()
 const { go } = useGo()
-const activeKey = ref('1')
+const activeKey = ref()
 const tabs = computed(() => {
-  const noticeNotRead = userInfo?.noticeNotRead || []
-  return options.value?.map(item => {
-    const _item = noticeNotRead.find(notice => notice.categoryId == item.value)
+  const noticeNotRead = userStore.getUserInfo?.noticeNotRead || []
+  return options.value?.map((item) => {
+    const _item = noticeNotRead.find((notice) => notice.categoryId == item.value)
     return {
       label: item.label,
       key: item.value,
@@ -50,36 +54,41 @@ const tabs = computed(() => {
 })
 // 通知数据列表数据-字典格式
 const noticeMap = ref<any>({})
-watch(tabs, (cur) => {
-  if (cur?.length) {
-    activeKey.value = cur[0].key
-  }
-}, { immediate: true })
+watch(
+  tabs,
+  (cur) => {
+    if (cur?.length && !activeKey.value) {
+      activeKey.value = cur[0].key
+    }
+  },
+  { immediate: true }
+)
 const countAll = computed(() => {
   return tabs.value?.reduce((pre, cur) => {
     return pre + cur.count
   }, 0)
 })
-function jump(params) {
+function jump(params?: any) {
   go({
-    path: '/mail'
+    path: '/mail',
+    query: params
   })
 }
 watch(activeKey, (cur) => {
-  useGetNoticeFn({ categoryId: cur })
+  useGetNoticeFn({ categoryId: cur, isRead: 0, pageSize: 5 })
 })
 async function useGetNoticeFn(params: any) {
   const { data } = await useGetNotice(params)
   if (data.value?.retCode == 0) {
     noticeMap.value[params.categoryId] = data.value?.data
   }
-  console.log("useGetNoticeFn----", data);
+  console.log('useGetNoticeFn----', data)
 }
 
 // 申赎审核
 function renderReview(params: any) {
   const _data = noticeMap.value[params.key]
-  console.log("renderReview----", _data);
+  // console.log("renderReview----", _data);
 
   return (
     <div>
@@ -87,39 +96,27 @@ function renderReview(params: any) {
         <BasicSkeleton
           paragraph={{ rows: 6 }}
           loading={!Array.isArray(_data) && !_data?.length}
-          showEmpty={!_data?.length}>
-          {
-            _data?.map((item: any, index: number) => {
-              return <div onClick={jump} class="list-item  text-black/65 hover:text-black/88  cursor-pointer">
+          showEmpty={!_data?.length}
+        >
+          {_data?.map((item: any, index: number) => {
+            return (
+              <div
+                onClick={() => jump({ activeKey: params.key, id: item?.id })}
+                class="list-item  text-black/65 hover:text-black/88  cursor-pointer"
+              >
                 <div class="flex-1 truncate mr-4">{item?.content}</div>
                 <div class="text-black/45">{item?.createTime}</div>
               </div>
-            })
-          }
+            )
+          })}
         </BasicSkeleton>
-
-
-        {/* <div class="list-item  text-black/65 hover:text-black/88  cursor-pointer">
-          <div class="flex-1 truncate">您的申购申请审核已通过通过…</div>
-          <div class="text-black/45">2025-03-08</div>
-        </div>
-        <div class="list-item  text-black/65 hover:text-black/88  cursor-pointer">
-          <div class="flex-1 truncate">您的申购申请审核已通过通过…</div>
-          <div class="text-black/45">2025-03-08</div>
-        </div>
-        <div class="list-item  text-black/65 hover:text-black/88  cursor-pointer">
-          <div class="flex-1 truncate">您的申购申请审核已通过通过…</div>
-          <div class="text-black/45">2025-03-08</div>
-        </div>
-        <div class="list-item  text-black/65 hover:text-black/88  cursor-pointer">
-          <div class="flex-1 truncate">您的申购申请审核已通过通过…</div>
-          <div class="text-black/45">2025-03-08</div>
-        </div> */}
-        {/* <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}></Empty> */}
       </div>
       <div class="flex justify-between items-center h-54px w-full text-black/25 ">
-        <div class="cursor-pointer hover:text-black/88">全部已读</div>
-        <div class="cursor-pointer hover:text-black/88">
+        <div class="cursor-pointer hover:text-black/88">{/* 全部已读 */}</div>
+        <div
+          onClick={() => jump({ activeKey: params.key })}
+          class="cursor-pointer hover:text-black/88"
+        >
           查看全部
           <RightOutlined />
         </div>

@@ -87,6 +87,16 @@ export const useUserStore = defineStore('user', {
           this.loginOut()
         }
       })
+    },
+    async updateUserInfo() {
+      try {
+        const { data } = await useGetUserInfo()
+        if (data.value?.retCode == 0) {
+          this.setUserInfo(data.value?.data)
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 })
