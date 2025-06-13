@@ -2,7 +2,7 @@ import { defineComponent, reactive, watch, ref } from 'vue'
 import Banner from './components/banner'
 import { Form, Input, List ,Button, message } from 'ant-design-vue'
 import { BasicButtonForm } from '@/components/button'
-import { fundTypeOptions } from "@/utils/options/basicOptions"
+import { fundTypeOptions,basicOptions } from "@/utils/options/basicOptions"
 import { BasicList } from '@/components/list'
 import { useGo } from '@/hooks/web/usePage'
 export default defineComponent({
@@ -11,14 +11,18 @@ export default defineComponent({
     const labelCol = { style: { width: '78px' } }
     const searchInfo = reactive({
       typeId: [],
+      basicId: [],
       queryInfo: ''
     })
     const searchOptions = {
-      man: fundTypeOptions
+      man: [...basicOptions,...fundTypeOptions],
+      basic: basicOptions,
     }
     const searchFormRef = ref()
     watch(() => searchInfo, (val,oldVal) => {
-      // console.log(val,oldVal)
+      console.log(val)
+      // if()
+    
     },{deep: true})
     // 列表
     const listRef = ref()
@@ -63,7 +67,9 @@ export default defineComponent({
         <Form.Item>
         {{
             default: () => (
-             <BasicButtonForm ref={searchFormRef}  options={searchOptions.man} v-model:value={searchInfo.typeId} />
+              <div class='flex'>
+                 <BasicButtonForm selectAllKey='all' ref={searchFormRef}  options={searchOptions.man} v-model:value={searchInfo.typeId} />
+              </div>
             ),
             label: () => <div class="font-h7 color-secondary">基金经理</div>
           }}

@@ -2,14 +2,14 @@
   <div
     class="cursor-pointer h-full flex justify-center items-center w-10 text-center hover:bg-dark/4"
   >
-    <Dropdown :destroyPopupOnHide="true" :forceRender="false">
+    <Dropdown :destroyPopupOnHide="true" v-model:visible="open">
       <div class="h-full flex justify-center items-center w-full">
         <Badge size="small" :count="countAll">
           <BellOutlined class="cursor-pointer" :style="{ fontSize: '24px' }" />
         </Badge>
       </div>
 
-      <template #overlay>
+      <template  #overlay>
         <div class="notice-cont">
           <Tabs v-model:activeKey="activeKey" :tabBarGutter="24" size="small">
             <Tabs.TabPane v-for="item in tabs" :key="item.key">
@@ -37,7 +37,8 @@ import { useUserStore } from '@/store/modules/user'
 import { BasicSkeleton } from '@/components/skeleton'
 
 const userStore = useUserStore()
-const userInfo = userStore.getUserInfo
+
+const open = ref(false)
 const { options } = useNoticeCategory()
 const { go } = useGo()
 const activeKey = ref()
