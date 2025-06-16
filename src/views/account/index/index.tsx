@@ -21,29 +21,44 @@ export default defineComponent({
     const dataSource = ref()
     // 组合比例
     const comRatio = computed(() => {
-      const _cnyRatio = (((dataSource.value?.aumCny/dataSource.value?.aum) || 0) * 100).toFixed(2)  
-      const _usdRatio = (((dataSource.value?.aumUsd/dataSource.value?.aum) || 0) * 100).toFixed(2)  
+      const _cnyRatio = ((dataSource.value?.aumCny / dataSource.value?.aum || 0) * 100).toFixed(2)
+      const _usdRatio = ((dataSource.value?.aumUsd / dataSource.value?.aum || 0) * 100).toFixed(2)
       return {
         cnyRatio: `${_cnyRatio}%`,
         usdRatio: `${_usdRatio}%`
       }
     })
 
-    const assetArr = [
-      {
-        totalEquity: '1000000',
-        name: 'CNY'
-      },
-      {
-        totalEquity: '2000000',
-        name: 'USD'
-      }
-    ]
-    const { render: renderAssetChange } = useAssetChangeRate()
+    // 资产占比
+    const assetArr = computed(() => {
+      return [
+        {
+          totalEquity: dataSource.value?.aumCny?.toFixed(2) || 0,
+          name: 'CNY'
+        },
+        {
+          totalEquity: dataSource.value?.aumUsd?.toFixed(2) || 0,
+          name: 'USD'
+        }
+      ]
+    })
+
+    // 持有基金占比
+    const fundArr = computed(() => {
+      const _fund = dataSource.value?.funds || []
+      return _fund?.map((item) => {
+        return {
+          totalEquity: item?.userAsset?.toFixed(2) || 0,
+          name: item?.fundName
+        }
+      })
+    })
+
+    // const { render: renderAssetChange } = useAssetChangeRate()
     const { render: renderTotalEchart } = useRenderTotalEchart()
-    const { render: renderAssetEchart } = useAssetPie(assetArr)
-    const { render: renderFundEchart } = useFundPie(assetArr)
-    const { render: renderFundValueEchart } = useFundValue(assetArr)
+    const { render: renderAssetEchart } = useAssetPie(assetArr, loading)
+    const { render: renderFundEchart } = useFundPie(fundArr, loading)
+    const { render: renderFundValueEchart } = useFundValue(fundArr, loading)
     function handleChangeMore() {
       isSwapped.value = !isSwapped.value
     }
@@ -53,6 +68,7 @@ export default defineComponent({
         const { data } = await useGetUserAssetInfo()
         if (data.value?.retCode == 0) {
           dataSource.value = data.value?.data
+          console.log('dataSource.value====', dataSource.value)
         }
       } finally {
         loading.value = false
@@ -132,19 +148,27 @@ export default defineComponent({
                         <Col span={12}>
                           <div class="text-xs color-tertiary leading-5">CNY</div>
                           <div class="font-h5">
-                            {isSwapped.value ? comRatio.value?.cnyRatio : formateNumStr(dataSource.value?.aumCny)}
+                            {isSwapped.value
+                              ? comRatio.value?.cnyRatio
+                              : formateNumStr(dataSource.value?.aumCny)}
                           </div>
                           <div class="leading-5 text-xs pt-2">
-                            {!isSwapped.value ? comRatio.value?.cnyRatio : formateNumStr(dataSource.value?.aumCny)}
+                            {!isSwapped.value
+                              ? comRatio.value?.cnyRatio
+                              : formateNumStr(dataSource.value?.aumCny)}
                           </div>
                         </Col>
                         <Col span={12}>
                           <div class="text-xs color-tertiary leading-5">USD</div>
                           <div class="font-h5">
-                            {isSwapped.value ? comRatio.value?.usdRatio : formateNumStr(dataSource.value?.aumUsd)}
+                            {isSwapped.value
+                              ? comRatio.value?.usdRatio
+                              : formateNumStr(dataSource.value?.aumUsd)}
                           </div>
                           <div class="leading-5 text-xs pt-2">
-                            {!isSwapped.value ? comRatio.value?.usdRatio : formateNumStr(dataSource.value?.aumUsd)}
+                            {!isSwapped.value
+                              ? comRatio.value?.usdRatio
+                              : formateNumStr(dataSource.value?.aumUsd)}
                           </div>
                         </Col>
                       </Row>
@@ -164,7 +188,7 @@ export default defineComponent({
           <Col span={8}>{renderFundValueEchart()}</Col>
         </Row>
         {/* 资产占比变化率 */}
-        <div class="pt-6">{renderAssetChange()}</div>
+        {/* <div class="pt-6">{renderAssetChange()}</div> */}
       </div>
     )
   }

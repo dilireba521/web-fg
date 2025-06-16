@@ -9,14 +9,17 @@ function renderListItem(name: string, value: any) {
 }
 // 基本信息
 export const renderBaseInfo = (data: any) => {
+    const _manager = data?.managers?.map((item)=>{
+        return item?.manager?.name
+    })?.join(',')
     return <div class='pt-16 border-b-[#00000014] border-b-1 border-b-solid'>
         <div class='font-500 border-b-[#00000014] border-b-1 border-b-solid pb-2'>基本信息</div>
         <List size="large">
-            {renderListItem('基金名称', data.name)}
-            {renderListItem('基金代码', data.name)}
-            {renderListItem('基金类型', data.name)}
-            {renderListItem('成立日期', data.name)}
-            {renderListItem('基金经理', data.name)}
+            {renderListItem('基金名称', data?.name)}
+            {renderListItem('基金代码', data?.code)}
+            {renderListItem('基金类型', data?.type?.name)}
+            {renderListItem('成立日期', data?.establishDate)}
+            {renderListItem('基金经理', _manager)}
         </List>
     </div>
 }

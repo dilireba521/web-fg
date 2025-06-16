@@ -60,7 +60,7 @@ watch(
       breadcrumb.value = matched
         .filter((item) => !item.meta?.nobBreadcrumb)
         .map((item) => {
-          console.log('item===', item)
+          // console.log('item===', item)
 
           return {
             title: item.meta.title,

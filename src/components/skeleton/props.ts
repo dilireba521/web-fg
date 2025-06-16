@@ -15,10 +15,10 @@ export function baseSkeletonProps() {
         },
         emptyProps: {
             ...emptyProps(),
-            image: {
-                type: Object as PropType<VNode>,
-                default: Empty.PRESENTED_IMAGE_SIMPLE
-            }
+            // image: {
+            //     type: Object as PropType<VNode>,
+            //     default: Empty.PRESENTED_IMAGE_SIMPLE
+            // }
         }
     }
 }

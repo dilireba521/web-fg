@@ -4,12 +4,12 @@ export function basicColumns() {
       title: '申购金额M（元）（含申购费）',
       align: 'center',
       width: '50%',
-      dataIndex: 'date'
+      dataIndex: 'content'
     },
     {
       title: '申购费率',
       align: 'center',
-      dataIndex: 'netWorth'
+      dataIndex: 'feeContent',
     }
   ]
 }
@@ -20,12 +20,12 @@ export function basicColumns2() {
       title: '持有时间（天）',
       align: 'center',
       width: '50%',
-      dataIndex: 'date'
+      dataIndex: 'content'
     },
     {
       title: '赎回费率',
       align: 'center',
-      dataIndex: 'netWorth'
+      dataIndex: 'feeContent',
     }
   ]
 }
@@ -33,15 +33,15 @@ export function basicColumns2() {
 export function basicColumns3() {
   return [
     {
-      title: '名称',
+      title: '费用类型',
       align: 'center',
       width: '50%',
-      dataIndex: 'date'
+      dataIndex: 'content'
     },
     {
-      title: '价格',
+      title: '费率',
       align: 'center',
-      dataIndex: 'netWorth'
+      dataIndex: 'feeContent'
     }
   ]
 }

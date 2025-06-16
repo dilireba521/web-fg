@@ -17,7 +17,7 @@ export default defineComponent({
         return () => {
             return (
                 <Skeleton {...getBindValues.value}>
-                    {props?.showEmpty ? <Empty {...emptyProps} /> : slots.default?.()}
+                    {props?.showEmpty ? <Empty {...emptyProps} image={Empty.PRESENTED_IMAGE_SIMPLE}/> : slots.default?.()}
                 </Skeleton>
             )
         }

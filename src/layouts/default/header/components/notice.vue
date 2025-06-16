@@ -83,7 +83,7 @@ async function useGetNoticeFn(params: any) {
   if (data.value?.retCode == 0) {
     noticeMap.value[params.categoryId] = data.value?.data
   }
-  console.log('useGetNoticeFn----', data)
+  // console.log('useGetNoticeFn----', data)
 }
 
 // 申赎审核

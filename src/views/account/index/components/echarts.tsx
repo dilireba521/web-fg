@@ -1,27 +1,48 @@
 import { Select, Empty, RangePicker, Tooltip } from 'ant-design-vue'
 import { BasicSkeleton } from '@/components/skeleton'
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, watch, reactive } from 'vue'
 import { renderBasicPanel, renderPanel } from './modules'
 import { useECharts } from '@/hooks/web/useECharts'
 import { formatNumberWithCommas } from '@/utils/formate'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { useGetUserAssetMap } from '@/api/user'
 //总资产规模
-export function useRenderTotalEchart(record: any) {
-  const loading = ref(true)
+export function useRenderTotalEchart() {
+  const loading = ref(false)
   const chartDom = ref(null)
   const { setOptions } = useECharts(chartDom as any)
-
-  onMounted(async () => {
-    await nextTick() // 确保DOM已经渲染完成
-    initData()
-    loading.value = false
+  const record = ref([])
+  const searchInfo = reactive({
+    year: '年',
+    unit: 'CNY'
   })
 
+  async function useGetUserAssetMapFn() {
+    try {
+      loading.value = true
+      const { data } = await useGetUserAssetMap()
+      if (data.value?.retCode == 0) {
+        record.value = data.value?.data
+        await nextTick()
+        initData()
+        console.log('record----', record.value)
+      }
+    } finally {
+      loading.value = false
+    }
+  }
+  watch(
+    () => searchInfo,
+    () => {
+      useGetUserAssetMapFn()
+    },
+    { immediate: true }
+  )
   function initData() {
     const _xAxisData: any = ['1月', '2月', '3月', '4月', '5月', '6月', '7月'],
       _seriesData1: any = [100, 200, 1510, 80, 70, 110, 130]
-    if (record) {
-      record?.forEach((item: any) => {
+    if (record.value) {
+      record.value?.forEach((item: any) => {
         _xAxisData.push(item.date)
         _seriesData1.push(item.value)
       })
@@ -115,16 +136,19 @@ export function useRenderTotalEchart(record: any) {
         <BasicSkeleton loading={loading.value}>
           <div class="px-4 pt-4 pb-2">
             <div class="flex justify-end gap-2">
-              <Select value="CNY">
-                <Select.Option value="jack">CNY</Select.Option>
-                <Select.Option value="lucy">USD</Select.Option>
+              <Select v-model:value={searchInfo.unit}>
+                <Select.Option value="CNY">CNY</Select.Option>
+                <Select.Option value="USD">USD</Select.Option>
               </Select>
-              <Select value="年">
-                <Select.Option value="jack">年</Select.Option>
-                <Select.Option value="lucy">月</Select.Option>
+              <Select v-model:value={searchInfo.year}>
+                <Select.Option value="年">年</Select.Option>
+                <Select.Option value="月">月</Select.Option>
               </Select>
             </div>
-            <div ref={chartDom} style="height: 344px;"></div>
+
+            <div ref={chartDom} style="height: 344px;">
+              <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
+            </div>
           </div>
         </BasicSkeleton>
       )
@@ -137,24 +161,22 @@ export function useRenderTotalEchart(record: any) {
 }
 
 // 资产占比
-export function useAssetPie(record: any) {
-  const loading = ref(true)
+export function useAssetPie(record: any, loading: any) {
   const chartDom = ref(null)
   const { setOptions } = useECharts(chartDom as any)
 
-  onMounted(async () => {
-    await nextTick() // 确保DOM已经渲染完成
-    setTimeout(() => {
-      loading.value = false
+  watch(
+    () => record,
+    (cur) => {
       initData()
-    }, 3000)
-    // loading.value = false
-  })
+    },
+    { immediate: true, deep: true }
+  )
 
   function initData() {
     const _data =
-      record?.length > 0
-        ? record?.map((item: any) => ({
+      record.value?.length > 0
+        ? record.value?.map((item: any) => ({
             value: Number(parseFloat(item.totalEquity).toFixed(4)),
             name: item.name
           }))
@@ -182,99 +204,97 @@ export function useAssetPie(record: any) {
   }
   function render() {
     return (
-      <BasicSkeleton paragraph={{ rows: 12, width: '100%'}} loading={loading.value}>
+      <BasicSkeleton paragraph={{ rows: 12, width: '100%' }} loading={loading.value}>
         {renderPanel({
           title: '资产占比',
-          content: () => <div ref={chartDom} style="height: 400px;"></div>
+          content: () => <div ref={chartDom} style="height: 400px;">
+              <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
+          </div>
         })}
       </BasicSkeleton>
     )
   }
   return {
-    render,
-    loading
+    render
   }
 }
 
 // 持有基金占比
-export function useFundPie(record: any) {
-    const loading = ref(true)
-    const chartDom = ref(null)
-    const { setOptions } = useECharts(chartDom as any)
-  
-    onMounted(async () => {
-      await nextTick() // 确保DOM已经渲染完成
-      setTimeout(() => {
-        loading.value = false
-        initData()
-      }, 3000)
-      // loading.value = false
-    })
-  
-    function initData() {
-      const _data =
-        record?.length > 0
-          ? record?.map((item: any) => ({
-              value: Number(parseFloat(item.totalEquity).toFixed(4)),
-              name: item.name
-            }))
-          : []
-      setOptions({
-        series: [
-          {
-            type: 'pie',
-            radius: ['30%', '45%'],
-            center: ['50%', '55%'],
-            color: ['#2C97EB', '#FFD54F', '#5BB86F', '#F55458'],
-            label: {
-              formatter: `{b}\n{d}%`,
-              color: '#000000E0'
-            },
-            data: _data,
-            animationType: 'scale',
-            animationEasing: 'exponentialInOut',
-            animationDelay: function () {
-              return Math.random() * 400
-            }
-          }
-        ]
-      })
-    }
-    function render() {
-      return (
-        <BasicSkeleton paragraph={{ rows: 12, width: '100%'}} loading={loading.value}>
-          {renderPanel({
-            title: '持有基金占比',
-            content: () => <div ref={chartDom} style="height: 400px;"></div>
-          })}
-        </BasicSkeleton>
-      )
-    }
-    return {
-      render,
-      loading
-    }
-}
-
-// 持有基金市值（CNY）
-export function useFundValue(record: any) {
-  const loading = ref(true)
+export function useFundPie(record: any, loading: any) {
   const chartDom = ref(null)
   const { setOptions } = useECharts(chartDom as any)
 
-  onMounted(async () => {
-    await nextTick() // 确保DOM已经渲染完成
-    setTimeout(() => {
-      loading.value = false
+  watch(
+    () => record,
+    (cur) => {
       initData()
-    }, 3000)
-    // loading.value = false
-  })
+    },
+    { immediate: true, deep: true }
+  )
 
   function initData() {
     const _data =
-      record?.length > 0
-        ? record?.map((item: any) => ({
+      record.value?.length > 0
+        ? record.value?.map((item: any) => ({
+            value: Number(parseFloat(item.totalEquity).toFixed(4)),
+            name: item.name
+          }))
+        : []
+    setOptions({
+      series: [
+        {
+          type: 'pie',
+          radius: ['30%', '45%'],
+          center: ['50%', '55%'],
+          color: ['#2C97EB', '#FFD54F', '#5BB86F', '#F55458'],
+          label: {
+            formatter: `{b}\n{d}%`,
+            color: '#000000E0'
+          },
+          data: _data,
+          animationType: 'scale',
+          animationEasing: 'exponentialInOut',
+          animationDelay: function () {
+            return Math.random() * 400
+          }
+        }
+      ]
+    })
+  }
+  function render() {
+    return (
+      <BasicSkeleton paragraph={{ rows: 12, width: '100%' }} loading={loading.value}>
+        {renderPanel({
+          title: '持有基金占比',
+          content: () => <div ref={chartDom} style="height: 400px;">
+            <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
+          </div>
+        })}
+      </BasicSkeleton>
+    )
+  }
+  return {
+    render
+  }
+}
+
+// 持有基金市值（CNY）
+export function useFundValue(record: any, loading: any) {
+  const chartDom = ref(null)
+  const { setOptions } = useECharts(chartDom as any)
+
+  watch(
+    () => record,
+    (cur) => {
+      initData()
+    },
+    { immediate: true, deep: true }
+  )
+
+  function initData() {
+    const _data =
+      record.value?.length > 0
+        ? record.value?.map((item: any) => ({
             value: Number(parseFloat(item.totalEquity).toFixed(4)),
             name: item.name
           }))
@@ -325,7 +345,7 @@ export function useFundValue(record: any) {
               dashOffset: 5,
               opacity: 0.1
             }
-          },
+          }
           // scale: true
         }
       ],
@@ -338,39 +358,40 @@ export function useFundValue(record: any) {
             color: '#000000E0'
           },
           data: _data,
-          barMaxWidth:'40'
+          barMaxWidth: '40'
         }
       ]
     })
   }
   function render() {
     return (
-      <BasicSkeleton paragraph={{ rows: 12, width: '100%'}} loading={loading.value}>
+      <BasicSkeleton paragraph={{ rows: 12, width: '100%' }} loading={loading.value}>
         {renderPanel({
-          title: ()=> <div class='flex'>
-            <div class='mr-2'>持有基金市值（CNY）</div>
-            <Tooltip>
-              {{
-                title: '233233',
-                default: ()=> <InfoCircleOutlined class='text-[#FAAD14] cursor-pointer'/>
-              }}
-            
-
-            </Tooltip>
-          </div>,
-          content: () => <div ref={chartDom} style="height: 400px;"></div>
+          title: () => (
+            <div class="flex">
+              <div class="mr-2">持有基金市值（CNY）</div>
+              <Tooltip>
+                {{
+                  title: '233233',
+                  default: () => <InfoCircleOutlined class="text-[#FAAD14] cursor-pointer" />
+                }}
+              </Tooltip>
+            </div>
+          ),
+          content: () => <div ref={chartDom} style="height: 400px;">
+            <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
+          </div>
         })}
       </BasicSkeleton>
     )
   }
   return {
-    render,
-    loading
+    render
   }
 }
 
 // 资产占比变化率
-export function useAssetChangeRate(record: any) {
+export function useAssetChangeRate() {
   const loading = ref(true)
   const chartDom = ref(null)
   const { setOptions } = useECharts(chartDom as any)
