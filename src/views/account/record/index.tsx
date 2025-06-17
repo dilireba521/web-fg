@@ -5,8 +5,8 @@ import { formatToDate } from '@/utils/dateUtil'
 import { Select, RangePicker, Row, Col } from 'ant-design-vue'
 import { StepRender } from './components/modules'
 import { TextTranslate } from '@/components/OptionTranslate';
-import { applyStatusOptions } from "@/utils/options/basicOptions"
-
+import { applyTypeOptions } from "@/utils/options/basicOptions"
+import { useGetUserFundSrlist } from "@/api/user"
 export default defineComponent({
   setup(props, ctx) {
     const searchInfo = reactive({
@@ -49,7 +49,7 @@ export default defineComponent({
       }
     }
     return () => (
-      <div class="container">
+      <div class="container pb-10">
         <div class="pt-10 pb-4 font-h5">申赎记录</div>
         <div class="flex mb-3">
           <div class="flex items-center  mr-4">
@@ -58,7 +58,7 @@ export default defineComponent({
               allowClear
               v-model:value={searchInfo.type}
               placeholder="请选择"
-              // options={transferTypeOptions}
+              options={applyTypeOptions}
               class="w-40"
             ></Select>
           </div>
@@ -69,15 +69,14 @@ export default defineComponent({
           </div>
         </div>
         <BasicTable
+          api={useGetUserFundSrlist}
           searchInfo={searchInfo}
           expandedRowKeys={expandedRowKeys.value}
           expandIconColumnIndex={-1}
-          // api={useGetUserFundApply}
-          dataSource={dataSoure.value}
           beforeFetch={beforeFetch}
           columns={basicColumns(expandRowCb, expandedRowKeys)}
         >
-          {{
+          {/* {{
             expandedRowRender: ({ record }) => {
               const current = 1
               const _steps = [
@@ -113,7 +112,7 @@ export default defineComponent({
                 </div>
               )
             }
-          }}
+          }} */}
         </BasicTable>
       </div>
     )

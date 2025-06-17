@@ -3,6 +3,17 @@ export function toLabelValueOptions(arr: any[], params: any): LabelValueOptions 
   const { label = 'label', value = 'value' } = params
   return arr.map((item) => ({ ...item, label: item[label], value: item[value] }))
 }
+// 
+
+// 申赎类型
+export const applyTypeOptions: LabelValueOptions = [{
+  label: '申购',
+  value: 'in'
+},{
+  label: '赎回',
+  value: 'out'
+}]
+
 // 基础选项
 export const basicOptions = [
   {
@@ -112,12 +123,16 @@ export const fundTypeOptions: LabelValueOptions = [
 // 申赎状态
 export const applyStatusOptions: LabelValueOptions = [
   {
-    label: '待审核',
+    label: '待处理',
+    value: '0',
+    color: '#FAAD14FF'
+  },  {
+    label: '处理中',
     value: '1',
     color: '#FAAD14FF'
   },
   {
-    label: '成功',
+    label: '审核通过',
     value: '2',
     color: '#2FB97BFF'
   },

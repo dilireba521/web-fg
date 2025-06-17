@@ -7,6 +7,7 @@ import { basicOptions, productNoticeOptions } from '@/utils/options/basicOptions
 import { useGo } from '@/hooks/web/usePage'
 import { formatToDate } from '@/utils/dateUtil'
 import { useUserStore } from '@/store/modules/user'
+import { useGetUserFundNotice } from "@/api/user"
 export default defineComponent({
   setup(props) {
     const userStore = useUserStore()
@@ -14,15 +15,15 @@ export default defineComponent({
     const route = useRoute()
     const listRef = ref()
     const searchInfo = reactive({
-      type: 'all',
-      fundId: route.query?.id,
-      content: '',
+      type: '定期公告',
+      id: route.query?.id,
+      // content: '',
       timeRang: null
     })
     const loading = ref(false)
     const options = [...productNoticeOptions]
     watch(
-      () => [searchInfo.timeRang, searchInfo.type],
+      () => [searchInfo.type],
       () => {
         handleClickSearch()
       }
@@ -52,13 +53,13 @@ export default defineComponent({
           <div class="font-500">基金报告</div>
           <div>
             <RangePicker v-model:value={searchInfo.timeRang} class="mr-4" />
-            <Button onClick={handleClick} class="w-[74px]" type="primary">
+            <Button onClick={handleClickSearch} class="w-[74px]" type="primary">
               查询
             </Button>
           </div>
         </div>
         <div>
-          <Tabs tabBarGutter={16} size="small">
+          <Tabs v-model:activeKey={searchInfo.type} tabBarGutter={16} size="small">
             {options.map((item: any) => {
               return <Tabs.TabPane key={item.value} tab={item.label}></Tabs.TabPane>
             })}
@@ -68,7 +69,7 @@ export default defineComponent({
             loading={loading.value}
             isHandle={true}
             beforeFetch={beforeFetch}
-            // api={useGetFundNotice}
+            api={useGetUserFundNotice}
             searchInfo={searchInfo}
           >
             {{

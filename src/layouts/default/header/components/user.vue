@@ -4,8 +4,8 @@
             <div class="h-full w-full justify-center flex items-center text-sm cursor-pointer border-dark">{{ userInfo?.name }}</div>
             <template #overlay>
                 <Menu>
-                    <Menu.Item key="1" @click="userStore.confirmLoginOut">退出登录</Menu.Item>
                     <Menu.Item key="2" @click="changePwd">修改密码</Menu.Item>
+                    <Menu.Item key="1" @click="userStore.confirmLoginOut">退出登录</Menu.Item>
                 </Menu>
             </template>
         </Dropdown>

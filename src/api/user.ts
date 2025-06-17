@@ -1,6 +1,11 @@
 import { useGet, usePost } from '@/utils/http'
 
 enum Api {
+    USER_FUND_DAILY = '/web/user/fund/daily/',
+    USER_FUND_NETORTH = '/web/user/fund/netorth/',
+    USER_FUND_NOTICE = '/web/user/fund/notice/',
+    USER_FUND_SRLIST = '/web/user/fund/srlist/',
+    USER_ASSET_AF = '/web/user/asset/af/',
     USER_ASSET_MAP = '/web/user/asset/map/',
     USER_FUND_LIST = '/web/user/fund/list/',
     USER_ASSET_INFO = '/web/user/asset/info/',
@@ -8,6 +13,11 @@ enum Api {
     CHANGE_PASSWORD = '/web/change/password/',
 }
 
+export const useGetUserFundDaily= (params?: any) => useGet(Api.USER_FUND_DAILY, params)
+export const useGetUserFundNetorth= (params?: any) => useGet(Api.USER_FUND_NETORTH, params)
+export const useGetUserFundNotice= (params?: any) => useGet(Api.USER_FUND_NOTICE, params)
+export const useGetUserFundSrlist= (params?: any) => useGet(Api.USER_FUND_SRLIST, params)
+export const useGetUserAssetAf = (params?: any) => useGet(Api.USER_ASSET_AF, params)
 export const useGetUserAssetMap = (params?: any) => useGet(Api.USER_ASSET_MAP, params)
 export const useGetUserFundList = (params?: any) => useGet(Api.USER_FUND_LIST, params)
 export const usePostUserFundList = (data?: any) => usePost(Api.USER_FUND_LIST, data)

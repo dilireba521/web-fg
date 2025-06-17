@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 dayjs.extend(isBetween)
 import { formatToDate } from '@/utils/dateUtil'
+import { useGetUserFundDaily } from "@/api/user"
 // import { useGetFundNetworth, postFundNetworth } from '@/api/fund'
 
 export default defineComponent({
@@ -34,7 +35,7 @@ export default defineComponent({
       tableRef.value?.fetch({ searchInfo: toRaw(searchInfo) })
     }
     function beforeFetch(params: any) {
-      params.fundId = props.record?.id
+      params.id = props.record?.id
       if (params.timeRang?.length > 0) {
         params.beginDate = formatToDate(params.timeRang[0])
         params.endDate = formatToDate(params.timeRang[1])
@@ -101,8 +102,8 @@ export default defineComponent({
         </div>
         <BasicTable
           ref={tableRef}
-          immediate={false}
-        //   api={useGetFundNetworth}
+          immediate={true}
+          api={useGetUserFundDaily}
           beforeFetch={beforeFetch}
           isHandle={true}
           searchInfo={searchInfo}

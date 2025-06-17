@@ -2,7 +2,7 @@ import { defineComponent, reactive, watch, ref, toRaw } from 'vue'
 import Banner from './components/banner'
 import { Form, Input, List, Button, message, Tree, RangePicker } from 'ant-design-vue'
 import { BasicButtonForm } from '@/components/button'
-import { fundTypeOptions } from '@/utils/options/basicOptions'
+import { fundTypeOptions, productNoticeOptions } from '@/utils/options/basicOptions'
 import { BasicList } from '@/components/list'
 import { useGetNews } from '@/api/news'
 import { formatToDate } from '@/utils/dateUtil'
@@ -33,16 +33,7 @@ export default defineComponent({
     const loading = ref(false)
     
     // 树
-    const treeData = ref([
-      {
-        title: '定期公告',
-        key: '定期公告',
-      },
-      {
-        title: '临时公告',
-        key: '临时公告',
-      }
-    ])
+    const treeData = ref(productNoticeOptions)
     function renderItem(name: string, value: string) {
       return (
         <div class="flex">
@@ -120,7 +111,7 @@ export default defineComponent({
                     >
                       <div class="w-full flex items-center justify-between">
                         <div class="font-h6 truncate">{item?.title}</div>
-                        <div class="color-tertiary">{item?.createTime}</div>
+                        <div class="color-tertiary">{item?.releaseTime}</div>
                       </div>
                     </List.Item>
                   )

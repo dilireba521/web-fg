@@ -1,57 +1,59 @@
 import { formatToDateTime } from '@/utils/dateUtil'
-import { formatNumberWithCommas } from '@/utils/formate'
+import { formateNumStr } from '@/utils/formate'
 import { useGo } from '@/hooks/web/usePage'
+import { getTextColor} from "@/utils/color"
 
 export function basicColumns() {
     const { go } = useGo()
     function handleClick(data: any) {
-        go({
-            path: '/account/detail',
-            query: data
-        })
+        go(data)
         console.log('点击了', data)
     }
 
     return [
         {
             title: '基金名称',
-            dataIndex: 'name',
-            customRender: ({ text }) => (text ? formatToDateTime(text) : '- -')
+            dataIndex: 'fundName',
         },
         {
             title: '基金代码',
-            dataIndex: 'name',
+            dataIndex: 'fundCode',
         },
-        {
-            title: '币种',
-            dataIndex: 'name',
-        },
+        // {
+        //     title: '币种',
+        //     dataIndex: 'name',
+        // },
         {
             title: '持有份额',
-            dataIndex: 'amount',
+            dataIndex: 'shares',
             customRender({ text }) {
-                return text ? formatNumberWithCommas(text) : '0'
+                return text ? formateNumStr(text) : '0'
             }
         },
         {
             title: '单位净值',
-            dataIndex: 'name',
-            sorter: true,
+            dataIndex: 'netWorth',
+            // sorter: true,
         },
         {
             title: '持有价值',
-            dataIndex: 'name',
-            sorter: true,
+            dataIndex: 'totalValue',
+            customRender({ text }) {
+                return text ? formateNumStr(text) : '0'
+            }
         },
         {
             title: '收益率',
-            dataIndex: 'name',
-            sorter: true,
+            dataIndex: 'earningRate',
+            // sorter: true,
         },
         {
             title: '涨跌幅',
-            dataIndex: 'name',
-            sorter: true,
+            dataIndex: 'chg',
+            customRender({ text }) {
+                return <div class={getTextColor(text)}>{text || '0'}</div>
+            }
+            // sorter: true,
         },
         {
             title: '操作',
@@ -60,7 +62,7 @@ export function basicColumns() {
             customRender(opt) {
                 const { record } = opt
                 const _params = {
-                    path: 'detail',
+                    path: '/account/detail',
                     query: {
                         id: record.id
                     }

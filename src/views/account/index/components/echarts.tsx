@@ -1,33 +1,42 @@
-import { Select, Empty, RangePicker, Tooltip } from 'ant-design-vue'
+import { Select, Empty, RangePicker, Tooltip, DatePicker, Spin } from 'ant-design-vue'
 import { BasicSkeleton } from '@/components/skeleton'
 import { ref, onMounted, nextTick, watch, reactive } from 'vue'
 import { renderBasicPanel, renderPanel } from './modules'
 import { useECharts } from '@/hooks/web/useECharts'
 import { formatNumberWithCommas } from '@/utils/formate'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
-import { useGetUserAssetMap } from '@/api/user'
+import { useGetUserAssetMap, useGetUserAssetAf } from '@/api/user'
+import dayjs, { Dayjs } from 'dayjs'
+
 //总资产规模
 export function useRenderTotalEchart() {
-  const loading = ref(false)
+  const loading = ref(true)
+  const spinning = ref(false)
   const chartDom = ref(null)
   const { setOptions } = useECharts(chartDom as any)
   const record = ref([])
   const searchInfo = reactive({
-    year: '年',
+    year: dayjs(new Date().getFullYear().toString()),
     unit: 'CNY'
+    // time: []
   })
 
   async function useGetUserAssetMapFn() {
     try {
-      loading.value = true
-      const { data } = await useGetUserAssetMap()
+      spinning.value = true
+      const _params = {
+        year: searchInfo.year.format('YYYY'),
+        unit: searchInfo.unit
+      }
+      const { data } = await useGetUserAssetMap(_params)
       if (data.value?.retCode == 0) {
         record.value = data.value?.data
         await nextTick()
         initData()
-        console.log('record----', record.value)
+        // console.log('record----', record.value)
       }
     } finally {
+      spinning.value = false
       loading.value = false
     }
   }
@@ -36,15 +45,15 @@ export function useRenderTotalEchart() {
     () => {
       useGetUserAssetMapFn()
     },
-    { immediate: true }
+    { immediate: true, deep: true }
   )
   function initData() {
-    const _xAxisData: any = ['1月', '2月', '3月', '4月', '5月', '6月', '7月'],
-      _seriesData1: any = [100, 200, 1510, 80, 70, 110, 130]
+    const _xAxisData: any = [],
+      _seriesData1: any = []
     if (record.value) {
       record.value?.forEach((item: any) => {
         _xAxisData.push(item.date)
-        _seriesData1.push(item.value)
+        _seriesData1.push(item.asset?.toFixed(2))
       })
     }
     setOptions({
@@ -60,7 +69,7 @@ export function useRenderTotalEchart() {
           return `<div class='min-w-30'>
                                 <div clsss='text-black/65'>${params[0].name}</div>
                                 <div style='border-bottom: 1px solid #00000026; margin: 8px 0;'></div>
-                                ¥&nbsp;${formatNumberWithCommas(params[0].value)}
+                                ${searchInfo.unit == 'CNY' ? '¥' : '$'}&nbsp;${formatNumberWithCommas(params[0].value)}
                             </div>`
         },
         axisPointer: {
@@ -71,7 +80,7 @@ export function useRenderTotalEchart() {
           }
         }
       },
-      color: ['#F55458FF'],
+      color: searchInfo.unit == 'CNY' ? '#F55458FF' : '#5BB86FFF',
       grid: {
         left: '0',
         right: 20,
@@ -134,22 +143,35 @@ export function useRenderTotalEchart() {
       title: '总资产规模',
       content: () => (
         <BasicSkeleton loading={loading.value}>
-          <div class="px-4 pt-4 pb-2">
-            <div class="flex justify-end gap-2">
-              <Select v-model:value={searchInfo.unit}>
-                <Select.Option value="CNY">CNY</Select.Option>
-                <Select.Option value="USD">USD</Select.Option>
-              </Select>
-              <Select v-model:value={searchInfo.year}>
+          <Spin spinning={spinning.value}>
+            <div class="px-4 pt-4 pb-2">
+              <div class="flex justify-end gap-2">
+                <Select allowClear={false} v-model:value={searchInfo.unit}>
+                  <Select.Option value="CNY">CNY</Select.Option>
+                  <Select.Option value="USD">USD</Select.Option>
+                </Select>
+                <DatePicker
+                  allowClear={false}
+                  v-model:value={searchInfo.year}
+                  picker="year"
+                ></DatePicker>
+                {/* <Select v-model:value={searchInfo.year}>
                 <Select.Option value="年">年</Select.Option>
                 <Select.Option value="月">月</Select.Option>
-              </Select>
+              </Select> */}
+              </div>
+              <div style="height:344px">
+                <div
+                  ref={chartDom}
+                  style={{ height: record.value?.length == 0 ? '1px' : '344px' }}
+                ></div>
+                <BasicSkeleton
+                  loading={false}
+                  showEmpty={record.value?.length == 0}
+                ></BasicSkeleton>
+              </div>
             </div>
-
-            <div ref={chartDom} style="height: 344px;">
-              <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
-            </div>
-          </div>
+          </Spin>
         </BasicSkeleton>
       )
     })
@@ -207,9 +229,11 @@ export function useAssetPie(record: any, loading: any) {
       <BasicSkeleton paragraph={{ rows: 12, width: '100%' }} loading={loading.value}>
         {renderPanel({
           title: '资产占比',
-          content: () => <div ref={chartDom} style="height: 400px;">
+          content: () => (
+            <div ref={chartDom} style="height: 400px;">
               <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
-          </div>
+            </div>
+          )
         })}
       </BasicSkeleton>
     )
@@ -266,9 +290,11 @@ export function useFundPie(record: any, loading: any) {
       <BasicSkeleton paragraph={{ rows: 12, width: '100%' }} loading={loading.value}>
         {renderPanel({
           title: '持有基金占比',
-          content: () => <div ref={chartDom} style="height: 400px;">
-            <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
-          </div>
+          content: () => (
+            <div ref={chartDom} style="height: 400px;">
+              <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
+            </div>
+          )
         })}
       </BasicSkeleton>
     )
@@ -378,9 +404,11 @@ export function useFundValue(record: any, loading: any) {
               </Tooltip>
             </div>
           ),
-          content: () => <div ref={chartDom} style="height: 400px;">
-            <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
-          </div>
+          content: () => (
+            <div ref={chartDom} style="height: 400px;">
+              <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
+            </div>
+          )
         })}
       </BasicSkeleton>
     )
@@ -392,23 +420,72 @@ export function useFundValue(record: any, loading: any) {
 
 // 资产占比变化率
 export function useAssetChangeRate() {
-  const loading = ref(true)
+  const loading = ref(false)
+  const spinning = ref(false)
   const chartDom = ref(null)
   const { setOptions } = useECharts(chartDom as any)
-
-  onMounted(async () => {
-    await nextTick() // 确保DOM已经渲染完成
-    initData()
-    loading.value = false
+  const record = ref([])
+  const searchInfo = reactive({
+    year: dayjs(new Date().getFullYear().toString()),
+    unit: 'CNY',
+    time: []
   })
 
+  async function useGetUserAssetAfFn() {
+    try {
+      spinning.value = true
+      const _params: any = {
+        // unit: searchInfo.unit
+      }
+      if (searchInfo.year) {
+        _params.year = searchInfo.year.format('YYYY')
+      }
+      if (searchInfo.time?.length > 0) {
+        _params.beginDate = searchInfo.time[0]?.format('YYYY-MM-DD')
+        _params.endDate = searchInfo.time[1]?.format('YYYY-MM-DD')
+      }
+      const { data } = await useGetUserAssetAf(_params)
+      if (data.value?.retCode == 0) {
+        record.value = data.value?.data
+        await nextTick()
+        initData()
+        console.log('record----', record.value)
+      }
+    } finally {
+      spinning.value = false
+      loading.value = false
+    }
+  }
+  watch(
+    () => searchInfo.year,
+    (curV, oldV) => {
+      if (curV) {
+        useGetUserAssetAfFn()
+        searchInfo.time = []
+      }
+    },
+    { immediate: true, deep: true }
+  )
+  watch(
+    () => searchInfo.time,
+    (curV, oldV) => {
+      if (curV?.length > 0) {
+        useGetUserAssetAfFn()
+        searchInfo.year = null
+      }
+    },
+    { immediate: true, deep: true }
+  )
+
   function initData() {
-    const _xAxisData: any = ['1月', '2月', '3月', '4月', '5月', '6月', '7月'],
-      _seriesData1: any = [100, 200, 1510, 80, 70, 110, 130]
-    if (record) {
-      record?.forEach((item: any) => {
+    const _xAxisData: any = [],
+      _seriesData1: any = [],
+      _seriesData2: any = []
+    if (record.value?.length > 0) {
+      record.value?.forEach((item: any) => {
         _xAxisData.push(item.date)
-        _seriesData1.push(item.value)
+        _seriesData1.push(item.aumCny)
+        _seriesData2.push(item.aumUsd)
       })
     }
     setOptions({
@@ -424,7 +501,8 @@ export function useAssetChangeRate() {
           return `<div class='min-w-30'>
                                 <div clsss='text-black/65'>${params[0].name}</div>
                                 <div style='border-bottom: 1px solid #00000026; margin: 8px 0;'></div>
-                                ¥&nbsp;${formatNumberWithCommas(params[0].value)}
+                                ¥&nbsp;${formatNumberWithCommas(params[0].value)}<br/>
+                                $&nbsp;${formatNumberWithCommas(params[1].value)}
                             </div>`
         },
         axisPointer: {
@@ -435,7 +513,7 @@ export function useAssetChangeRate() {
           }
         }
       },
-      color: ['#F55458FF'],
+      color: ['#F55458FF', '#5BB86FFF'],
       grid: {
         left: '0',
         right: 20,
@@ -481,10 +559,18 @@ export function useAssetChangeRate() {
       ],
       series: [
         {
-          name: record?.[0]?.name,
           type: 'line', // 这里可以是'line'、'bar'、'pie'等，根据图表类型选择
           data: _seriesData1,
           symbol: _seriesData1?.length > 1 ? 'none' : 'circle',
+          smooth: true,
+          lineStyle: {
+            width: 1
+          }
+        },
+        {
+          type: 'line', // 这里可以是'line'、'bar'、'pie'等，根据图表类型选择
+          data: _seriesData2,
+          symbol: _seriesData2?.length > 1 ? 'none' : 'circle',
           smooth: true,
           lineStyle: {
             width: 1
@@ -500,17 +586,21 @@ export function useAssetChangeRate() {
         <BasicSkeleton loading={loading.value}>
           <div class="px-4 pt-4 pb-2">
             <div class="flex justify-end gap-2">
-              <Select value="CNY">
-                <Select.Option value="jack">CNY</Select.Option>
-                <Select.Option value="lucy">USD</Select.Option>
-              </Select>
-              <RangePicker></RangePicker>
-              <Select value="年">
-                <Select.Option value="jack">年</Select.Option>
-                <Select.Option value="lucy">月</Select.Option>
-              </Select>
+              {/* <Select allowClear={false} v-model:value={searchInfo.unit}>
+                <Select.Option value="CNY">CNY</Select.Option>
+                <Select.Option value="USD">USD</Select.Option>
+              </Select> */}
+              <DatePicker v-model:value={searchInfo.year} picker="year"></DatePicker>
+              <RangePicker v-model:value={searchInfo.time}></RangePicker>
             </div>
-            <div ref={chartDom} style="height: 344px;"></div>
+
+            <div style="height:344px">
+              <div
+                ref={chartDom}
+                style={{ height: record.value?.length == 0 ? '1px' : '344px' }}
+              ></div>
+              <BasicSkeleton loading={false} showEmpty={record.value?.length == 0}></BasicSkeleton>
+            </div>
           </div>
         </BasicSkeleton>
       )

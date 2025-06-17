@@ -1,30 +1,32 @@
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useGetNews } from '@/api/news'
+import { useGetNews, usePostNews } from '@/api/news'
 import { formatToDateTime } from '@/utils/dateUtil'
 
 export default defineComponent({
   setup() {
     const route = useRoute()
-    watch(
-      () => route.query,
-      (cur) => {
-        if (cur?.id) {
-          useGetNewsFn(cur)
-        }
-      },
-      { immediate: true }
-    )
+    
     const record = ref()
-    async function useGetNewsFn(params: any) {
+    async function useGetNewsFn() {
       try {
-        const { data } = await useGetNews(params)
+        const { data } = await useGetNews({id:route?.query?.id})
         if (data.value?.retCode == 0) {
           record.value = data.value?.data
         }
         // console.log(data.value)
       } catch (error) {}
     }
+    async function usePostNewsFn() {
+      try {
+        const { data } = await usePostNews({id:route?.query?.id})
+        // console.log(data.value)
+      } catch (error) {}
+    }
+    onMounted(()=>{
+      usePostNewsFn()
+      useGetNewsFn()
+    })
     return () => {
       return (
         <div class="container">

@@ -11,12 +11,16 @@ import {
 } from 'vue'
 import TabsVue from '@/layouts/default/header/components/tabs/index.vue'
 import { BasicSkeleton } from '@/components/skeleton'
+import { useUserStore } from '@/store/modules/user'
+
 export default defineComponent({
   name: 'AccountLayout',
   components: {
     TabsVue
   },
   setup(props, ctx) {
+    const userStore = useUserStore()
+const userInfo = userStore.getUserInfo
     const items = shallowRef([
       {
         label: '账户信息',
@@ -48,8 +52,8 @@ export default defineComponent({
         <div class="bg-#C1272D h-37">
           <div class="container">
             <div class="pl-10 pt-12">
-              <div class="font-h5 color-text1">您好，用户001</div>
-              <div class="mt-1 font-h8 color-tertiary1">上次登录时间：2025-04-08</div>
+              <div class="font-h5 color-text1">您好，用户{userInfo?.name}</div>
+              <div class="mt-1 font-h8 color-tertiary1">上次登录时间：{userInfo?.name}</div>
             </div>
           </div>
         </div>

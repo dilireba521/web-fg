@@ -1,13 +1,16 @@
-import { defineComponent } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import BannerElm from '@/views/fund/detail/components/banner'
 import { renderPanel } from '@/views/account/index/components/modules'
 import { Col, Row } from 'ant-design-vue'
 import { formatNumberWithCommas } from '@/utils/formate'
 import { renderFund } from './components/modules'
-import { useRenderTotalEchart } from "./components/echarts"
-import fundElm from "./components/fund"
-import noticeElm from "./components/notice"
-import noteElm from "./components/note"
+import { useRenderTotalEchart } from './components/echarts'
+import fundElm from './components/fund'
+import noticeElm from './components/notice'
+import noteElm from './components/note'
+import { usePostUserFundList } from '@/api/user'
+import { useRoute } from 'vue-router'
+
 export default defineComponent({
     components: {
         noteElm,
@@ -16,22 +19,37 @@ export default defineComponent({
         fundElm
     },
     setup() {
-        const { render: renderEchart } = useRenderTotalEchart([])
+        const { render: renderEchart } = useRenderTotalEchart()
+        const dataSource = ref()
+        const route = useRoute()
+
+        onMounted(() => {
+            usePostUserFundListFn()
+        })
+        async function usePostUserFundListFn() {
+            if (!route.query.id) return
+            try {
+                const { data } = await usePostUserFundList({ id: route.query.id })
+                if (data.value?.retCode == 0) {
+                    dataSource.value = data.value?.data
+                    console.log('data.value?.data=====', data.value?.data)
+                }
+            } finally {
+            }
+        }
         return () => (
             <div>
-                <BannerElm hasFund={true} />
+                <BannerElm  record={dataSource.value} hasFund={true} />
                 <div class="container pt-12">
-                    {renderFund({})}
+                    {renderFund(dataSource.value)}
                     {/* 净值曲线 */}
-                    <div class='pt-10'>
-                        {renderEchart()}
-                    </div>
+                    <div class="pt-10">{renderEchart()}</div>
                     {/* 基金净值 */}
-                    <fundElm class='mt-10' />
-                     {/* 产品公告 */}
-                    <noticeElm class='mt-10' />
+                    <fundElm record={{id: route.query.id}} class="mt-10" />
+                    {/* 产品公告 */}
+                    <noticeElm class="mt-10" />
                     {/* 重要提示 */}
-                    <noteElm class='mt-10'></noteElm>
+                    <noteElm class="mt-10"></noteElm>
                 </div>
             </div>
         )

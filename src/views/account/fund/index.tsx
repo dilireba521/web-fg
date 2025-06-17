@@ -9,13 +9,13 @@ export default defineComponent({
       type: null,
     })
     const dataSoure = ref([])
-    async function useGetUserFundListFn(){
-      const {data} = await useGetUserFundList()
-      console.log("data-----",data);
-      if(data.value?.retCode == 0){
-        dataSoure.value = data.value?.data
-      }
-    }
+    // async function useGetUserFundListFn(){
+    //   const {data} = await useGetUserFundList()
+    //   console.log("data-----",data);
+    //   if(data.value?.retCode == 0){
+    //     dataSoure.value = data.value?.data
+    //   }
+    // }
 
     function beforeFetch(params: any) {
       // if (params.timeRang?.length > 0) {
@@ -23,15 +23,15 @@ export default defineComponent({
       //   params.endTime = formatToDate(params.timeRang[1]) + ' 23:59:59'
       // }
     }
-    onMounted(() => {
-      useGetUserFundListFn()
-    })
-    return () => <div class="container">
+    // onMounted(() => {
+    //   useGetUserFundListFn()
+    // })
+    return () => <div class="container pb-10">
       <div class='pt-10 pb-4 font-h5'>持有基金</div>
       <BasicTable
         searchInfo={searchInfo}
-        // api={useGetUserFundApply}
-        dataSource={dataSoure.value}
+        api={useGetUserFundList}
+        // dataSource={dataSoure.value}
         beforeFetch={beforeFetch}
         columns={basicColumns()}
       >

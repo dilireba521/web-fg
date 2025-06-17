@@ -54,7 +54,7 @@ export default defineComponent({
       })
     })
 
-    // const { render: renderAssetChange } = useAssetChangeRate()
+    const { render: renderAssetChange } = useAssetChangeRate()
     const { render: renderTotalEchart } = useRenderTotalEchart()
     const { render: renderAssetEchart } = useAssetPie(assetArr, loading)
     const { render: renderFundEchart } = useFundPie(fundArr, loading)
@@ -188,7 +188,7 @@ export default defineComponent({
           <Col span={8}>{renderFundValueEchart()}</Col>
         </Row>
         {/* 资产占比变化率 */}
-        {/* <div class="pt-6">{renderAssetChange()}</div> */}
+        <div class="pt-6">{renderAssetChange()}</div>
       </div>
     )
   }

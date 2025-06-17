@@ -12,12 +12,12 @@ export function basicColumns() {
     {
       title: '涨跌幅',
       align: 'center',
-      dataIndex: 'yesterdayEarningRate'
+      dataIndex: 'yesterdayEarnings'
     },
     {
       title: '累计净值',
       align: 'center',
-      dataIndex: 'netWorth'
+      dataIndex: 'totalEarnings'
     }
   ]
 }

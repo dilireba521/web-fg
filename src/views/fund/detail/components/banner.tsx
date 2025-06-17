@@ -25,13 +25,13 @@ export default defineComponent({
         }
         
         return () => {
-            const _level:any = riskLevelOptions2?.find((i) => i.value == props.record?.riskLevel)?.label
+            const _level:any = riskLevelOptions2?.find((i) => i.value == props.record?.riskLevel || i.value == props.record?.risk_level)?.label
             return <div class='h-[146px] bg-#C1272DFF sticky top-11 z-1'>
             <div class='container pl-18 pt-12 flex justify-between items-center'>
                 <div>
                     <div class='font-h5 text-white/88'>{props.record?.name}</div>
                     <div class='flex pt-4 font-h7 text-white/88'>
-                        <div class='mr-6'>{props.record?.code}</div>
+                        <div class='mr-6'>{props.record?.code || props.record?.fund_code}</div>
                         <div>{_level}</div>
                     </div>
                 </div>

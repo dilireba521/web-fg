@@ -7,6 +7,7 @@ import { basicOptions, productNoticeOptions } from '@/utils/options/basicOptions
 import { useGo } from '@/hooks/web/usePage'
 import { formatToDate } from '@/utils/dateUtil'
 import { useUserStore } from '@/store/modules/user'
+import { renderRisk } from "@/views/fund/detail/components/modules"
 export default defineComponent({
   setup(props) {
     const userStore = useUserStore()
@@ -50,7 +51,7 @@ export default defineComponent({
       listRef.value?.fetch({ searchInfo: toRaw(searchInfo) })
     }
     return () => (
-      <div>
+      <div class='pb-10'>
         <div class="flex justify-between items-center pb-2">
           <div class="font-500">重要提示</div>
         </div>
@@ -60,7 +61,7 @@ export default defineComponent({
               return <Tabs.TabPane key={item.value} tab={item.label}></Tabs.TabPane>
             })}
           </Tabs>
-          222
+          {renderRisk(false)}
         </div>
       </div>
     )
