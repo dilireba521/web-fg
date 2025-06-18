@@ -230,8 +230,12 @@ export function useAssetPie(record: any, loading: any) {
         {renderPanel({
           title: '资产占比',
           content: () => (
-            <div ref={chartDom} style="height: 400px;">
-              <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
+            <div style="height:400px">
+              <div
+                ref={chartDom}
+                style={{ height: record.value?.length == 0 ? '1px' : '400px' }}
+              ></div>
+              <BasicSkeleton loading={false} showEmpty={record.value?.length == 0}></BasicSkeleton>
             </div>
           )
         })}
@@ -265,6 +269,17 @@ export function useFundPie(record: any, loading: any) {
           }))
         : []
     setOptions({
+      legend: {
+        icon: 'rect',
+        itemWidth: 12,
+        itemHeight: 4,
+        textStyle: {
+          color: '#000000E0'
+        },
+        formatter: function (name) {
+          return name.length > 6 ? name.slice(0, 6) + '...' : name
+        }
+      },
       series: [
         {
           type: 'pie',
@@ -273,7 +288,8 @@ export function useFundPie(record: any, loading: any) {
           color: ['#2C97EB', '#FFD54F', '#5BB86F', '#F55458'],
           label: {
             formatter: `{b}\n{d}%`,
-            color: '#000000E0'
+            color: '#000000E0',
+            overflow: 'truncate'
           },
           data: _data,
           animationType: 'scale',
@@ -291,8 +307,12 @@ export function useFundPie(record: any, loading: any) {
         {renderPanel({
           title: '持有基金占比',
           content: () => (
-            <div ref={chartDom} style="height: 400px;">
-              <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
+            <div style="height:400px">
+              <div
+                ref={chartDom}
+                style={{ height: record.value?.length == 0 ? '1px' : '400px' }}
+              ></div>
+              <BasicSkeleton loading={false} showEmpty={record.value?.length == 0}></BasicSkeleton>
             </div>
           )
         })}
@@ -405,8 +425,12 @@ export function useFundValue(record: any, loading: any) {
             </div>
           ),
           content: () => (
-            <div ref={chartDom} style="height: 400px;">
-              <BasicSkeleton loading={false} showEmpty={true}></BasicSkeleton>
+            <div style="height:400px">
+              <div
+                ref={chartDom}
+                style={{ height: record.value?.length == 0 ? '1px' : '400px' }}
+              ></div>
+              <BasicSkeleton loading={false} showEmpty={record.value?.length == 0}></BasicSkeleton>
             </div>
           )
         })}

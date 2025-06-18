@@ -17,7 +17,7 @@ export default defineComponent({
         return () => {
             return (
                 <Skeleton {...getBindValues.value}>
-                    {props?.showEmpty ? <Empty {...emptyProps} image={Empty.PRESENTED_IMAGE_SIMPLE}/> : slots.default?.()}
+                    {props?.showEmpty ? <div class='flex h-full justify-center items-center'><Empty {...emptyProps} image={Empty.PRESENTED_IMAGE_SIMPLE}/></div>  : slots.default?.()}
                 </Skeleton>
             )
         }

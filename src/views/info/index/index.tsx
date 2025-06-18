@@ -7,6 +7,8 @@ import { BasicList } from '@/components/list'
 import { useGetNews } from '@/api/news'
 import { formatToDate } from '@/utils/dateUtil'
 import { useGo } from '@/hooks/web/usePage'
+import { watchDebounced } from '@vueuse/core'
+import { usePostNewsInfo } from '@/api/news'
 
 export default defineComponent({
   setup(props, ctx) {
@@ -14,26 +16,42 @@ export default defineComponent({
     const labelCol = { style: { width: '78px' } }
     const searchInfo = reactive({
       timeRang: null,
-      fundType: null,
+      category: null,
       queryString: ''
     })
-    const searchOptions = {
-      man: fundTypeOptions
-    }
+
     const searchFormRef = ref()
     watch(
       () => searchInfo,
       (val, oldVal) => {
         // console.log(val,oldVal)
+        if (searchInfo.category?.length > 1) {
+          // 选择多个，只取最后一个
+          searchInfo.category = [searchInfo.category[searchInfo.category.length - 1]]
+        }
       },
       { deep: true }
+    )
+    watchDebounced(
+      () => searchInfo.category,
+      () => {
+        handleClickSearch()
+      },
+      { debounce: 200 }
     )
     // 列表
     const listRef = ref()
     const loading = ref(false)
-    
+
     // 树
-    const treeData = ref(productNoticeOptions)
+    const treeData = ref(
+      productNoticeOptions.map((item) => {
+        return {
+          title: item.label,
+          key: item.value
+        }
+      })
+    )
     function renderItem(name: string, value: string) {
       return (
         <div class="flex">
@@ -51,17 +69,32 @@ export default defineComponent({
     function handleClickSearch() {
       listRef.value?.fetch({ searchInfo: toRaw(searchInfo) })
     }
+    function clear() {
+      searchInfo.category = null
+    }
+    // 打开公告详情
+    function openDetail(params: any) {
+      // console.log('openDetail===', params)
+      if (params?.file?.file) {
+        window.open(params?.file?.file)
+      } else {
+        go(`/info/detail/?id=${params?.id}`)
+        usePostNewsInfo({ id: params?.id })
+      }
+    }
     return () => (
       <div>
         <Banner />
-        <div class="pt-25 container flex">
+        <div class="pt-25 container flex min-h-200">
           <div class="w-76 pr-8 shrink-0" style="box-shadow: 1px 0px 0px 0px rgba(0,0,0,0.1);">
             <div
               class="flex justify-between leading-54px text-sm"
               style="box-shadow: 0px 1px 0px 0px rgba(0,0,0,0.1);"
             >
               <div class="color-secondary">筛选</div>
-              <div class="color-tertiary cursor-pointer">清除</div>
+              <div onClick={clear} class="color-tertiary cursor-pointer">
+                清除
+              </div>
             </div>
             <div class="leading-14 mt-2">公告类型</div>
             <Tree
@@ -69,7 +102,7 @@ export default defineComponent({
               defaultExpandAll={true}
               selectable={false}
               blockNode={true}
-              v-model:checkedKeys={searchInfo.fundType}
+              v-model:checkedKeys={searchInfo.category}
               checkable
             ></Tree>
           </div>
@@ -104,9 +137,7 @@ export default defineComponent({
                 renderItem: ({ item }) => {
                   return (
                     <List.Item
-                      onClick={() => {
-                        go(`/info/detail/?id=${item?.id}`)
-                      }}
+                      onClick={() => openDetail(item)}
                       class="!p-6 bg-black/3 mb-1 cursor-pointer hover:bg-[#C1272D1A] hover:text-[#C1272D]"
                     >
                       <div class="w-full flex items-center justify-between">

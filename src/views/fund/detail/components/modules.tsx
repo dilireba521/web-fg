@@ -31,13 +31,17 @@ export const renderBaseInfo = (data: any) => {
 
 // 投资策略
 export const renderStrate = (data: any) => {
+  
+  const parts = data?.investmentStrategy.split(/(投资目标：|投资范围：|投资策略：)/)?.filter(part => part && !["投资目标：", "投资范围：","投资策略：",''].includes(part));;
+
   return (
     <div class="pt-8 border-b-[#00000014] border-b-1 border-b-solid">
       <div class="font-500 border-b-[#00000014] border-b-1 border-b-solid pb-2">投资策略</div>
+      {/* <pre class='py-2 whitespace-pre-wrap break-words'>{data?.investmentStrategy}</pre> */}
       <List size="large">
-        {renderListItem('投资目标', data.name)}
-        {renderListItem('投资范围', data.name)}
-        {renderListItem('投资策略', data.name)}
+        {renderListItem('投资目标', parts?.[0])}
+        {renderListItem('投资范围', parts?.[1])}
+        {renderListItem('投资策略', parts?.[2])}
       </List>
     </div>
   )
@@ -46,7 +50,7 @@ export const renderStrate = (data: any) => {
 // 风险提示函
 export const renderRisk = (showTitle: boolean = true) => {
   return (
-    <div class={[" border-b-[#00000014] border-b-1 border-b-solid",showTitle ? 'pt-8' : 'pt-0']}>
+    <div class={[' border-b-[#00000014] border-b-1 border-b-solid', showTitle ? 'pt-8' : 'pt-0']}>
       {showTitle && (
         <div class="font-500 border-b-[#00000014] border-b-1 border-b-solid pb-2">风险提示函</div>
       )}

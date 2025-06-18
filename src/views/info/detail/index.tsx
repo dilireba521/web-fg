@@ -1,43 +1,46 @@
 import { defineComponent, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useGetNews, usePostNews } from '@/api/news'
+import { useGetNewsInfo, usePostNewsInfo } from '@/api/news'
 import { formatToDateTime } from '@/utils/dateUtil'
+import { BasicSkeleton } from '@/components/skeleton'
 
 export default defineComponent({
   setup() {
     const route = useRoute()
-    
+    const loading = ref(true)
     const record = ref()
-    async function useGetNewsFn() {
+    async function useGetNewsInfoFn() {
       try {
-        const { data } = await useGetNews({id:route?.query?.id})
+        const { data } = await useGetNewsInfo({ id: route?.query?.id })
         if (data.value?.retCode == 0) {
           record.value = data.value?.data
         }
         // console.log(data.value)
-      } catch (error) {}
+      } finally {
+        loading.value = false
+      }
     }
-    async function usePostNewsFn() {
+    async function usePostNewsInfoFn() {
       try {
-        const { data } = await usePostNews({id:route?.query?.id})
+        const { data } = await usePostNewsInfo({ id: route?.query?.id })
         // console.log(data.value)
       } catch (error) {}
     }
-    onMounted(()=>{
-      usePostNewsFn()
-      useGetNewsFn()
+    onMounted(() => {
+      usePostNewsInfoFn()
+      useGetNewsInfoFn()
     })
     return () => {
       return (
-        <div class="container">
-          <div class="mt-[70px] text-2xl text-center">{record.value?.title}</div>
-          <div class="mt-10 flex justify-center items-center">
-            <div class="h-[1px] bg-white/10 flex-1 mr-2"></div>
-            <div class="text-white/60">
-              {record.value?.createTime && formatToDateTime(record.value?.createTime)}
+        <div class="container min-h-100">
+          <BasicSkeleton loading={loading.value} paragraph={{rows: 10}}>
+            <div class="mt-[70px] text-2xl text-center">{record.value?.title}</div>
+            <div class="mt-10 flex justify-center items-center">
+              <div class="h-[1px] bg-white/10 flex-1 mr-2"></div>
+              <div>{record.value?.releaseTime && formatToDateTime(record.value?.releaseTime)}</div>
             </div>
-          </div>
-          <div class="mt-4 mb-15" v-html={record.value?.content}></div>
+            <div class="mt-4 mb-15" v-html={record.value?.content}></div>
+          </BasicSkeleton>
         </div>
       )
     }

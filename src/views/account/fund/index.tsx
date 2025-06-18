@@ -26,7 +26,7 @@ export default defineComponent({
     // onMounted(() => {
     //   useGetUserFundListFn()
     // })
-    return () => <div class="container pb-10">
+    return () => <div class="container min-h-150 pb-10">
       <div class='pt-10 pb-4 font-h5'>持有基金</div>
       <BasicTable
         searchInfo={searchInfo}

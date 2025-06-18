@@ -1,6 +1,7 @@
 import { useGet, usePost } from '@/utils/http'
 
 enum Api {
+    SLIDERS = '/web/sliders/',
     USER_FUND_DAILY = '/web/user/fund/daily/',
     USER_FUND_NETORTH = '/web/user/fund/netorth/',
     USER_FUND_NOTICE = '/web/user/fund/notice/',
@@ -13,6 +14,7 @@ enum Api {
     CHANGE_PASSWORD = '/web/change/password/',
 }
 
+export const useGetSliders= (params?: any) => useGet(Api.SLIDERS, params)
 export const useGetUserFundDaily= (params?: any) => useGet(Api.USER_FUND_DAILY, params)
 export const useGetUserFundNetorth= (params?: any) => useGet(Api.USER_FUND_NETORTH, params)
 export const useGetUserFundNotice= (params?: any) => useGet(Api.USER_FUND_NOTICE, params)

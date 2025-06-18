@@ -36,7 +36,7 @@ export default defineComponent({
           {/* 基金经理 */}
           <ManagerElm record={dataSource.value?.managers}/>
           {/* 投资策略 */}
-          {renderStrate({})}
+          {renderStrate(dataSource.value)}
           {/* 费用信息 */}
           <CostElm  record={dataSource.value?.fees}/>
           {/* 风险提示函 */}

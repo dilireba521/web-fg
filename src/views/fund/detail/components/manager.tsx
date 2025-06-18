@@ -95,7 +95,7 @@ function renderManager(data?: any) {
           <div class="pb-6">{data?.manager?.name}</div>
           <div>
             {renderItem('简介', data?.manager?.introduce)}
-            {renderItem('管理年限', data?.manager?.years|| 0 + '年')}
+            {renderItem('管理年限', (data?.manager?.years || 0) + '年')}
             {/* {renderItem('历史业绩', '历史业绩介绍')} */}
           </div>
         </div>

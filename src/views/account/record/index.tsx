@@ -49,7 +49,7 @@ export default defineComponent({
       }
     }
     return () => (
-      <div class="container pb-10">
+      <div class="container pb-10  min-h-150">
         <div class="pt-10 pb-4 font-h5">申赎记录</div>
         <div class="flex mb-3">
           <div class="flex items-center  mr-4">
