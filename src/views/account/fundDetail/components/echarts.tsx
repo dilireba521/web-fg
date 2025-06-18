@@ -62,7 +62,7 @@ export function useRenderTotalEchart() {
         searchInfo.time = []
       }
     },
-    { immediate: true, deep: true }
+    { deep: true }
   )
   watch(
     () => searchInfo.time,
@@ -72,7 +72,7 @@ export function useRenderTotalEchart() {
         searchInfo.year = null
       }
     },
-    { immediate: true, deep: true }
+    { deep: true }
   )
 
   function initData() {

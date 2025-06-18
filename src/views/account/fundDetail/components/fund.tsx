@@ -24,8 +24,8 @@ export default defineComponent({
     })
     watch(
       () => props.record,
-      (curV) => {
-        if (curV?.id) {
+      (curV, prevV) => {
+        if (curV?.id != prevV?.id) {
           tableRef.value?.fetch({ searchInfo: toRaw(searchInfo) })
         }
       },

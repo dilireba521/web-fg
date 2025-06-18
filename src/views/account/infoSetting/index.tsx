@@ -69,7 +69,7 @@ export default defineComponent({
             <LockFilled class="text-[#888888] text-24px" />
             <div class="ml-2">密码</div>
           </div>
-          <div class="text-xs color-tertiary flex-1">上次登录时间 2024-06-18 15:12:23</div>
+          <div class="text-xs color-tertiary flex-1">上次登录时间 { userInfo?.lastLoginTime ? formatToDateTime(userInfo?.lastLoginTime) : '- -'}</div>
           <div
             onClick={() => handleClick({ type: ClickType.PASSWORD })}
             class="color-secondary cursor-pointer hover:text-[#C1272D]"

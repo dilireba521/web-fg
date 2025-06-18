@@ -7,7 +7,7 @@ import {
   ref,
   KeepAlive,
   computed,
-  Transition 
+  Transition
 } from 'vue'
 import TabsVue from '@/layouts/default/header/components/tabs/index.vue'
 import { BasicSkeleton } from '@/components/skeleton'
@@ -21,7 +21,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const userStore = useUserStore()
-const userInfo = userStore.getUserInfo
+    const userInfo = userStore.getUserInfo
     const items = shallowRef([
       {
         label: '账户信息',
@@ -54,7 +54,9 @@ const userInfo = userStore.getUserInfo
           <div class="container">
             <div class="pl-10 pt-12">
               <div class="font-h5 color-text1">您好，用户{userInfo?.name}</div>
-              <div class="mt-1 font-h8 color-tertiary1">上次登录时间：{formatToDateTime(userInfo?.lastLoginTime) || '- -'}</div>
+              <div class="mt-1 font-h8 color-tertiary1">
+                上次登录时间：{ userInfo?.lastLoginTime ? formatToDateTime(userInfo?.lastLoginTime) : '- -'}
+              </div>
             </div>
           </div>
         </div>
@@ -69,11 +71,15 @@ const userInfo = userStore.getUserInfo
           </div>
         </div>
         <div>
-        <KeepAlive>
+          <KeepAlive>
             <Suspense>
               {{
                 default: () => curComponent.value && h(curComponent.value),
-                fallback: () => <div class='container'><BasicSkeleton /></div> 
+                fallback: () => (
+                  <div class="container">
+                    <BasicSkeleton />
+                  </div>
+                )
               }}
             </Suspense>
           </KeepAlive>
