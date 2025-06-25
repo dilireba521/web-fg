@@ -85,6 +85,7 @@ export function useRenderTotalEchart() {
         left: '0',
         right: 20,
         bottom: '0',
+        top: 20,
         containLabel: true
       },
       xAxis: {
@@ -204,6 +205,18 @@ export function useAssetPie(record: any, loading: any) {
           }))
         : []
     setOptions({
+      legend: {
+        top: 20,
+        icon: 'rect',
+        itemWidth: 12,
+        itemHeight: 4,
+        textStyle: {
+          color: '#000000E0'
+        },
+        formatter: function (name) {
+          return name.length > 6 ? name.slice(0, 6) + '...' : name
+        }
+      },
       series: [
         {
           type: 'pie',
@@ -270,6 +283,7 @@ export function useFundPie(record: any, loading: any) {
         : []
     setOptions({
       legend: {
+        top: 20,
         icon: 'rect',
         itemWidth: 12,
         itemHeight: 4,
@@ -353,6 +367,7 @@ export function useFundValue(record: any, loading: any) {
         }
       },
       grid: {
+        top: 32,
         left: '0',
         right: 20,
         bottom: '8',
@@ -513,6 +528,7 @@ export function useAssetChangeRate() {
       })
     }
     setOptions({
+
       tooltip: {
         trigger: 'axis',
         backgroundColor: '#FFFFFF',
@@ -539,6 +555,7 @@ export function useAssetChangeRate() {
       },
       color: ['#F55458FF', '#5BB86FFF'],
       grid: {
+        top: 32,
         left: '0',
         right: 20,
         bottom: '0',

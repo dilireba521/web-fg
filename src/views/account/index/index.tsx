@@ -22,7 +22,7 @@ export default defineComponent({
     // 组合比例
     const comRatio = computed(() => {
       const _cnyRatio = ((dataSource.value?.aumCny / dataSource.value?.aum || 0) * 100).toFixed(2)
-      const _usdRatio = ((dataSource.value?.aumUsd / dataSource.value?.aum || 0) * 100).toFixed(2)
+      const _usdRatio = (((dataSource.value?.aumUsd * dataSource.value?.exchangeRate) / dataSource.value?.aum || 0) * 100).toFixed(2)
       return {
         cnyRatio: `${_cnyRatio}%`,
         usdRatio: `${_usdRatio}%`

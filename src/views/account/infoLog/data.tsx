@@ -10,7 +10,7 @@ export function basicColumns(): ColumnProps[] {
     {
       title: '操作时间',
       align: 'center',
-      dataIndex: 'createTime'
+      dataIndex: 'actionTime'
     },
 
     {

@@ -32,11 +32,10 @@ export default defineComponent({
     })
     return () => {
       return (
-        <div class="container min-h-100">
+        <div class="w-960px m-auto  min-h-100">
           <BasicSkeleton loading={loading.value} paragraph={{rows: 10}}>
-            <div class="mt-[70px] text-2xl text-center">{record.value?.title}</div>
-            <div class="mt-10 flex justify-center items-center">
-              <div class="h-[1px] bg-white/10 flex-1 mr-2"></div>
+            <div class="mt-[96px] text-32px font-500">{record.value?.title}</div>
+            <div class="mt-6 pb-4 color-secondary font-h7 flex items-center border-b border-b-solid border-b-black/3">
               <div>{record.value?.releaseTime && formatToDateTime(record.value?.releaseTime)}</div>
             </div>
             <div class="mt-4 mb-15" v-html={record.value?.content}></div>

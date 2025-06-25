@@ -6,6 +6,7 @@ import { useUserStore } from '@/store/modules/user'
 import { formatPhone } from '@/utils/formate'
 import { useApiBasic } from '@/utils/hook/useApi'
 import { message } from 'ant-design-vue'
+import { formatToDateTime } from '@/utils/dateUtil'
 export default defineComponent({
   setup(props, ctx) {
     const userStore = useUserStore()
@@ -66,7 +67,7 @@ export default defineComponent({
         {/* 密码 */}
         <div class="flex h-16 items-center mt-10">
           <div class="w-26 flex items-center">
-            <LockFilled class="text-[#888888] text-24px" />
+            <LockFilled class="text-[#888888] text-20px" />
             <div class="ml-2">密码</div>
           </div>
           <div class="text-xs color-tertiary flex-1">上次登录时间 { userInfo?.lastLoginTime ? formatToDateTime(userInfo?.lastLoginTime) : '- -'}</div>
@@ -80,7 +81,7 @@ export default defineComponent({
         {/* 手机号码 */}
         <div class="flex h-16 items-center">
           <div class="w-26 flex items-center">
-            <MobileFilled class="text-[#888888] text-24px" />
+            <MobileFilled class="text-[#888888] text-20px" />
             <div class="ml-2">手机号码</div>
           </div>
           <div class="text-xs color-tertiary flex-1">{userInfo?.phone ? formatPhone(userInfo?.phone) : '未绑定'}</div>
@@ -94,7 +95,7 @@ export default defineComponent({
         {/* 邮箱设置 */}
         <div class="flex h-16 items-center">
           <div class="w-26 flex items-center">
-            <MailFilled class="text-[#888888] text-24px" />
+            <MailFilled class="text-[#888888] text-20px" />
             <div class="ml-2">邮箱设置</div>
           </div>
           <div class="text-xs color-tertiary flex-1">{userInfo?.email || '未绑定'}</div>

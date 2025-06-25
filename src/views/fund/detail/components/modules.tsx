@@ -50,7 +50,7 @@ export const renderStrate = (data: any) => {
 // 风险提示函
 export const renderRisk = (showTitle: boolean = true) => {
   return (
-    <div class={[' border-b-[#00000014] border-b-1 border-b-solid', showTitle ? 'pt-8' : 'pt-0']}>
+    <div class={['', showTitle ? 'pt-8' : 'pt-0']}>
       {showTitle && (
         <div class="font-500 border-b-[#00000014] border-b-1 border-b-solid pb-2">风险提示函</div>
       )}

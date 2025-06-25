@@ -14,7 +14,7 @@ export default defineConfig({
     host: true,
     proxy: {
       '/fundApi': {
-        target: 'http://192.168.0.43:8000',
+        target: 'http://10.1.31.101:8000',
         changeOrigin: true,
         rewrite: (path) => path.replace(new RegExp(`^/fundApi`), ''),
         // only https

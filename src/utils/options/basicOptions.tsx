@@ -90,15 +90,15 @@ export const establishOptions: LabelValueOptions = [
 export const fundTagOptions: LabelValueOptions = [
   {
     label: 'CTA',
-    value: '1'
+    value: '0'
   },
   {
     label: '混合',
-    value: '2'
+    value: '1'
   },
   {
     label: '中性',
-    value: '3'
+    value: '2'
   }
 ]
 

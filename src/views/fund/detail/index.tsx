@@ -30,7 +30,7 @@ export default defineComponent({
     return () => (
       <div>
         <BannerElm record={dataSource.value}></BannerElm>
-        <div class="container">
+        <div class="container pb-8">
           {/* 基本信息 */}
           {renderBaseInfo(dataSource.value)}
           {/* 基金经理 */}

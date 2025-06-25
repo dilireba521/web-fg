@@ -30,7 +30,7 @@ export default defineComponent({
           </div>
         ) : ( */}
           <div class="flex items-center justify-center connect-page">
-            <div class="w-320 h-297px pt-64px flex">
+            <div class="container h-297px pt-64px flex">
             <div class="connect-box w-full flex justify-between">
               <div class="flex">
                 {/* <img class="w-96px h-86px mr-96px"  src={logoHomeBottom} alt="" /> */}

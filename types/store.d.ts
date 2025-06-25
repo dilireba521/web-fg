@@ -8,4 +8,5 @@ export interface UserInfo {
   loginTime?: string
   active?: string
   noticeConfig?: any
+  riskLevel?: string
 }

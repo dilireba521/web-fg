@@ -1,14 +1,19 @@
 import { computed, defineComponent, ref } from 'vue'
 import { riskLevelOptions } from '@/utils/options/basicOptions'
+import { useUserStore } from '@/store/modules/user'
 
 export default defineComponent({
   setup() {
+    const userStore = useUserStore()
+    const userInfo = userStore.getUserInfo
     const list = riskLevelOptions
-    const level = ref('C3')
-    const curLevelItem = computed(() => list.find((item) => item.label == level.value))
+    const level = computed(()=>{
+      return userInfo?.riskLevel || 1
+    })
+    const curLevelItem = computed(() => list.find((item) => item.value == level.value))
     return () => (
       <div class="bg-black/3 rounded-xs p-12 min-h-665px mt-6">
-        <div>您的承受风险等级为：{level.value}</div>
+        <div>您的承受风险等级为：{curLevelItem.value?.label}</div>
         <div class="flex gap-2 pt-3">
           {list.map((item) => {
             return (

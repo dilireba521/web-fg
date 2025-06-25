@@ -25,12 +25,14 @@ export default defineComponent({
         if (!data?.link) return
         window.open(data?.link, '_blank')
       }
+      const _img = 'https://rta1.oss-cn-hangzhou.aliyuncs.com/web-bg/web-headbg/head-connect.png'
       return (
         <div onClick={jump} class={[style.banner, data?.link && 'cursor-pointer']}>
-          {
+          <img class='w-full h-full' src={_img} alt=" " onError={(e) => (e.target.src = logoImg)} />
+          {/* {
             !!data ? <img class='w-full h-full' src={data?.image?.image} alt=" " onError={(e) => (e.target.src = logoImg)} />
               : <img class='w-100 h-full m-auto' src={logoImg} alt=" " />
-          }
+          } */}
         </div>
       )
     }

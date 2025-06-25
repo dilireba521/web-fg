@@ -78,6 +78,9 @@ function jump(params?: any) {
 watch(activeKey, (cur) => {
   useGetNoticeFn({ categoryId: cur, isRead: 0, pageSize: 5 })
 })
+watch(()=> countAll.value,()=>{
+  useGetNoticeFn({ categoryId: activeKey.value, isRead: 0, pageSize: 5 })
+})
 async function useGetNoticeFn(params: any) {
   const { data } = await useGetNotice(params)
   if (data.value?.retCode == 0) {
@@ -105,7 +108,7 @@ function renderReview(params: any) {
                 onClick={() => jump({ activeKey: params.key, id: item?.id })}
                 class="list-item  text-black/65 hover:text-black/88  cursor-pointer"
               >
-                <div class="flex-1 truncate mr-4">{item?.content}</div>
+                <div class="flex-1 truncate mr-4">{item?.title}</div>
                 <div class="text-black/45">{item?.createTime}</div>
               </div>
             )

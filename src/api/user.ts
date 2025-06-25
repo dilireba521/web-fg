@@ -1,6 +1,7 @@
 import { useGet, usePost } from '@/utils/http'
 
 enum Api {
+    USER_LOGS = '/web/user/logs/',
     SLIDERS = '/web/sliders/',
     USER_FUND_DAILY = '/web/user/fund/daily/',
     USER_FUND_NETORTH = '/web/user/fund/netorth/',
@@ -15,6 +16,7 @@ enum Api {
 }
 
 export const useGetSliders= (params?: any) => useGet(Api.SLIDERS, params)
+export const useGetUserLogs= (params?: any) => useGet(Api.USER_LOGS, params)
 export const useGetUserFundDaily= (params?: any) => useGet(Api.USER_FUND_DAILY, params)
 export const useGetUserFundNetorth= (params?: any) => useGet(Api.USER_FUND_NETORTH, params)
 export const useGetUserFundNotice= (params?: any) => useGet(Api.USER_FUND_NOTICE, params)

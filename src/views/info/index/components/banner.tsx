@@ -38,7 +38,7 @@ export default defineComponent({
       console.log('props?.record===', props?.record)
       return (
         <div>
-          <Carousel class="max-w-[1920px] mx-auto" autoplay autoplaySpeed={8000}>
+          <Carousel class="mx-auto" autoplay autoplaySpeed={8000}>
             {props?.record.length > 0
               ? props?.record
                 ?.sort((a, b) => a?.order - b?.order)

@@ -110,6 +110,7 @@ export function useRenderTotalEchart() {
       },
       color: ['#F55458FF'],
       grid: {
+        top: '30',
         left: '0',
         right: 20,
         bottom: '0',
