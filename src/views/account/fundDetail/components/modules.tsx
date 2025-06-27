@@ -87,7 +87,7 @@ export const renderFund = (data: any) => {
               <div class="pt-2 flex-1">
                 <div class="text-xs color-tertiary leading-5">&nbsp;</div>
                 <div class={["font-h5", getTextColor(data?.total_earnings_rate)]}>
-                  {formateNumStr(data?.total_earnings_rate, { decimals: 2 })}
+                  {formateNumStr(data?.total_earnings_rate * 100, { decimals: 2 })}%
                 </div>
               </div>
             )

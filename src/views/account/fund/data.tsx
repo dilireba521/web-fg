@@ -1,7 +1,7 @@
 import { formatToDateTime } from '@/utils/dateUtil'
 import { formateNumStr } from '@/utils/formate'
 import { useGo } from '@/hooks/web/usePage'
-import { getTextColor} from "@/utils/color"
+import { getTextColor } from "@/utils/color"
 
 export function basicColumns() {
     const { go } = useGo()
@@ -46,7 +46,14 @@ export function basicColumns() {
             title: '收益率（%）',
             dataIndex: 'earningRate',
             customRender({ text }) {
-                return <div class={getTextColor(text)}>{text || '0'}</div>
+                let _class = ''
+                const _num = parseFloat(text);
+                if (_num < 0) {
+                    _class = 'text-[#2FB97B]';
+                } else if (_num > 0) {
+                    _class = 'text-[#C1272D]';
+                }
+                return <div class={_class}>{text ? parseFloat((text * 100).toFixed(2)) : '0'}</div>
             }
             // sorter: true,
         },
@@ -54,7 +61,7 @@ export function basicColumns() {
             title: '涨跌幅（%）',
             dataIndex: 'chg',
             customRender({ text }) {
-                return <div class={[getTextColor(text)]}>{text || '0'}</div>
+                return <div class={[getTextColor(text)]}>{text ? parseFloat((text * 100).toFixed(2)) : '0'}</div>
             }
             // sorter: true,
         },

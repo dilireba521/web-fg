@@ -532,7 +532,7 @@ export function useAssetChangeRate() {
   function initData() {
     const _xAxisData: any = [],
       _seriesData1: any = [],
-      _seriesData2: any = []
+      _seriesData2: any = [];
     if (record.value?.length > 0) {
       record.value?.forEach((item: any) => {
         _xAxisData.push(item.date)
@@ -541,7 +541,6 @@ export function useAssetChangeRate() {
       })
     }
     setOptions({
-
       tooltip: {
         trigger: 'axis',
         backgroundColor: '#FFFFFF',
@@ -554,21 +553,21 @@ export function useAssetChangeRate() {
           return `<div class='min-w-30'>
                                 <div clsss='text-black/65'>${params[0].name}</div>
                                 <div style='border-bottom: 1px solid #00000026; margin: 8px 0;'></div>
-                                ¥&nbsp;${formatNumberWithCommas(params[0].value)}<br/>
-                                $&nbsp;${formatNumberWithCommas(params[1].value)}
+                                CNY&nbsp;${formatNumberWithCommas(params[0].value)}<br/>
+                                USD&nbsp;${formatNumberWithCommas(params[1].value)}
                             </div>`
         },
-        axisPointer: {
-          type: 'line',
-          lineStyle: {
-            type: [4, 6],
-            color: '#C1272D40'
-          }
-        }
+        // axisPointer: {
+        //   type: 'line',
+        //   lineStyle: {
+        //     type: [4, 6],
+        //     color: '#C1272D40'
+        //   }
+        // }
       },
       color: ['#F55458FF', '#5BB86FFF'],
       grid: {
-        top: 32,
+        // top: 32,
         left: '0',
         right: 20,
         bottom: '0',
@@ -608,34 +607,40 @@ export function useAssetChangeRate() {
               opacity: 0.1
             }
           },
+          min:0,
           scale: true
         }
       ],
       series: [
         {
-          type: 'line', // 这里可以是'line'、'bar'、'pie'等，根据图表类型选择
+          name:'CNY',
+          type: 'bar', // 这里可以是'line'、'bar'、'pie'等，根据图表类型选择
           data: _seriesData1,
-          symbol: _seriesData1?.length > 1 ? 'none' : 'circle',
-          smooth: true,
-          lineStyle: {
-            width: 1
-          }
+          stack: 'total',
+          barWidth: 8,
+          // symbol: _seriesData1?.length > 1 ? 'none' : 'circle',
+          // smooth: true,
+          // lineStyle: {
+          //   width: 1
+          // }
         },
         {
-          type: 'line', // 这里可以是'line'、'bar'、'pie'等，根据图表类型选择
+          name:'USD',
+          type: 'bar', // 这里可以是'line'、'bar'、'pie'等，根据图表类型选择
           data: _seriesData2,
-          symbol: _seriesData2?.length > 1 ? 'none' : 'circle',
-          smooth: true,
-          lineStyle: {
-            width: 1
-          }
+          stack: 'total',
+          // symbol: _seriesData2?.length > 1 ? 'none' : 'circle',
+          // smooth: true,
+          // lineStyle: {
+          //   width: 1
+          // }
         }
       ]
     })
   }
   function render() {
     return renderBasicPanel({
-      title: '资产占比变化率',
+      title: '资产占比变化率（CNY）',
       content: () => (
         <BasicSkeleton loading={loading.value}>
           <div class="px-4 pt-4 pb-2">

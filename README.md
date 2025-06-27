@@ -34,3 +34,10 @@ npm run build & pnpm build
 - store 使用pinia做状态管理，线上对数据做了加密处理，开发环境未做处理
 - hook 如有经常使用的hooks，可以自行封装，可以放在目录下与同事一起分享
 - unocss 原子化css，根据个人喜好，可以自行选择是否使用
+
+
+### 7.常用工具及部分常用函数介绍
+- useApiBasic 仅进行接口调用并无特殊数据处理时，可使用此函数，函数进行简单成功，失败返回处理
+- utils/options/basicOptions.tsx 静态状态管理文件
+- utils/options/useBasicOptions.tsx 异步状态管理文件
+- components/skeleton 为异步资源加载等待组件，模块优化时可优先考虑使用

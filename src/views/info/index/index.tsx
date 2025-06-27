@@ -115,7 +115,7 @@ export default defineComponent({
                 <Input
                   class="w-[332px]"
                   v-model:value={searchInfo.queryString}
-                  placeholder="输入基金名称/关键字"
+                  placeholder="输入关键字"
                 />
               </Form.Item>
               <Form.Item>

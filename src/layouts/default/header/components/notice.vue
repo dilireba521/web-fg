@@ -49,7 +49,7 @@ const tabs = computed(() => {
     return {
       label: item.label,
       key: item.value,
-      count: _item.count || 0
+      count: _item?.count || 0
     }
   })
 })

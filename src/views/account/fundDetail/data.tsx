@@ -13,7 +13,7 @@ export function basicColumns() {
       dataIndex: 'shares'
     },
     {
-      title: '单位净值（元）',
+      title: '单位净值（CNY）',
       align: 'center',
       dataIndex: 'netWorth'
     },
