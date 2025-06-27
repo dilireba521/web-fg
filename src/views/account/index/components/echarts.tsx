@@ -1,4 +1,4 @@
-import { Select, Empty, RangePicker, Tooltip, DatePicker, Spin } from 'ant-design-vue'
+import { Select, Empty, RangePicker, Popover, DatePicker, Spin } from 'ant-design-vue'
 import { BasicSkeleton } from '@/components/skeleton'
 import { ref, onMounted, nextTick, watch, reactive } from 'vue'
 import { renderBasicPanel, renderPanel } from './modules'
@@ -8,6 +8,7 @@ import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { useGetUserAssetMap, useGetUserAssetAf } from '@/api/user'
 import dayjs, { Dayjs } from 'dayjs'
 
+const colorList = ['#2C97EB', '#FFD54F', '#5BB86F', '#5470C6', '#FD8451', '#9A60B4', '#EB7BCC']
 //总资产规模
 export function useRenderTotalEchart() {
   const loading = ref(true)
@@ -241,7 +242,7 @@ export function useAssetPie(record: any, loading: any) {
     return (
       <BasicSkeleton paragraph={{ rows: 12, width: '100%' }} loading={loading.value}>
         {renderPanel({
-          title: '资产占比',
+          title: '资产占比（CNY）',
           content: () => (
             <div style="height:400px">
               <div
@@ -299,7 +300,11 @@ export function useFundPie(record: any, loading: any) {
           type: 'pie',
           radius: ['30%', '45%'],
           center: ['50%', '55%'],
-          color: ['#2C97EB', '#FFD54F', '#5BB86F', '#F55458'],
+          itemStyle: {
+            color: function(params) {
+              return colorList[params.dataIndex % colorList.length]
+            }
+          },
           label: {
             formatter: `{b}\n{d}%`,
             color: '#000000E0',
@@ -319,7 +324,7 @@ export function useFundPie(record: any, loading: any) {
     return (
       <BasicSkeleton paragraph={{ rows: 12, width: '100%' }} loading={loading.value}>
         {renderPanel({
-          title: '持有基金占比',
+          title: '持有基金占比（CNY）',
           content: () => (
             <div style="height:400px">
               <div
@@ -413,7 +418,12 @@ export function useFundValue(record: any, loading: any) {
       series: [
         {
           type: 'bar',
-          color: ['#F55458'],
+          // color: ['#F55458'],
+          itemStyle: {
+            color: function(params) {
+              return colorList[params.dataIndex % colorList.length]
+            }
+          },
           label: {
             formatter: `{b}\n{d}%`,
             color: '#000000E0'
@@ -431,12 +441,15 @@ export function useFundValue(record: any, loading: any) {
           title: () => (
             <div class="flex">
               <div class="mr-2">持有基金市值（CNY）</div>
-              <Tooltip>
+              <Popover>
                 {{
-                  title: '233233',
+                  content: () => <div>
+                    持有的基金市值（含外币资产）已按最新汇率折算为人民币。<br/>
+                    实际价值受汇率波动影响，本展示仅供参考，请务必谨慎评估风险，理性投资。
+                  </div>,
                   default: () => <InfoCircleOutlined class="text-[#FAAD14] cursor-pointer" />
                 }}
-              </Tooltip>
+              </Popover>
             </div>
           ),
           content: () => (

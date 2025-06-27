@@ -99,6 +99,9 @@ function renderReview(params: any) {
       <div class="h-270px overflow-auto">
         <BasicSkeleton
           paragraph={{ rows: 6 }}
+          emptyProps={{
+            description: '暂无消息'
+          }}
           loading={!Array.isArray(_data) && !_data?.length}
           showEmpty={!_data?.length}
         >

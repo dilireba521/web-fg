@@ -75,6 +75,8 @@ export default defineComponent({
     expose({
       fetch
     })
+    console.log('slots----',getBindValues);
+    
     return () => {
       return (
         <Table

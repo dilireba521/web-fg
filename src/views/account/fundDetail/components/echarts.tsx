@@ -7,6 +7,8 @@ import { BasicSkeleton } from '@/components/skeleton'
 import { useGetUserFundNetorth } from '@/api/user'
 import dayjs, { Dayjs } from 'dayjs'
 import { useRoute } from 'vue-router'
+import { netValueCurveOptions } from '@/utils/options/basicOptions'
+import { hasOwn } from '@vueuse/core'
 
 //净值曲线
 export function useRenderTotalEchart() {
@@ -19,9 +21,10 @@ export function useRenderTotalEchart() {
   const record = ref([])
   const searchInfo = reactive({
     year: dayjs(new Date().getFullYear().toString()),
-    // unit: 'CNY'
+    type: '1',
     time: []
   })
+  const showType = ref(false)
   async function useGetUserFundNetorthFn() {
     try {
       spinning.value = true
@@ -40,6 +43,9 @@ export function useRenderTotalEchart() {
         record.value = data.value?.data
         await nextTick()
         initData()
+        if(record.value?.length > 0 && hasOwn(record.value[0],'netWorthCny')){
+          showType.value = true
+        }
         console.log('record----', record.value)
       }
     } finally {
@@ -75,16 +81,43 @@ export function useRenderTotalEchart() {
     { deep: true }
   )
 
+  function setSeriesData(data: any,name?:string) {
+    return {
+      name: name,
+      type: 'line', // 这里可以是'line'、'bar'、'pie'等，根据图表类型选择
+      data: data,
+      symbol: data?.length > 1 ? 'none' : 'circle',
+      smooth: true,
+      lineStyle: {
+        width: 1
+      }
+    }
+  }
   function initData() {
     const _xAxisData: any = [],
-      _seriesData1: any = []
+      _series = [],
+      _seriesData1: any = [],
+      _seriesData2: any = [],
+      _seriesData3: any = []
     if (record.value?.length > 0) {
       record.value?.forEach((item: any) => {
         _xAxisData.push(item.date)
         _seriesData1.push(item.netWorth)
+        _seriesData2.push(item?.netWorthCny)
+        _seriesData3.push(item?.netWorthUsd)
       })
     }
+    if (searchInfo.type == '2') {
+      _series.push(setSeriesData(_seriesData2,'CNY'))
+      _series.push(setSeriesData(_seriesData3,'USD'))
+    }else {
+      _series.push(setSeriesData(_seriesData1))
+    }
+    
     setOptions({
+      legend:{
+        show: false
+      },
       tooltip: {
         trigger: 'axis',
         backgroundColor: '#FFFFFF',
@@ -94,11 +127,19 @@ export function useRenderTotalEchart() {
           lineHeight: 20
         },
         formatter: (params) => {
-          return `<div class='min-w-30'>
-                                  <div clsss='text-black/65'>${params[0].name}</div>
-                                  <div style='border-bottom: 1px solid #00000026; margin: 8px 0;'></div>
-                                  &nbsp;${formatNumberWithCommas(params[0].value)}
-                              </div>`
+          let _str = `<div clsss='text-black/65'>${params[0].name}</div>
+          <div style='border-bottom: 1px solid #00000026; margin: 8px 0;'></div>
+          <div class='flex justify-between'>
+            <div>${params[0].marker}CNY</div>${formatNumberWithCommas(params[0].value)}
+          </div>`
+          if(searchInfo.type == '2'){
+            if(params[1]){
+              _str += ` <div class='flex justify-between'>
+              <div>${params[1].marker}USD</div>${formatNumberWithCommas(params[1].value)}
+            </div>`
+            }
+          }
+          return `<div class='min-w-30'>${_str}</div>`
         },
         axisPointer: {
           type: 'line',
@@ -108,7 +149,7 @@ export function useRenderTotalEchart() {
           }
         }
       },
-      color: ['#F55458FF'],
+      color: ['#F55458FF', '#5BB86FFF'],
       grid: {
         top: '30',
         left: '0',
@@ -153,18 +194,7 @@ export function useRenderTotalEchart() {
           scale: true
         }
       ],
-      series: [
-        {
-          // name: record?.[0]?.name,
-          type: 'line', // 这里可以是'line'、'bar'、'pie'等，根据图表类型选择
-          data: _seriesData1,
-          symbol: _seriesData1?.length > 1 ? 'none' : 'circle',
-          smooth: true,
-          lineStyle: {
-            width: 1
-          }
-        }
-      ]
+      series: _series
     })
   }
   function render() {
@@ -175,6 +205,13 @@ export function useRenderTotalEchart() {
           <Spin spinning={spinning.value}>
             <div class="px-4 pt-4 pb-2">
               <div class="flex justify-end gap-2">
+                {
+                  showType.value && <Select
+                  v-model:value={searchInfo.type}
+                  options={netValueCurveOptions}
+                  style="width: 160px"
+                ></Select>
+                }
                 <DatePicker v-model:value={searchInfo.year} picker="year"></DatePicker>
                 <RangePicker v-model:value={searchInfo.time}></RangePicker>
               </div>

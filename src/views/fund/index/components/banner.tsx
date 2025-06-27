@@ -25,12 +25,16 @@ export default defineComponent({
         if (!data?.link) return
         window.open(data?.link, '_blank')
       }
+      const _img = 'https://rta1.oss-cn-hangzhou.aliyuncs.com/fundFg/fund.png'
+      const _style = {
+        'background-image': `url(${_img})`,
+        'background-size': 'cover',
+        'background-repeat': 'no-repeat',
+        height: '100%',
+      }
       return (
         <div onClick={jump} class={[style.banner, data?.link && 'cursor-pointer']}>
-          {
-            !!data ? <img class='w-full h-full' src={data?.image?.image} alt=" " onError={(e) => (e.target.src = logoImg)} />
-              : <img class='w-100 h-full m-auto' src={logoImg} alt=" " />
-          }
+          <div style={_style}></div>
         </div>
       )
     }

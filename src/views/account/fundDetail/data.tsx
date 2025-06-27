@@ -1,3 +1,6 @@
+import { getTextColor} from "@/utils/color"
+import { formateNumStr } from '@/utils/formate'
+
 export function basicColumns() {
   return [
     {
@@ -5,14 +8,22 @@ export function basicColumns() {
       dataIndex: 'date'
     },
     {
+      title: '份额',
+      align: 'center',
+      dataIndex: 'shares'
+    },
+    {
       title: '单位净值（元）',
       align: 'center',
       dataIndex: 'netWorth'
     },
     {
-      title: '涨跌幅',
+      title: '涨跌幅（%）',
       align: 'center',
-      dataIndex: 'yesterdayEarnings'
+      dataIndex: 'yesterdayEarningsRate',
+      customRender({ text }) {
+          return <div class={[getTextColor(text)]}>{ formateNumStr(text * 100,{decimals: 2})}%</div>
+      }
     },
     {
       title: '累计净值',

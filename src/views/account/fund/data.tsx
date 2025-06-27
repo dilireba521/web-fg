@@ -45,13 +45,16 @@ export function basicColumns() {
         {
             title: '收益率（%）',
             dataIndex: 'earningRate',
+            customRender({ text }) {
+                return <div class={getTextColor(text)}>{text || '0'}</div>
+            }
             // sorter: true,
         },
         {
             title: '涨跌幅（%）',
             dataIndex: 'chg',
             customRender({ text }) {
-                return <div class={getTextColor(text)}>{text || '0'}</div>
+                return <div class={[getTextColor(text)]}>{text || '0'}</div>
             }
             // sorter: true,
         },

@@ -74,7 +74,7 @@ export default defineComponent({
     }
     // 打开公告详情
     function openDetail(params: any) {
-      // console.log('openDetail===', params)
+      console.log('openDetail===', params)
       if (params?.file?.file) {
         window.open(params?.file?.file)
       } else {

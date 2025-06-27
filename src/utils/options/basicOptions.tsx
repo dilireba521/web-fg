@@ -3,13 +3,20 @@ export function toLabelValueOptions(arr: any[], params: any): LabelValueOptions 
   const { label = 'label', value = 'value' } = params
   return arr.map((item) => ({ ...item, label: item[label], value: item[value] }))
 }
-// 
+// 净值曲线类型
+export const netValueCurveOptions: LabelValueOptions = [{
+  label: '统一计价视图',
+  value: '1'
+}, {
+  label: '分币计价视图',
+  value: '2'
+}]
 
 // 申赎类型
 export const applyTypeOptions: LabelValueOptions = [{
   label: '申购',
   value: 'in'
-},{
+}, {
   label: '赎回',
   value: 'out'
 }]
@@ -126,7 +133,7 @@ export const applyStatusOptions: LabelValueOptions = [
     label: '待处理',
     value: '0',
     color: '#FAAD14FF'
-  },  {
+  }, {
     label: '处理中',
     value: '1',
     color: '#FAAD14FF'

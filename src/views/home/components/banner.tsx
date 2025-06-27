@@ -27,20 +27,16 @@ export default defineComponent({
         if (!data?.link) return
         window.open(data?.link, '_blank')
       }
-      console.log('renderImg=', data)
-
+      const _style = {
+        'background-image': `url(${data?.image?.image})`,
+        'background-size': 'cover',
+        'background-repeat': 'no-repeat',
+        height: '100%',
+      }
       return (
-        <div onClick={jump} class={[style.banner, data?.link && 'cursor-pointer']}>
-          {!!data ? (
-            <img
-              class="w-full h-full"
-              src={data?.image?.image}
-              alt=" "
-              onError={(e) => (e.target.src = logoImg)}
-            />
-          ) : (
-            <img class="w-100 h-full m-auto" src={logoImg} alt=" " />
-          )}
+        <div onClick={jump}
+          class={[style.banner, data?.link && 'cursor-pointer']}>
+          <div style={_style}></div>
         </div>
       )
     }
@@ -51,7 +47,7 @@ export default defineComponent({
         if (data.value?.retCode == 0) {
           dataSource.value = data.value?.data
         }
-      } catch (error) {}
+      } catch (error) { }
     }
     onMounted(() => {
       useGetSlidersFn()
@@ -63,10 +59,10 @@ export default defineComponent({
           <Carousel class="mx-auto" autoplay autoplaySpeed={8000}>
             {dataSource.value?.length > 0
               ? dataSource.value
-                  ?.sort((a, b) => (a?.order || 0) - (b?.order || 0))
-                  .map((item: any) => {
-                    return renderImg(item)
-                  })
+                ?.sort((a, b) => (a?.order || 0) - (b?.order || 0))
+                .map((item: any) => {
+                  return renderImg(item)
+                })
               : renderImg()}
           </Carousel>
         </div>

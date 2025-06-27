@@ -12,6 +12,7 @@ import {
 import { BasicSkeleton } from '@/components/skeleton'
 import { SwapOutlined } from '@ant-design/icons-vue'
 import { useGetUserAssetInfo } from '@/api/user'
+import { getTextColor } from '@/utils/color'
 export default defineComponent({
   setup(props, ctx) {
     const loading = ref(false)
@@ -22,7 +23,7 @@ export default defineComponent({
     // 组合比例
     const comRatio = computed(() => {
       const _cnyRatio = ((dataSource.value?.aumCny / dataSource.value?.aum || 0) * 100).toFixed(2)
-      const _usdRatio = (((dataSource.value?.aumUsd * dataSource.value?.exchangeRate) / dataSource.value?.aum || 0) * 100).toFixed(2)
+      const _usdRatio = ((dataSource.value?.aumUsd / dataSource.value?.aum || 0) * 100).toFixed(2)
       return {
         cnyRatio: `${_cnyRatio}%`,
         usdRatio: `${_usdRatio}%`
@@ -110,7 +111,7 @@ export default defineComponent({
                   content: () => (
                     <div class="pt-2">
                       <div class="text-xs color-tertiary leading-5">CNY</div>
-                      <div class="font-h5">{formateNumStr(dataSource.value?.earnings)}</div>
+                      <div class={["font-h5",getTextColor(dataSource.value?.earningRate)]}>{formateNumStr(dataSource.value?.earnings)}</div>
                     </div>
                   )
                 })}
@@ -125,7 +126,7 @@ export default defineComponent({
                   content: () => (
                     <div class="pt-2">
                       <div class="text-xs color-tertiary leading-5">&nbsp;</div>
-                      <div class="font-h5">{dataSource.value?.earningRate}</div>
+                      <div class={["font-h5",getTextColor(dataSource.value?.earningRate)]}>{formateNumStr(dataSource.value?.earningRate * 100)}%</div>
                     </div>
                   )
                 })}
@@ -163,12 +164,12 @@ export default defineComponent({
                           <div class="font-h5">
                             {isSwapped.value
                               ? comRatio.value?.usdRatio
-                              : formateNumStr(dataSource.value?.aumUsd)}
+                              : formateNumStr(dataSource.value?.aumUsd/dataSource.value?.exchangeRate)}
                           </div>
                           <div class="leading-5 text-xs pt-2">
                             {!isSwapped.value
                               ? comRatio.value?.usdRatio
-                              : formateNumStr(dataSource.value?.aumUsd)}
+                              : formateNumStr(dataSource.value?.aumUsd/dataSource.value?.exchangeRate)}
                           </div>
                         </Col>
                       </Row>

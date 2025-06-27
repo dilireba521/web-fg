@@ -11,7 +11,7 @@
                             修改密码
                         </div>
                     </Menu.Item>
-                    <Menu.Item key="1" @click="userStore.confirmLoginOut">
+                    <Menu.Item key="1" @click="openModal">
                         <div class="min-w-30">
                             <PoweroffOutlined  class="mr-1"/>
                             退出登录
@@ -21,6 +21,7 @@
             </template>
         </Dropdown>
         <Password ref="passwordRef"></Password>
+        <loginOut ref="loginOutRef"/>
     </div>
 </template>
 <script lang="tsx" setup>
@@ -30,14 +31,22 @@ import { Dropdown, Menu } from 'ant-design-vue'
 import { useUserStore } from '@/store/modules/user'
 import { PoweroffOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { Password } from "@/views/account/infoSetting/components/modules"
+import loginOut from '@/views/login/loginOut'
 const userStore = useUserStore()
 const userInfo = userStore.getUserInfo
 const overlayStyle = {
     bottom: '20px'
 }
 const passwordRef = ref()
+const loginOutRef = ref()
 function changePwd() {
     passwordRef.value.visible = true
 }
+function openModal(){
+    console.log("defineExpose--",loginOutRef);
+    
+    loginOutRef.value?.openModal()
+}
+
 
 </script>

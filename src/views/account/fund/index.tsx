@@ -8,7 +8,7 @@ export default defineComponent({
     const searchInfo = reactive({
       type: null,
     })
-    const dataSoure = ref([])
+    const expandedRowKeys = ref()
     // async function useGetUserFundListFn(){
     //   const {data} = await useGetUserFundList()
     //   console.log("data-----",data);
@@ -23,6 +23,9 @@ export default defineComponent({
       //   params.endTime = formatToDate(params.timeRang[1]) + ' 23:59:59'
       // }
     }
+    function afterFetch(data: any) {
+      expandedRowKeys.value = data?.map((item: any) => item.id)
+    }
     // onMounted(() => {
     //   useGetUserFundListFn()
     // })
@@ -30,9 +33,11 @@ export default defineComponent({
       <div class='pt-10 pb-4 font-h5'>持有基金</div>
       <BasicTable
         searchInfo={searchInfo}
+        expandedRowKeys={expandedRowKeys.value}
         api={useGetUserFundList}
-        // dataSource={dataSoure.value}
+        rowKey='id'
         beforeFetch={beforeFetch}
+        afterFetch={afterFetch}
         columns={basicColumns()}
       >
       </BasicTable>
