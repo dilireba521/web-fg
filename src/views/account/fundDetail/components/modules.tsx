@@ -14,7 +14,7 @@ export const renderFund = (data: any) => {
       <Row class="mt-1" gutter={8}>
         <Col flex={'208px'}>
           {renderPanel({
-            title: '最新净值',
+            title: '最新单位净值',
             type: 'default',
             panelClass: 'h-[100px]',
             content: () => (
@@ -47,7 +47,8 @@ export const renderFund = (data: any) => {
               <div class="flex">
                 <div class="pt-2 flex-1">
                   <div class="text-xs color-tertiary leading-5">
-                    {data?.fund_unit == '人民币' ? 'CNY' : 'USD'}
+                    {/* {data?.fund_unit == '人民币' ? 'CNY' : 'USD'} */}
+                    CNY
                   </div>
                   <div class="font-h5">{formateNumStr(data?.asset, { decimals: 2 })}</div>
                 </div>
@@ -61,13 +62,16 @@ export const renderFund = (data: any) => {
         </Col>
         <Col flex={'400px'}>
           {renderPanel({
-            title: '累积收益',
+            title: '累计收益',
             type: 'default',
             panelClass: 'h-[100px]',
             content: () => (
               <div class="flex">
                 <div class="pt-2 flex-1">
-                  <div class="text-xs color-tertiary leading-5"> {data?.fund_unit == '人民币' ? 'CNY' : 'USD'}</div>
+                  <div class="text-xs color-tertiary leading-5">
+                     {/* {data?.fund_unit == '人民币' ? 'CNY' : 'USD'} */}
+                     CNY
+                    </div>
                   <div class="font-h5">{formateNumStr(data?.total_earnings, { decimals: 2 })}</div>
                 </div>
                 {/* <div class="pt-2 flex-1">
@@ -80,7 +84,7 @@ export const renderFund = (data: any) => {
         </Col>
         <Col flex={'auto'}>
           {renderPanel({
-            title: '累积收益率',
+            title: '累计收益率',
             type: 'default',
             panelClass: 'h-[100px]',
             content: () => (

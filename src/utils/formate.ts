@@ -1,11 +1,14 @@
 // 转换为数字型字符串
-export function formateNumStr(str, params: any = { decimals: 4, multiple: 1, suffix: '' }) {
+export function formateNumStr(str, params: any = { decimals: 4, multiple: 1, suffix: '' , keepZero: true}) {
   if (!str) return '0'
   if (str == 0) return '0'
   const { decimals, multiple = 1, suffix } = params
   let _res: any = (Number(str) * multiple).toFixed(decimals)
   if (Number(_res) == 0) {
     _res = str
+  }
+  if (!params.keepZero) {
+    _res = parseFloat(_res);
   }
   return formatNumberWithCommas(_res) + (suffix || '')
 }

@@ -1,4 +1,4 @@
-import { getTextColor} from "@/utils/color"
+import { getTextColor } from '@/utils/color'
 import { formateNumStr } from '@/utils/formate'
 
 export function basicColumns() {
@@ -22,13 +22,16 @@ export function basicColumns() {
       align: 'center',
       dataIndex: 'yesterdayEarningsRate',
       customRender({ text }) {
-          return <div class={[getTextColor(text)]}>{ formateNumStr(text * 100,{decimals: 2})}%</div>
+        return <div class={[getTextColor(text)]}>{formateNumStr(text * 100, { decimals: 2 })}%</div>
       }
     },
     {
       title: '累计净值',
       align: 'center',
-      dataIndex: 'totalEarnings'
+      dataIndex: 'netWorth',
+      // customRender({ text }) {
+      //   return text ? formateNumStr(text,{ keepZero: true}) : '0'
+      // }
     }
   ]
 }

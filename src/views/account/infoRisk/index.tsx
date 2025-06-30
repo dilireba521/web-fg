@@ -32,7 +32,7 @@ export default defineComponent({
           })}
         </div>
         <div class="text-xs color-secondary pt-10 pb-22 border-b-black/3 border-b-1 border-b-solid">
-          如需重新评估，请联系基金经理
+          如需重新评估，请联系客户经理
         </div>
         <div class="color-secondary pt-8">
           普通投资者风险承受能力和基金产品或者服务的风险等级建立以下适当性匹配原则：

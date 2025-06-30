@@ -56,7 +56,7 @@ const ListElm = defineComponent({
         <div>
           <BasicSkeleton loading={false} showEmpty={!data?.value?.data}>
             <Row gutter={[16, 16]}>
-              {data.value?.data?.map((item, index) => {
+              {data.value?.data?.slice(0,8)?.map((item, index) => {
                 return (
                   <Col span={6}>
                     <div
@@ -81,7 +81,7 @@ const ListElm = defineComponent({
                         <div>
                           <SwapRightOutlined class="hidden group-hover:block" />
                         </div>
-                        <div class="font-h7 text-right">{item?.createTime}</div>
+                        <div class="font-h7 text-right">{item?.releaseTime}</div>
                       </div>
                     </div>
                   </Col>
