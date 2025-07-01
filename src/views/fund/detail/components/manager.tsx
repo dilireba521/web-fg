@@ -3,8 +3,8 @@ import logoImg from '@/assets/icons/logo.svg'
 export default defineComponent({
   props: {
     record: {
-      type: Object,
-      default: () => ({})
+      type: Array as PropType<any[]>,
+      default: () => []
     }
   },
   setup(props: any) {
@@ -30,7 +30,12 @@ export default defineComponent({
         <div class="font-500 border-b-[#00000014] border-b-1 border-b-solid pb-2">基金经理</div>
         <div class="px-6">
           {/* <TabRender class="py-4 border-b-[#00000014] border-b-1 border-b-solid" tabs={tabs} v-model:activeKey={searchInfo.active}></TabRender> */}
-          {renderManager(manager.value)}
+          {
+            props.record?.map(item=>{
+              return renderManager(item)
+            })
+          }
+          {/* {renderManager(manager.value)} */}
         </div>
       </div>
     )

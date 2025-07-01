@@ -5,7 +5,7 @@
     <Dropdown :destroyPopupOnHide="true" v-model:visible="open">
       <div class="h-full flex justify-center items-center w-full">
         <Badge size="small" :count="countAll">
-          <BellOutlined class="cursor-pointer" :style="{ fontSize: '24px' }" />
+          <BellOutlined class="cursor-pointer" :style="{ fontSize: '20px' }" />
         </Badge>
       </div>
 

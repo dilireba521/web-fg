@@ -38,7 +38,7 @@ export const renderFund = (data: any) => {
             )
           })}
         </Col>
-        <Col flex={'400px'}>
+        <Col flex={'300px'}>
           {renderPanel({
             title: '持有价值',
             type: 'default',
@@ -60,7 +60,7 @@ export const renderFund = (data: any) => {
             )
           })}
         </Col>
-        <Col flex={'400px'}>
+        <Col flex={'300px'}>
           {renderPanel({
             title: '累计收益',
             type: 'default',
@@ -93,6 +93,26 @@ export const renderFund = (data: any) => {
                 <div class={["font-h5", getTextColor(data?.total_earnings_rate)]}>
                   {formateNumStr(data?.total_earnings_rate * 100, { decimals: 2 })}%
                 </div>
+              </div>
+            )
+          })}
+        </Col>
+        <Col flex={'200px'}>
+          {renderPanel({
+            title: '最新涨跌幅',
+            type: 'default',
+            panelClass: 'h-[100px]',
+            content: () => (
+              <div class="flex">
+                <div class="pt-2 flex-1">
+                  <div class="text-xs color-tertiary leading-5">&nbsp;
+                    </div>
+                  <div class="font-h5">{formateNumStr(data?.chg * 100, { decimals: 2 })}%</div>
+                </div>
+                {/* <div class="pt-2 flex-1">
+                  <div class="text-xs color-tertiary leading-5">USD</div>
+                  <div class="font-h5">{formateNumStr(1234567890.0)}</div>
+                </div> */}
               </div>
             )
           })}

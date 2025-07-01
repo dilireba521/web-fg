@@ -1,6 +1,6 @@
 import { renderBasicPanel, renderPanel } from '@/views/account/index/components/modules'
 import { ref, onMounted, watch, nextTick, reactive } from 'vue'
-import { formatNumberWithCommas } from '@/utils/formate'
+import { formatNumberWithCommas, formateNumStr } from '@/utils/formate'
 import { useECharts } from '@/hooks/web/useECharts'
 import { Select, Empty, RangePicker, Tooltip, Spin, DatePicker } from 'ant-design-vue'
 import { BasicSkeleton } from '@/components/skeleton'
@@ -10,7 +10,7 @@ import { useRoute } from 'vue-router'
 import { netValueCurveOptions } from '@/utils/options/basicOptions'
 import { hasOwn } from '@vueuse/core'
 
-//净值曲线
+// 单位净值
 export function useRenderTotalEchart() {
   const loading = ref(true)
   const spinning = ref(false)
@@ -43,7 +43,7 @@ export function useRenderTotalEchart() {
         record.value = data.value?.data
         await nextTick()
         initData()
-        if(record.value?.length > 0 && hasOwn(record.value[0],'netWorthCny')){
+        if (record.value?.length > 0 && hasOwn(record.value[0], 'netWorthCny')) {
           showType.value = true
         }
         console.log('record----', record.value)
@@ -81,42 +81,115 @@ export function useRenderTotalEchart() {
     { deep: true }
   )
 
-  function setSeriesData(data: any,name?:string) {
-    return {
+  function setSeriesData(data: any, markPointData: any, name?: string, showMarkPoint?: boolean) {
+    let _series: any = {
       name: name,
       type: 'line', // 这里可以是'line'、'bar'、'pie'等，根据图表类型选择
       data: data,
       symbol: data?.length > 1 ? 'none' : 'circle',
       smooth: true,
+      visible: false,
       lineStyle: {
         width: 1
       }
     }
+    if (showMarkPoint) {
+      const _markPointData = []
+      record.value?.forEach((item, i) => {
+        if (item?.inOutSet?.length > 0) {
+          let _hasOut = false,
+            _hasIn = false
+          console.log('item----', item?.inOutSet)
+          item?.inOutSet?.forEach((item2: any) => {
+            if (item2?.type == 'out') {
+              _hasOut = true
+            }
+            if (item2?.type == 'in') {
+              _hasIn = true
+            }
+          })
+          if (_hasOut) {
+            _markPointData.push({
+              coord: [i, item?.netWorth],
+              label: {
+                color: '#fff',
+                formatter: (params) => {
+                  return 'S'
+                }
+              }
+            })
+          } 
+          if (_hasIn) {
+            _markPointData.push({
+              coord: [i, item?.netWorth],
+              itemStyle: {
+                color: '#5BB86FFF'
+              },
+              symbolRotate: 180,
+              label: {
+                offset: [0, 6],
+                color: '#fff',
+                formatter: (params) => {
+                  return 'B'
+                }
+              }
+            })
+          }
+        }
+      })
+
+      _series = {
+        ..._series,
+        markPoint: {
+          symbol: 'pin',
+          symbolSize: 30,
+          data: _markPointData
+        }
+      }
+    }
+    return _series
   }
   function initData() {
+    let _isParent: any = false
     const _xAxisData: any = [],
       _series = [],
+      _markPointData: any = [],
       _seriesData1: any = [],
       _seriesData2: any = [],
       _seriesData3: any = []
+
     if (record.value?.length > 0) {
       record.value?.forEach((item: any) => {
         _xAxisData.push(item.date)
         _seriesData1.push(item.netWorth)
         _seriesData2.push(item?.netWorthCny)
         _seriesData3.push(item?.netWorthUsd)
+        _markPointData.push(item?.inOutSet)
       })
     }
-    if (searchInfo.type == '2') {
-      _series.push(setSeriesData(_seriesData2,'CNY'))
-      _series.push(setSeriesData(_seriesData3,'USD'))
-    }else {
-      _series.push(setSeriesData(_seriesData1))
+    _isParent = _seriesData2?.length > 0 && _seriesData3?.length > 0
+    const _first = record.value?.[0]
+    _series.push(setSeriesData(_seriesData1, _markPointData, _first?.name, true))
+    if (_isParent) {
+      _series.push(setSeriesData(_seriesData2, [], _first?.nameCny, false))
+      _series.push(setSeriesData(_seriesData3, [], _first?.nameUsd, false))
     }
-    
+
     setOptions({
-      legend:{
-        show: false
+      legend: {
+        show: true,
+        icon: 'rect',
+        itemWidth: 12,
+        itemHeight: 4,
+        itemGap: 36,
+        textStyle: {
+          color: '#000000E0'
+        },
+        selected: {
+          [_first?.name]: true,
+          [_first?.nameCny]: false,
+          [_first?.nameUsd]: false
+        }
       },
       tooltip: {
         trigger: 'axis',
@@ -127,18 +200,48 @@ export function useRenderTotalEchart() {
           lineHeight: 20
         },
         formatter: (params) => {
+          // console.log(params);
+          let _hasOut = false,
+            _outData = 0,
+          _hasIn = false,
+          _inData = 0
+          const _inOutSet = record.value[params[0].dataIndex]?.inOutSet
+          _inOutSet?.forEach((item2: any) => {
+            if (item2?.type == 'out') {
+              _outData += item2?.shares
+              _hasOut = true
+            }
+            if (item2?.type == 'in') {
+              _inData += item2?.shares
+              _hasIn = true
+            }
+          })
           let _str = `<div clsss='text-black/65'>${params[0].name}</div>
           <div style='border-bottom: 1px solid #00000026; margin: 8px 0;'></div>
-          <div class='flex justify-between'>
-            <div>${params[0].marker}CNY</div>${formatNumberWithCommas(params[0].value)}
+          <div class='flex justify-between gap-2'>
+            <div>${params[0].marker}${params[0].seriesName}</div>${formateNumStr(params[0].value)}
           </div>`
-          if(searchInfo.type == '2'){
-            if(params[1]){
-              _str += ` <div class='flex justify-between'>
-              <div>${params[1].marker}USD</div>${formatNumberWithCommas(params[1].value)}
+          if (_isParent) {
+            if (params[1]) {
+              _str += ` <div class='flex justify-between gap-2'>
+              <div>${params[1].marker}${params[1].seriesName}</div>${formateNumStr(params[1].value)}
+            </div>`
+            }
+            if (params[2]) {
+              _str += ` <div class='flex justify-between gap-2'>
+              <div>${params[2].marker}${params[2].seriesName}</div>${formateNumStr(params[2].value)}
             </div>`
             }
           }
+          if(_hasIn){
+            _str += `<div class='flex justify-between gap-2'>
+            <div> 申购（份额）</div>${formateNumStr(_inData)}</div>`
+          }
+          if(_hasOut){
+            _str += `<div class='flex justify-between gap-2'>
+            <div> 赎回（份额）</div>${formateNumStr(_outData)}</div>`
+          }
+         
           return `<div class='min-w-30'>${_str}</div>`
         },
         axisPointer: {
@@ -199,19 +302,19 @@ export function useRenderTotalEchart() {
   }
   function render() {
     return renderBasicPanel({
-      title: '净值曲线',
+      title: '单位净值',
       content: () => (
-        <BasicSkeleton loading={loading.value}>
+        <BasicSkeleton loading={loading.value} paragraph={{ rows: 12 }}>
           <Spin spinning={spinning.value}>
             <div class="px-4 pt-4 pb-2">
               <div class="flex justify-end gap-2">
-                {
+                {/* {
                   showType.value && <Select
                   v-model:value={searchInfo.type}
                   options={netValueCurveOptions}
                   style="width: 160px"
                 ></Select>
-                }
+                } */}
                 <DatePicker v-model:value={searchInfo.year} picker="year"></DatePicker>
                 <RangePicker v-model:value={searchInfo.time}></RangePicker>
               </div>

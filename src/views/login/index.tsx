@@ -4,12 +4,12 @@ import { Form, Input, Button, Checkbox, message } from 'ant-design-vue'
 import './index.less'
 import { usePostLogin } from '@/api/login'
 import { useUserStore } from '@/store/modules/user'
-import {  useGo } from '@/hooks/web/usePage'
+import { useGo } from '@/hooks/web/usePage'
 
 export default defineComponent({
   setup() {
     const userStore = useUserStore()
-    const {go} = useGo()
+    const { go } = useGo()
     const OSSURL = import.meta.env.VITE_GLOB_OSS
     const formRef = ref()
     const formState = reactive({
@@ -45,9 +45,12 @@ export default defineComponent({
         console.log('data===', data.value)
 
         if (data.value?.retCode == 0) {
-            await userStore.afterLogin(data.value?.data)
-            message.success(data.value?.msg || '登录成功')
-            go('/',{isReplace:true})
+          await userStore.afterLogin(data.value?.data)
+          message.success({
+            content: data.value?.msg || '登录成功',
+            duration: 2,
+          })
+          go('/', { isReplace: true })
           //     console.log(data.value)
           //     if (data.value?.data) {
           //       // 登录成功
@@ -92,6 +95,7 @@ export default defineComponent({
               hideRequiredMark={true}
               class="mt-12 login-form"
               layout="vertical"
+              onSubmit={submit}
             >
               <Form.Item label="账号" name="loginName">
                 <Input
@@ -109,20 +113,22 @@ export default defineComponent({
                   autocomplete="current-password"
                 ></Input.Password>
               </Form.Item>
+              <Form.Item>
+                <Button
+                  loading={loading.value}
+                  onClick={submit}
+                  size="large"
+                  class="w-full"
+                  type="primary"
+                  html-type="submit"
+                >
+                  登录
+                </Button>
+              </Form.Item>
             </Form>
             {/* <div class='mb-2'>
                         <Checkbox><span class='text-xs color-tertiary'>记住账号</span></Checkbox>
                     </div> */}
-            <Button
-              loading={loading.value}
-              onClick={submit}
-              size="large"
-              class="w-full"
-              type="primary"
-              html-type="submit"
-            >
-              登录
-            </Button>
           </div>
         </div>
       )

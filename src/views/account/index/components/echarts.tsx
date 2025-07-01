@@ -628,6 +628,7 @@ export function useAssetChangeRate() {
           name:'USD',
           type: 'bar', // 这里可以是'line'、'bar'、'pie'等，根据图表类型选择
           data: _seriesData2,
+          barWidth: 8,
           stack: 'total',
           // symbol: _seriesData2?.length > 1 ? 'none' : 'circle',
           // smooth: true,

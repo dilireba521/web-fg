@@ -60,7 +60,7 @@ export default defineComponent({
             </div>
           </div>
         </div>
-        <div class="bg-#f7f7f7 sticky top-0 z-10">
+        <div class="bg-#f7f7f7 sticky top-0 z-10" style='box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1)'>
           <div class="container ">
             <TabsVue
               list={items.value}

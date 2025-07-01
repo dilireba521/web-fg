@@ -24,6 +24,8 @@ export default defineComponent({
       // }
     }
     function afterFetch(data: any) {
+      console.log("data-----");
+      
       expandedRowKeys.value = data?.map((item: any) => item.id)
     }
     // onMounted(() => {
@@ -33,7 +35,7 @@ export default defineComponent({
       <div class='pt-10 pb-4 font-h5'>持有基金</div>
       <BasicTable
         searchInfo={searchInfo}
-        expandedRowKeys={expandedRowKeys.value}
+        v-model:expandedRowKeys={expandedRowKeys.value}
         api={useGetUserFundList}
         rowKey='id'
         beforeFetch={beforeFetch}
