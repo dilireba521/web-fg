@@ -1,5 +1,5 @@
 <template>
-    <div class="min-w-11 max-w-21 text-center pl-2 hover:bg-dark/4 h-full flex items-center justify-center">
+    <div class="min-w-11 max-w-21 text-center pl-2 pr-2 hover:bg-dark/4 h-full flex items-center justify-center">
         <Dropdown placement="bottomRight" :overlayStyle="overlayStyle">
             <div class="h-full w-full justify-center flex items-center text-sm cursor-pointer border-dark ">
                 <div class="truncate" :title="userInfo?.name"> {{ userInfo?.name

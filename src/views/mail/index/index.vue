@@ -1,5 +1,5 @@
 <template>
-  <div class="w-936px min-h-120 m-auto pt-16 pb-10">
+  <div class="w-936px m-auto pt-16 pb-10" style="min-height:calc(100vh - 462px)">
     <Tabs v-model:activeKey="activeKey" :tabBarGutter="24" size="small">
       <Tabs.TabPane v-for="item in tabs" :key="item.key">
         <template #tab>

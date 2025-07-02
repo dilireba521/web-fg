@@ -4,9 +4,9 @@ import { basicColumns } from './data'
 import { formatToDate } from '@/utils/dateUtil'
 import { Select, RangePicker, Row, Col } from 'ant-design-vue'
 import { StepRender } from './components/modules'
-import { TextTranslate } from '@/components/OptionTranslate';
-import { applyTypeOptions } from "@/utils/options/basicOptions"
-import { useGetUserFundSrlist } from "@/api/user"
+import { TextTranslate } from '@/components/OptionTranslate'
+import { applyTypeOptions, applyStatusOptions } from '@/utils/options/basicOptions'
+import { useGetUserFundSrlist } from '@/api/user'
 export default defineComponent({
   setup(props, ctx) {
     const searchInfo = reactive({
@@ -15,23 +15,7 @@ export default defineComponent({
       timeRang: []
     })
     const expandedRowKeys = ref([])
-    const dataSoure = ref([
-      {
-        name: '123',
-        amount: '123',
-        detail: 'dfgdf'
-      },
-      {
-        name: '1233',
-        amount: '1233',
-        detail: 'sdfmlsdjflsdl'
-      },
-      {
-        name: '1234',
-        amount: '1234',
-        detail: 'sdfmldfgsdfgsdjflsdl'
-      }
-    ])
+
     function beforeFetch(params: any) {
       if (params.timeRang?.length > 0) {
         params.beginTime = formatToDate(params.timeRang[0]) + ' 00:00:00'
@@ -39,7 +23,7 @@ export default defineComponent({
       }
     }
     function expandRowCb(data: any) {
-      console.log('expandRowCb===', data)
+      // console.log('expandRowCb===', data)
       if (expandedRowKeys.value.includes(data.record.key)) {
         expandedRowKeys.value = []
         return
@@ -76,7 +60,7 @@ export default defineComponent({
           beforeFetch={beforeFetch}
           columns={basicColumns(expandRowCb, expandedRowKeys)}
         >
-          {/* {{
+          {{
             expandedRowRender: ({ record }) => {
               const current = 1
               const _steps = [
@@ -96,31 +80,44 @@ export default defineComponent({
               return (
                 <div class="pt-10">
                   <div class="pb-8 border-b-[#00000014] border-b-1 border-b-solid">
-                  <div class="w-474px m-auto">
-                    <StepRender current={current} steps={_steps}></StepRender>
+                    <div class="w-474px m-auto">
+                      <StepRender current={current} steps={_steps}></StepRender>
                     </div>
                   </div>
                   <div class="w-814px m-auto pt-8 pb-4">
-                    <Row gutter={[8,8]}>
-                     {renderItem('申请时间', '2025-04-08 12:00:00')}
-                     {renderItem('申赎类型', '赎回')}
-                     {renderItem('审核状态', <TextTranslate type="dot" options={applyStatusOptions} value='2' />)}
-                     {renderItem('赎回份额', '621')}
-                     {renderItem('赎回金额', '8875.60（CNY）')}
+                    <Row gutter={[8, 8]}>
+                      {renderItem('申请时间', record?.applyTime)}
+                      {renderItem(
+                        '申赎类型',
+                        <TextTranslate type="dot" options={applyTypeOptions} value={record?.type} />
+                      )}
+                      {renderItem(
+                        '审核状态',
+                        <TextTranslate
+                          type="dot"
+                          options={applyStatusOptions}
+                          value={record?.status}
+                        />
+                      )}
+                      {record?.type == 'in'
+                        ? renderItem('申购金额', record?.amount)
+                        : renderItem('赎回份额', record?.shares + '（CNY）')}
                     </Row>
                   </div>
                 </div>
               )
             }
-          }} */}
+          }}
         </BasicTable>
       </div>
     )
   }
 })
 function renderItem(name: string, value: any) {
-  return <Col span={8} class='pb-2 flex text-base'>
-      <div class='text-nowrap min-w-[76px] color-secondary'>{name}</div>
-      <div>{ typeof value == 'function' ?  value?.() : value || '- -'}</div>
-  </Col>
+  return (
+    <Col span={8} class="pb-2 flex text-base">
+      <div class="text-nowrap min-w-[76px] color-secondary">{name}</div>
+      <div>{typeof value == 'function' ? value?.() : value || '- -'}</div>
+    </Col>
+  )
 }

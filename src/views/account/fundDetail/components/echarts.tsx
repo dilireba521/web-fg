@@ -162,7 +162,9 @@ export function useRenderTotalEchart() {
       record.value?.forEach((item: any) => {
         _xAxisData.push(item.date)
         _seriesData1.push(item.netWorth)
+        if(item?.netWorthCny)
         _seriesData2.push(item?.netWorthCny)
+        if(item?.netWorthUsd)
         _seriesData3.push(item?.netWorthUsd)
         _markPointData.push(item?.inOutSet)
       })
@@ -170,6 +172,7 @@ export function useRenderTotalEchart() {
     _isParent = _seriesData2?.length > 0 && _seriesData3?.length > 0
     const _first = record.value?.[0]
     _series.push(setSeriesData(_seriesData1, _markPointData, _first?.name, true))
+
     if (_isParent) {
       _series.push(setSeriesData(_seriesData2, [], _first?.nameCny, false))
       _series.push(setSeriesData(_seriesData3, [], _first?.nameUsd, false))
@@ -200,7 +203,7 @@ export function useRenderTotalEchart() {
           lineHeight: 20
         },
         formatter: (params) => {
-          // console.log(params);
+          console.log(params);
           let _hasOut = false,
             _outData = 0,
           _hasIn = false,

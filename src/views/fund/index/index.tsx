@@ -12,14 +12,16 @@ import {
 import { BasicList } from '@/components/list'
 import { useGo } from '@/hooks/web/usePage'
 import { useGetlist } from '@/api/fund'
+import { useFundCategory } from "@/utils/options/useBasicOptions"
 export default defineComponent({
   setup(props, ctx) {
+    const { options } = useFundCategory()
     const { go } = useGo()
     const labelCol = { style: { width: '78px' } }
     const searchInfo = reactive({
       queryFundManager: '',
       queryYears: '',
-      label: '',
+      categoryId: '',
       queryString: '',
       riskLevel: ''
     })
@@ -125,7 +127,7 @@ export default defineComponent({
               {{
                 default: () => (
                   <div class="flex">
-                    <BasicButtonForm options={fundTagOptions} v-model:value={searchInfo.label} />
+                    <BasicButtonForm options={options.value} v-model:value={searchInfo.categoryId} />
                   </div>
                 ),
                 label: () => <div class="font-h7 color-secondary">基金标签</div>
@@ -146,7 +148,7 @@ export default defineComponent({
                   <List.Item class="!px-8 !py-6 bg-black/3 mb-2">
                     <div class="w-full flex items-center justify-between">
                       <div>
-                        <div class="font-h5 font-500">{item?.name}</div>
+                        <div onClick={()=>jump(item)} class="font-h5 font-500 cursor-pointer ">{item?.name}</div>
                         <div class="flex mt-3 gap-8">
                           {renderItem('基金代码：', item?.fundCode)}
                           {renderItem('风险等级：', _level)}

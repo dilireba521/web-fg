@@ -3,6 +3,8 @@ import type { Ref } from 'vue'
 import { toLabelValueOptions } from './basicOptions'
 import { useProjectConfigStore } from '@/store/modules/projectConfig'
 import { useGetNoticeCategory } from '@/api/notice'
+import { useGetCategory } from '@/api/fund'
+import { useGetNewsCategory } from '@/api/news'
 
 interface Options {
   label: string
@@ -63,4 +65,14 @@ function baseFetch(api: Function, { label = 'label', value = 'value' }: Options,
 // 通知类型
 export function useNoticeCategory() {
   return baseFetch(useGetNoticeCategory, { label: 'name', value: 'id' })
+}
+
+// 基金类型
+export function useFundCategory() {
+  return baseFetch(useGetCategory, { label: 'name', value: 'id' })
+}
+
+// 公告类型
+export function useNewsCategory() {
+  return baseFetch(useGetNewsCategory, { label: 'name', value: 'id' })
 }

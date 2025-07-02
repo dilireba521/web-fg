@@ -60,7 +60,7 @@ export function basicColumns(cb, expandedRowKeys) {
         {
             title: '申请状态',
             dataIndex: 'status',
-            customRender: ({ text }) => <TextTranslate value={text} options={applyStatusOptions} />,
+            customRender: ({ text }) => <TextTranslate type="dot"  value={text} options={applyStatusOptions} />,
 
         },
         // {
@@ -73,17 +73,17 @@ export function basicColumns(cb, expandedRowKeys) {
         //     dataIndex: 'name',
         //     // sorter: true,
         // },
-        // {
-        //     title: '操作',
-        //     dataIndex: 'action',
-        //     width: 200,
-        //     customRender(opt) {
-        //         return (
-        //             <div onClick={() => handleClick(opt)} class='text-[#1677FF] cursor-pointer'>
-        //                 {expandedRowKeys?.value?.includes(opt.record.key) ? '收起' : '展开'}
-        //             </div>
-        //         )
-        //     }
-        // }
+        {
+            title: '操作',
+            dataIndex: 'action',
+            width: 200,
+            customRender(opt) {
+                return (
+                    <div onClick={() => handleClick(opt)} class='text-[#1677FF] cursor-pointer'>
+                        {expandedRowKeys?.value?.includes(opt.record.key) ? '收起' : '展开'}
+                    </div>
+                )
+            }
+        }
     ]
 }

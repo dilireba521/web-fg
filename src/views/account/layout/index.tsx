@@ -7,12 +7,15 @@ import {
   ref,
   KeepAlive,
   computed,
-  Transition
+  Transition,
+  watch,
+  nextTick
 } from 'vue'
 import TabsVue from '@/layouts/default/header/components/tabs/index.vue'
 import { BasicSkeleton } from '@/components/skeleton'
 import { useUserStore } from '@/store/modules/user'
 import { formatToDateTime } from '@/utils/dateUtil'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'AccountLayout',
@@ -22,6 +25,7 @@ export default defineComponent({
   setup(props, ctx) {
     const userStore = useUserStore()
     const userInfo = userStore.getUserInfo
+    const route = useRoute()
     const items = shallowRef([
       {
         label: '账户信息',
@@ -48,6 +52,17 @@ export default defineComponent({
     const curComponent = computed(() => {
       return items.value.find((item) => item.value === selectedKey.value)?.component
     })
+    watch(
+      () => route.query,
+      (curV) => {
+        if (curV?.activeKey && curV?.activeKey != selectedKey.value) {
+          nextTick(() => {
+            selectedKey.value = curV?.activeKey
+          })
+        }
+      },
+      { immediate: true }
+    )
     return () => (
       <div>
         <div class="bg-#C1272D h-37">
@@ -55,12 +70,13 @@ export default defineComponent({
             <div class="pl-10 pt-12">
               <div class="font-h5 color-text1">您好，用户{userInfo?.name}</div>
               <div class="mt-1 font-h8 color-tertiary1">
-                上次登录时间：{ userInfo?.lastLoginTime ? formatToDateTime(userInfo?.lastLoginTime) : '- -'}
+                上次登录时间：
+                {userInfo?.lastLoginTime ? formatToDateTime(userInfo?.lastLoginTime) : '- -'}
               </div>
             </div>
           </div>
         </div>
-        <div class="bg-#f7f7f7 sticky top-0 z-10" style='box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1)'>
+        <div class="bg-#f7f7f7 sticky top-0 z-10" style="box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1)">
           <div class="container ">
             <TabsVue
               list={items.value}

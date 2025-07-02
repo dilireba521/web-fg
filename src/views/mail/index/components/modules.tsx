@@ -1,6 +1,6 @@
 import { defineComponent, nextTick, ref, watch } from 'vue'
 import '../index.less'
-import { Badge } from 'ant-design-vue'
+import { Badge, Empty } from 'ant-design-vue'
 import { BasicSkeleton } from '@/components/skeleton'
 import { useGetNotice, usePostNotice } from '@/api/notice'
 import { BasicList } from '@/components/list'
@@ -65,8 +65,8 @@ export const Review = defineComponent({
       })
     }
     async function readAll() {
-      const { data } = await usePostNotice({ categoryId: props.categoryId,readAll: true })
-      if(data.value?.retCode == 0) {
+      const { data } = await usePostNotice({ categoryId: props.categoryId, readAll: true })
+      if (data.value?.retCode == 0) {
         listRef.value?.fetch()
         userStore.updateUserInfo()
       }
@@ -74,9 +74,17 @@ export const Review = defineComponent({
     return () => (
       <div>
         <div class="flex justify-end items-center h-38px w-full text-black/25 ">
-          <div onClick={readAll} class="cursor-pointer hover:text-black/88">全部已读</div>
+          <div onClick={readAll} class="cursor-pointer hover:text-black/88">
+            全部已读
+          </div>
         </div>
-        <BasicSkeleton loading={false} showEmpty={false}>
+        <BasicSkeleton
+          loading={false}
+          showEmpty={false}
+          emptyProps={{
+            description: '暂无消息'
+          }}
+        >
           <BasicList
             api={useGetNotice}
             ref={listRef}
@@ -86,6 +94,9 @@ export const Review = defineComponent({
             beforeFetch={beforeFetch}
             afterFetch={afterFetch}
             split={false}
+            locale={{
+              emptyText: <Empty description="暂无消息" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            }}
           >
             {{
               renderItem: ({ item }) => {

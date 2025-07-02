@@ -1,22 +1,24 @@
-import { defineComponent, reactive, watch, ref, toRaw } from 'vue'
+import { defineComponent, reactive, watch, ref, toRaw, computed } from 'vue'
 import Banner from './components/banner'
 import { Form, Input, List, Button, message, Tree, RangePicker } from 'ant-design-vue'
 import { BasicButtonForm } from '@/components/button'
 import { fundTypeOptions, productNoticeOptions } from '@/utils/options/basicOptions'
 import { BasicList } from '@/components/list'
-import { useGetNews } from '@/api/news'
+import { useGetNews, usePostNewsInfo } from '@/api/news'
 import { formatToDate } from '@/utils/dateUtil'
 import { useGo } from '@/hooks/web/usePage'
 import { watchDebounced } from '@vueuse/core'
-import { usePostNewsInfo } from '@/api/news'
-
+import { useNewsCategory } from '@/utils/options/useBasicOptions'
 export default defineComponent({
   setup(props, ctx) {
+    const { options } = useNewsCategory()
+
     const { go } = useGo()
     const labelCol = { style: { width: '78px' } }
     const searchInfo = reactive({
       timeRang: null,
       category: null,
+      categoryId: null,
       queryString: ''
     })
 
@@ -24,7 +26,6 @@ export default defineComponent({
     watch(
       () => searchInfo,
       (val, oldVal) => {
-        // console.log(val,oldVal)
         if (searchInfo.category?.length > 1) {
           // 选择多个，只取最后一个
           searchInfo.category = [searchInfo.category[searchInfo.category.length - 1]]
@@ -35,6 +36,7 @@ export default defineComponent({
     watchDebounced(
       () => searchInfo.category,
       () => {
+        searchInfo.categoryId = searchInfo.category
         handleClickSearch()
       },
       { debounce: 200 }
@@ -44,14 +46,14 @@ export default defineComponent({
     const loading = ref(false)
 
     // 树
-    const treeData = ref(
-      productNoticeOptions.map((item) => {
+    const treeData = computed(() => {
+      return options.value?.map((item) => {
         return {
           title: item.label,
           key: item.value
         }
       })
-    )
+    })
     function renderItem(name: string, value: string) {
       return (
         <div class="flex">

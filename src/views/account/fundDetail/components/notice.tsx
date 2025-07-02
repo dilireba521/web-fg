@@ -8,26 +8,34 @@ import { useGo } from '@/hooks/web/usePage'
 import { formatToDate } from '@/utils/dateUtil'
 import { useUserStore } from '@/store/modules/user'
 import { useGetUserFundNotice } from "@/api/user"
+import { useNewsCategory } from '@/utils/options/useBasicOptions'
+
 export default defineComponent({
   setup(props) {
+    const { options } = useNewsCategory()
     const userStore = useUserStore()
     const { go } = useGo()
     const route = useRoute()
     const listRef = ref()
     const searchInfo = reactive({
-      type: '定期公告',
+      type: '',
       id: route.query?.id,
       // content: '',
       timeRang: null
     })
     const loading = ref(false)
-    const options = [...productNoticeOptions]
+    // const options = [...productNoticeOptions]
     watch(
       () => [searchInfo.type],
       () => {
         handleClickSearch()
       }
     )
+    watch(()=>options.value,(cur)=>{
+      if(cur?.length>0){
+        searchInfo.type = cur[0].label
+      }
+    })
     function handleClick(params: any) {
       if (userStore.getToken) {
         window.open(params?.file?.file, '_blank')
@@ -50,7 +58,7 @@ export default defineComponent({
     return () => (
       <div>
         <div class="flex justify-between items-center pb-2">
-          <div class="font-500">基金报告</div>
+          <div class="font-500">基金公告</div>
           <div>
             <RangePicker v-model:value={searchInfo.timeRang} class="mr-4" />
             <Button onClick={handleClickSearch} class="w-[74px]" type="primary">
@@ -60,8 +68,8 @@ export default defineComponent({
         </div>
         <div>
           <Tabs v-model:activeKey={searchInfo.type} tabBarGutter={16} size="small">
-            {options.map((item: any) => {
-              return <Tabs.TabPane key={item.value} tab={item.label}></Tabs.TabPane>
+            {options.value?.map((item: any) => {
+              return <Tabs.TabPane key={item.label} tab={item.label}></Tabs.TabPane>
             })}
           </Tabs>
           <BasicList
@@ -74,7 +82,7 @@ export default defineComponent({
           >
             {{
               renderItem: ({ item }) => (
-                <List.Item onClick={() => handleClick(item)} key={item?.id}>
+                <List.Item class='cursor-pointer' onClick={() => handleClick(item)} key={item?.id}>
                   <div>{item?.title}</div>
                   <div class="color-tertiary">{item?.updateTime}</div>
                 </List.Item>
