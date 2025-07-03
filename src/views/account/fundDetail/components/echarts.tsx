@@ -238,7 +238,7 @@ export function useRenderTotalEchart() {
           }
           if(_hasIn){
             _str += `<div class='flex justify-between gap-2'>
-            <div> 申购（份额）</div>${formateNumStr(_inData)}</div>`
+            <div> 申购（金额）</div>${formateNumStr(_inData)}</div>`
           }
           if(_hasOut){
             _str += `<div class='flex justify-between gap-2'>

@@ -15,7 +15,7 @@ import TabsVue from '@/layouts/default/header/components/tabs/index.vue'
 import { BasicSkeleton } from '@/components/skeleton'
 import { useUserStore } from '@/store/modules/user'
 import { formatToDateTime } from '@/utils/dateUtil'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'AccountLayout',
@@ -26,6 +26,7 @@ export default defineComponent({
     const userStore = useUserStore()
     const userInfo = userStore.getUserInfo
     const route = useRoute()
+    const router = useRouter()
     const items = shallowRef([
       {
         label: '账户信息',
@@ -54,14 +55,27 @@ export default defineComponent({
     })
     watch(
       () => route.query,
-      (curV) => {
-        if (curV?.activeKey && curV?.activeKey != selectedKey.value) {
-          nextTick(() => {
+      (curV,oldV) => {
+        console.log("curV---",route,curV,oldV);
+        
+        nextTick(() => {
+          if (curV?.activeKey && curV?.activeKey != selectedKey.value) {
             selectedKey.value = curV?.activeKey
-          })
-        }
+          }
+        })
       },
       { immediate: true }
+    )
+    watch(
+      () => selectedKey.value,
+      (curV) => {
+        router.push({
+          query: {
+            activeKey: curV
+          },
+          replace: true // 不会创建新的历史记录
+        })
+      }
     )
     return () => (
       <div>
@@ -86,16 +100,16 @@ export default defineComponent({
             />
           </div>
         </div>
-        <div>
+        <div class='min-h-150'>
           <KeepAlive>
             <Suspense>
               {{
                 default: () => curComponent.value && h(curComponent.value),
-                fallback: () => (
-                  <div class="container">
-                    <BasicSkeleton />
-                  </div>
-                )
+                // fallback: () => (
+                //   <div class="container">
+                //     <BasicSkeleton paragraph={{ rows: 12, width: '100%' }} />
+                //   </div>
+                // )
               }}
             </Suspense>
           </KeepAlive>

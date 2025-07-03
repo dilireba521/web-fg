@@ -138,7 +138,7 @@ export default defineComponent({
     })
     return () => {
       const _isIn = props.type == 'in'
-      console.log("---------------",props);
+      // console.log("---------------",props);
       
       return (
         <Modal
@@ -182,14 +182,14 @@ export default defineComponent({
                           class="w-80"
                         >
                           {{
-                            suffix: () => <div class="color-tertiary">{_isIn ? '$' : '份'}</div>
+                            suffix: () => <div class="color-tertiary">{_isIn ? '¥' : '份'}</div>
                           }}
                         </Input>
                         {_isIn ? '' : <div class='font-h8 color-secondary mt-1'>当前拥有{props.record?.shares}份额</div>}
                       </div>
                     </div>
                   ) : (
-                    renderItem(_isIn ? '购买金额' : '赎回份额', searchInfo.value + (_isIn ?' $':' 份'))
+                    renderItem(_isIn ? '购买金额' : '赎回份额', searchInfo.value + (_isIn ?' ¥':' 份'))
                   )}
                 </>
               ) : (

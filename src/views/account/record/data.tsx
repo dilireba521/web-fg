@@ -7,7 +7,7 @@ import { TextTranslate } from '@/components/OptionTranslate';
 export function basicColumns(cb, expandedRowKeys) {
     function handleClick(data: any) {
         cb?.(data)
-        console.log('点击了', data, expandedRowKeys)
+        // console.log('点击了', data, expandedRowKeys)
     }
 
     return [
@@ -41,10 +41,10 @@ export function basicColumns(cb, expandedRowKeys) {
 
         },
         {
-            title: '持有份额',
+            title: '赎回份额',
             dataIndex: 'shares',
             customRender({ text }) {
-                return text ? formatNumberWithCommas(text) : '0'
+                return text ? formatNumberWithCommas(text) : '- -'
             }
         },
         // {
@@ -53,9 +53,11 @@ export function basicColumns(cb, expandedRowKeys) {
         //     sorter: true,
         // },
         {
-            title: '持有价值',
+            title: '申购金额',
             dataIndex: 'amount',
-            // sorter: true,
+            customRender({ text }) {
+                return text ? formatNumberWithCommas(text) : '- -'
+            }
         },
         {
             title: '申请状态',

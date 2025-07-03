@@ -78,6 +78,7 @@ export default defineComponent({
             isHandle={true}
             beforeFetch={beforeFetch}
             api={useGetUserFundNotice}
+            immediate={false}
             searchInfo={searchInfo}
           >
             {{

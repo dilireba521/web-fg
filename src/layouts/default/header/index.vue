@@ -54,8 +54,9 @@ watch(
   () => {
     const _len = route.matched?.length
     const _item = route.matched[_len - 1]
-    const { matched } = route
-    console.log('matched===', matched)
+    const { matched, query } = route
+    // console.log('matched===', matched)
+    // console.log('route===', route)
     if (matched[_len - 1].meta.parentPath) {
       breadcrumb.value = matched
         .filter((item) => !item.meta?.nobBreadcrumb)
@@ -64,7 +65,8 @@ watch(
 
           return {
             title: item.meta.title,
-            path: item.path
+            path: item.path,
+            query: query
           }
         })
     } else {
@@ -152,8 +154,8 @@ router.afterEach((to, from) => {
 onMounted(() => {
   // 初始化时设置正确的样式
   updateHeaderStyle(window.pageYOffset || document.documentElement.scrollTop)
-   // 桌面设备添加滚轮事件监听
-   document.addEventListener('wheel', handleWheel)
+  // 桌面设备添加滚轮事件监听
+  document.addEventListener('wheel', handleWheel)
 })
 onUnmounted(() => {
   // 移除滚轮事件监听

@@ -62,37 +62,42 @@ export default defineComponent({
         >
           {{
             expandedRowRender: ({ record }) => {
-              const current = 1
+              const _hasError = record?.status == '3'
+              const _current =_hasError ? 2 : record?.status != '2' ? 1 : 2
+              const _isIn = record?.type == 'in'
+              const _typeName = _isIn ? '申购' : '赎回'
+
               const _steps = [
                 {
-                  title: '赎回申请',
-                  desc: '1'
+                  title: _typeName + '申请',
+                  desc: ''
                 },
                 {
-                  title: '赎回确认',
-                  desc: '2'
+                  title: _typeName + '确认',
+                  desc: ''
                 },
                 {
-                  title: '赎回结果',
-                  desc: '3'
+                  title: _typeName + '结果',
+                  desc: ''
                 }
               ]
+              _steps[_current].desc = record?.remark
               return (
                 <div class="pt-10">
                   <div class="pb-8 border-b-[#00000014] border-b-1 border-b-solid">
                     <div class="w-474px m-auto">
-                      <StepRender current={current} steps={_steps}></StepRender>
+                      <StepRender hasError={_hasError} current={_current} steps={_steps}></StepRender>
                     </div>
                   </div>
                   <div class="w-814px m-auto pt-8 pb-4">
                     <Row gutter={[8, 8]}>
                       {renderItem('申请时间', record?.applyTime)}
                       {renderItem(
-                        '申赎类型',
+                        '申请类型',
                         <TextTranslate type="dot" options={applyTypeOptions} value={record?.type} />
                       )}
                       {renderItem(
-                        '审核状态',
+                        '申请状态',
                         <TextTranslate
                           type="dot"
                           options={applyStatusOptions}
@@ -101,7 +106,7 @@ export default defineComponent({
                       )}
                       {record?.type == 'in'
                         ? renderItem('申购金额', record?.amount)
-                        : renderItem('赎回份额', record?.shares + '（CNY）')}
+                        : renderItem('赎回份额', record?.shares + '（份）')}
                     </Row>
                   </div>
                 </div>

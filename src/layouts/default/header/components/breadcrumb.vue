@@ -1,12 +1,8 @@
 <template>
   <div class="breadcrumb-wrap">
     <div class="breadcrumb">
-      <div
-        v-for="(item, i) in breadcrumb"
-        :key="i"
-        @click="handleClick({ data: item, index: i })"
-        :class="['breadcrumb-item', i === breadcrumbLength - 1 ? 'is-last' : '']"
-      >
+      <div v-for="(item, i) in breadcrumb" :key="i" @click="handleClick({ data: item, index: i })"
+        :class="['breadcrumb-item', i === breadcrumbLength - 1 ? 'is-last' : '']">
         <div :class="['mr-2']">
           {{ i === breadcrumbLength - 1 ? route?.query?.breadcrumb || item.title : item.title }}
         </div>
@@ -28,12 +24,17 @@ const props = defineProps({
 })
 const breadcrumbLength = computed(() => props.breadcrumb.length)
 const { go } = useGo()
-console.log('breadcrumb====breadcrumb', props.breadcrumb)
-
 function handleClick(params: any) {
   if (params.index === breadcrumbLength.value - 1) return
+  let _params = {}
+
+  // 处理面包屑点击父级带参数跳转
+  if (Object.prototype.hasOwnProperty.call(params?.data?.query, 'redirect')) {
+    _params = JSON.parse(params?.data?.query.redirect)
+  }
   go({
-    path: params?.data?.path
+    path: params?.data?.path,
+    query: _params
   })
 }
 </script>
@@ -44,6 +45,7 @@ function handleClick(params: any) {
   background-color: #fff;
   z-index: 1;
 }
+
 .breadcrumb {
   width: @widthMax;
   margin: 0 auto;
@@ -53,6 +55,7 @@ function handleClick(params: any) {
   font-size: 14px;
   line-height: 44px;
   background-color: #fff;
+
   &-item {
     display: flex;
     align-items: center;
