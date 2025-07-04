@@ -1,4 +1,4 @@
-import { defineComponent, reactive, ref, toRaw, watch } from 'vue'
+import { defineComponent, reactive, ref, toRaw,h, watch } from 'vue'
 import { Segmented, RangePicker, Input, List, message, Button, Tabs } from 'ant-design-vue'
 import { BasicList } from '@/components/list'
 import { useRoute } from 'vue-router'
@@ -61,7 +61,7 @@ export default defineComponent({
               return <Tabs.TabPane key={item.value} tab={item.label}></Tabs.TabPane>
             })}
           </Tabs>
-          {renderRisk(false)}
+          {h(renderRisk(false))}
         </div>
       </div>
     )

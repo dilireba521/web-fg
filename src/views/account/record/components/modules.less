@@ -1,107 +1,108 @@
 .cur-step-record {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 
-    .step-item {
-        flex: 1;
-        position: relative;
+  .step-item {
+    flex: 1;
+    position: relative;
 
-        .step-line {
-            position: absolute;
-            top: -1px;
-            left: 14px;
-            margin-left: 50px;
-            width: calc(100% - 27px);
-            line-height: 0;
+    .step-line {
+      position: absolute;
+      top: -1px;
+      left: 14px;
+      margin-left: 50px;
+      width: calc(100% - 27px);
+      line-height: 0;
 
-            &:after {
-                content: '';
-                display: inline-block;
-                width: 100%;
-                height: 1px;
-                background: #00000026;
-
-            }
-        }
-
-        .step-dot {
-            position: relative;
-            top: -1px;
-            width: 8px;
-            height: 8px;
-            background: #00000073;
-            border-radius: 50%;
-            margin-left: 50px;
-            translate: -50%;
-        }
-
-        .step-title {
-            width: 100px;
-            text-align: center;
-            margin-top: 8px;
-            font-size: 16px;
-            color: @colorTextTertiary;
-        }
-
-        .step-desc {
-            width: 100px;
-            color: @colorTextTertiary;
-            text-align: center;
-        }
-
-        &.is-finished {
-            .step-line {
-                &:after {
-                    background: @colorSuccess;
-                }
-            }
-
-            .step-dot {
-                background-color: @colorSuccess;
-            }
-
-            .step-title {
-                color: @colorText;
-            }
-        }
-
-        &.is-active {
-            .step-dot {
-                width: 10px;
-                height: 10px;
-                background: @colorSuccess;
-            }
-
-            .step-desc,
-            .step-title {
-                color: @colorText;
-            }
-
-            &.is-error {
-                .step-dot {
-                    background: @colorError;
-                }
-
-                .step-desc,
-                .step-title {
-                    color: @colorError;
-                }
-            }
-        }
-
-        &:last-child {
-            .step-line {
-                display: none;
-            }
-            &.is-active {
-                .step-desc,
-                .step-title {
-                    color: @colorSuccess;
-                }
-            }
-        }
+      &:after {
+        content: '';
+        display: inline-block;
+        width: 100%;
+        height: 1px;
+        background: #00000026;
+      }
     }
 
+    .step-dot {
+      position: relative;
+      top: -1px;
+      width: 8px;
+      height: 8px;
+      background: #00000073;
+      border-radius: 50%;
+      margin-left: 50px;
+      translate: -50%;
+    }
 
+    .step-title {
+      width: 100px;
+      text-align: center;
+      margin-top: 8px;
+      font-size: 16px;
+      color: @colorTextTertiary;
+    }
 
+    .step-desc {
+      width: 100px;
+      color: @colorTextTertiary;
+      text-align: center;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* 可以设置为所需的行数 */
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &.is-finished {
+      .step-line {
+        &:after {
+          background: @colorSuccess;
+        }
+      }
+
+      .step-dot {
+        background-color: @colorSuccess;
+      }
+
+      .step-title {
+        color: @colorText;
+      }
+    }
+
+    &.is-active {
+      .step-dot {
+        width: 10px;
+        height: 10px;
+        background: @colorSuccess;
+      }
+
+      .step-desc,
+      .step-title {
+        color: @colorText;
+      }
+
+      &.is-error {
+        .step-dot {
+          background: @colorError;
+        }
+
+        .step-desc,
+        .step-title {
+          color: @colorError;
+        }
+      }
+    }
+
+    &:last-child {
+      .step-line {
+        display: none;
+      }
+      &.is-active {
+        .step-desc,
+        .step-title {
+          color: @colorSuccess;
+        }
+      }
+    }
+  }
 }

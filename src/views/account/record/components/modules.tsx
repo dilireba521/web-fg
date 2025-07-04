@@ -33,7 +33,7 @@ export const StepRender = defineComponent({
                             <div class="step-line"></div>
                             <div class="step-dot"></div>
                             <div class="step-title">{item?.title}</div>
-                            <div class="step-desc">{item?.desc}</div>
+                            <div class="step-desc" title={item?.desc}>{item?.desc}</div>
                         </div>
                     )
                 })}

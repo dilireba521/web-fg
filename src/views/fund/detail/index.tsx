@@ -1,4 +1,4 @@
-import { defineComponent, watch, reactive, onMounted, ref } from 'vue'
+import { defineComponent, watch, reactive,h, onMounted, ref } from 'vue'
 import BannerElm from './components/banner'
 import { renderBaseInfo, renderStrate, renderRisk } from './components/modules'
 import ManagerElm from './components/manager'
@@ -40,7 +40,7 @@ export default defineComponent({
           {/* 费用信息 */}
           <CostElm  record={dataSource.value?.fees}/>
           {/* 风险提示函 */}
-          {renderRisk()}
+          {h(renderRisk())}
         </div>
       </div>
     )
