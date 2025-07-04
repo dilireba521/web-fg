@@ -6,6 +6,7 @@ enum Api {
     USER_FUND_DAILY = '/web/user/fund/daily/',
     USER_FUND_NETORTH = '/web/user/fund/netorth/',
     USER_FUND_NOTICE = '/web/user/fund/notice/',
+    USER_FUND_NOTICE_INFO = '/web/user/fund/notice/info/',
     USER_FUND_SRLIST = '/web/user/fund/srlist/',
     USER_ASSET_AF = '/web/user/asset/af/',
     USER_ASSET_MAP = '/web/user/asset/map/',
@@ -20,6 +21,8 @@ export const useGetUserLogs= (params?: any) => useGet(Api.USER_LOGS, params)
 export const useGetUserFundDaily= (params?: any) => useGet(Api.USER_FUND_DAILY, params)
 export const useGetUserFundNetorth= (params?: any) => useGet(Api.USER_FUND_NETORTH, params)
 export const useGetUserFundNotice= (params?: any) => useGet(Api.USER_FUND_NOTICE, params)
+export const useGetUserFundNoticeInfo= (params?: any) => useGet(Api.USER_FUND_NOTICE_INFO, params)
+export const usePostUserFundNoticeInfo= (data?: any) => usePost(Api.USER_FUND_NOTICE_INFO, data)
 export const useGetUserFundSrlist= (params?: any) => useGet(Api.USER_FUND_SRLIST, params)
 export const useGetUserAssetAf = (params?: any) => useGet(Api.USER_ASSET_AF, params)
 export const useGetUserAssetMap = (params?: any) => useGet(Api.USER_ASSET_MAP, params)

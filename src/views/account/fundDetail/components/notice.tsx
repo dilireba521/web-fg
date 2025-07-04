@@ -7,7 +7,7 @@ import { basicOptions, productNoticeOptions } from '@/utils/options/basicOptions
 import { useGo } from '@/hooks/web/usePage'
 import { formatToDate } from '@/utils/dateUtil'
 import { useUserStore } from '@/store/modules/user'
-import { useGetUserFundNotice } from "@/api/user"
+import { useGetUserFundNotice,usePostUserFundNoticeInfo } from "@/api/user"
 import { useNewsCategory } from '@/utils/options/useBasicOptions'
 
 export default defineComponent({
@@ -39,6 +39,7 @@ export default defineComponent({
     function handleClick(params: any) {
       if (userStore.getToken) {
         window.open(params?.file?.file, '_blank')
+        usePostUserFundNoticeInfo({ id: params?.id })
       } else {
         message.warning('请先登录账号！')
       }

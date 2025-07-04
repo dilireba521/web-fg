@@ -9,6 +9,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import { useRoute } from 'vue-router'
 import { netValueCurveOptions } from '@/utils/options/basicOptions'
 import { hasOwn } from '@vueuse/core'
+import { useDebounceFn } from '@vueuse/core'
 
 // 单位净值
 export function useRenderTotalEchart() {
@@ -53,10 +54,11 @@ export function useRenderTotalEchart() {
       loading.value = false
     }
   }
+  const debounceFn = useDebounceFn(useGetUserFundNetorthFn, 200)
   watch(
     () => searchInfo,
     () => {
-      useGetUserFundNetorthFn()
+      debounceFn()
     },
     { immediate: true, deep: true }
   )
@@ -64,7 +66,7 @@ export function useRenderTotalEchart() {
     () => searchInfo.year,
     (curV, oldV) => {
       if (curV) {
-        useGetUserFundNetorthFn()
+        debounceFn()
         searchInfo.time = []
       }
     },
@@ -74,7 +76,7 @@ export function useRenderTotalEchart() {
     () => searchInfo.time,
     (curV, oldV) => {
       if (curV?.length > 0) {
-        useGetUserFundNetorthFn()
+        debounceFn()
         searchInfo.year = null
       }
     },
@@ -215,7 +217,7 @@ export function useRenderTotalEchart() {
               _hasOut = true
             }
             if (item2?.type == 'in') {
-              _inData += item2?.shares
+              _inData += item2?.amount
               _hasIn = true
             }
           })

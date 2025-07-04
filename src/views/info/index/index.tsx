@@ -81,8 +81,8 @@ export default defineComponent({
         window.open(params?.file?.file)
       } else {
         go(`/info/detail/?id=${params?.id}`)
-        usePostNewsInfo({ id: params?.id })
       }
+      usePostNewsInfo({ id: params?.id })
     }
     return () => (
       <div>
