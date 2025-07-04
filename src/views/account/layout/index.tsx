@@ -82,7 +82,7 @@ export default defineComponent({
         <div class="bg-#C1272D h-37">
           <div class="container">
             <div class="pl-10 pt-12">
-              <div class="font-h5 color-text1">您好，用户{userInfo?.name}</div>
+              <div class="font-h5 color-text1">您好，{userInfo?.name}</div>
               <div class="mt-1 font-h8 color-tertiary1">
                 上次登录时间：
                 {userInfo?.lastLoginTime ? formatToDateTime(userInfo?.lastLoginTime) : '- -'}
