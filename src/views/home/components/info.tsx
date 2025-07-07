@@ -46,25 +46,27 @@ const ListElm = defineComponent({
     const { data } = await useGetNews({ isHome: true })
     console.log('data----', data)
     function handleClick(params: any) {
-      emit('push', {
-        path: '/info/detail',
-        query: params
-      })
+      if (params?.file?.file) {
+        window.open(params?.file?.file, '_blank')
+      } else {
+        emit('push', {
+          path: '/info/detail',
+          query: {
+            id: params?.id
+          }
+        })
+      }
     }
     return () => {
       return (
         <div>
           <BasicSkeleton loading={false} showEmpty={!data?.value?.data}>
             <Row gutter={[16, 16]}>
-              {data.value?.data?.slice(0,8)?.map((item, index) => {
+              {data.value?.data?.slice(0, 8)?.map((item, index) => {
                 return (
                   <Col span={6}>
                     <div
-                      onClick={() =>
-                        handleClick({
-                          id: item.id
-                        })
-                      }
+                      onClick={() => handleClick(item)}
                       class="p-5 group bg-[#F5F5F5] hover:bg-[#C1272D]
                  cursor-pointer rounded-sm"
                     >

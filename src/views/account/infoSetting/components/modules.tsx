@@ -6,7 +6,7 @@ import { usePostChangePas } from '@/api/user'
 import { useApiBasic } from '@/utils/hook/useApi'
 import { useInterval } from '@vueuse/core'
 import { useUserStore } from '@/store/modules/user'
-
+import { validatePassword } from "@/utils/regex"
 const modalFooterBtn: any = {
   class: 'w-74px !ml-4'
 }
@@ -126,7 +126,17 @@ export const Password = defineComponent({
         {
           required: true,
           message: '请输入新密码',
-          trigger: 'blur'
+          trigger: 'blur',
+          validator: (rule: any, value: any) => {
+            if (value === '') {
+              return Promise.reject('密码不能为空')
+            } else {
+              if (!validatePassword(value)) {
+                return Promise.reject('密码由8-16位数字、字母或符号组成')
+              }
+              return Promise.resolve()
+            }
+          }
         }
       ],
       password2: [
@@ -194,6 +204,7 @@ export const Password = defineComponent({
             default: () => (
               <Form
                 hideRequiredMark={true}
+                validateFirst={true}
                 ref={formRef}
                 labelCol={labelCol}
                 model={formState}
@@ -207,10 +218,16 @@ export const Password = defineComponent({
                   ></Input.Password>
                 </Form.Item> */}
                 <Form.Item name="password1" label="新密码">
-                  <Input.Password
-                    v-model:value={formState.password1}
-                    placeholder="请输入新密码"
-                  ></Input.Password>
+                  {{
+                    default: () => (
+                      <Input.Password
+                        v-model:value={formState.password1}
+                        placeholder="请输入新密码"
+                      ></Input.Password>
+                    ),
+                    help: () =><div class="font-h8">密码由8-16位数字、字母或符号组成</div>
+                  }}
+                  
                 </Form.Item>
                 <Form.Item name="password2" label="重复新密码">
                   <Input.Password
@@ -230,7 +247,7 @@ export const Password = defineComponent({
                     <Button
                       disabled={counterMsg.value != _count}
                       onClick={getCode}
-                      class='w-30 text-center !px-0'
+                      class="w-30 text-center !px-0"
                     >
                       {counterMsg.value != _count
                         ? counterMsg.value + '秒后重新获取'

@@ -32,8 +32,8 @@ export const StepRender = defineComponent({
                         >
                             <div class="step-line"></div>
                             <div class="step-dot"></div>
-                            <div class="step-title">{item?.title}</div>
-                            <div class="step-desc" title={item?.desc}>{item?.desc}</div>
+                            <div class={["step-title",props.hasError && index === props.current ? 'is-error' : '']}>{item?.title}</div>
+                            <div class={["step-desc",props.hasError && index === props.current ? 'is-error' : '']} title={item?.desc}>{item?.desc}</div>
                         </div>
                     )
                 })}
