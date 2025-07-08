@@ -33,7 +33,7 @@ export default defineComponent({
     )
     watch(()=>options.value,(cur)=>{
       if(cur?.length>0){
-        searchInfo.type = cur[0].label
+        searchInfo.type = cur[0].value
       }
     })
     function handleClick(params: any) {
@@ -70,7 +70,7 @@ export default defineComponent({
         <div>
           <Tabs v-model:activeKey={searchInfo.type} tabBarGutter={16} size="small">
             {options.value?.map((item: any) => {
-              return <Tabs.TabPane key={item.label} tab={item.label}></Tabs.TabPane>
+              return <Tabs.TabPane key={item.value} tab={item.label}></Tabs.TabPane>
             })}
           </Tabs>
           <BasicList

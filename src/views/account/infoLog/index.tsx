@@ -10,7 +10,7 @@ export default defineComponent({
     const tableRef = ref()
 
     const searchInfo = reactive({
-      timeRang: ''
+      timeRang: null
     })
     function beforeFetch(params: any) {
       if (params.timeRang?.length > 0) {

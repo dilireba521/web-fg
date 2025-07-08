@@ -67,19 +67,19 @@ const ListElm = defineComponent({
                   <Col span={6}>
                     <div
                       onClick={() => handleClick(item)}
-                      class="p-5 group bg-[#F5F5F5] hover:bg-[#C1272D]
-                 cursor-pointer rounded-sm"
+                      class="p-5 pb-4 group bg-[#F5F5F5] hover:bg-[#C1272D]
+                 cursor-pointer rounded-sm flex flex-col justify-between h-162px"
                     >
                       <div
                         title={item?.title}
-                        class="group-hover:color-[#fff]/88 font-h6 font-500 truncate"
+                        class="group-hover:color-[#fff]/88 font-h6 font-500 line-clamp-2"
                       >
                         {item?.title}
                       </div>
-                      <div class="group-hover:color-[#fff]/88 pt-2 h-13 font-h7 color-secondary line-clamp-2">
+                      <div class=" group-hover:color-[#fff]/88 pt-2 font-h7 color-secondary line-clamp-2">
                         {item?.desc}
                       </div>
-                      <div class="group-hover:color-[#fff]/88 color-secondary flex justify-between items-center pt-6">
+                      <div class="group-hover:color-[#fff]/88 color-secondary flex-1 flex justify-between items-end">
                         <div>
                           <SwapRightOutlined class="hidden group-hover:block" />
                         </div>

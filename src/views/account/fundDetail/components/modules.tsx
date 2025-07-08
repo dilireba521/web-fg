@@ -99,7 +99,7 @@ export const renderFund = (data: any) => {
         </Col>
         <Col flex={'200px'}>
           {renderPanel({
-            title: '日涨跌',
+            title: '涨跌幅',
             type: 'default',
             panelClass: 'h-[100px]',
             content: () => (

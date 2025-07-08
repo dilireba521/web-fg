@@ -35,7 +35,7 @@ import { useNoticeCategory } from '@/utils/options/useBasicOptions'
 import { useGetNotice } from '@/api/notice'
 import { useUserStore } from '@/store/modules/user'
 import { BasicSkeleton } from '@/components/skeleton'
-
+import { useDebounceFn } from '@vueuse/core'
 const userStore = useUserStore()
 
 const open = ref(false)
@@ -76,11 +76,17 @@ function jump(params?: any) {
   })
 }
 watch(activeKey, (cur) => {
-  useGetNoticeFn({ categoryId: cur, isRead: 0, pageSize: 5 })
+  // console.log(1);
+  debounceFn()
+  // useGetNoticeFn({ categoryId: cur, isRead: 0, pageSize: 5 })
 })
 watch(()=> countAll.value,()=>{
-  useGetNoticeFn({ categoryId: activeKey.value, isRead: 0, pageSize: 5 })
+  // console.log(2);
+  debounceFn()
+  // useGetNoticeFn({ categoryId: activeKey.value, isRead: 0, pageSize: 5 })
 })
+const debounceFn = useDebounceFn(()=>useGetNoticeFn({ categoryId: activeKey.value, isRead: 0, pageSize: 5 }), 200)
+
 async function useGetNoticeFn(params: any) {
   const { data } = await useGetNotice(params)
   if (data.value?.retCode == 0) {

@@ -41,7 +41,7 @@ export function basicColumns(cb, expandedRowKeys) {
 
         },
         {
-            title: '赎回份额',
+            title: '份额',
             dataIndex: 'shares',
             customRender({ text }) {
                 return text ? formatNumberWithCommas(text) : '- -'
@@ -53,7 +53,7 @@ export function basicColumns(cb, expandedRowKeys) {
         //     sorter: true,
         // },
         {
-            title: '申购金额',
+            title: '金额（CNY）',
             dataIndex: 'amount',
             customRender({ text }) {
                 return text ? formatNumberWithCommas(text) : '- -'

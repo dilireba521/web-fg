@@ -71,7 +71,7 @@ export default defineComponent({
       (curV) => {
         router.push({
           query: {
-            activeKey: curV
+            activeKey: curV.toString()
           },
           replace: true // 不会创建新的历史记录
         })

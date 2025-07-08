@@ -257,7 +257,7 @@ export function useRenderTotalEchart() {
           }
         }
       },
-      color: ['#F55458FF', '#5BB86FFF'],
+      color: ['#F55458FF', '#5BB86FFF','#2C97EB'],
       grid: {
         top: '30',
         left: '0',

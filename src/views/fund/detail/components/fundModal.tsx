@@ -1,10 +1,11 @@
 import { defineComponent, reactive, ref, onMounted, computed, watch, nextTick } from 'vue'
-import { Modal, Input, Button, Checkbox, message } from 'ant-design-vue'
+import { Modal, Input, Popover, InputNumber, Button, Checkbox, message } from 'ant-design-vue'
 import './fundModal.less'
 import { useGo } from '@/hooks/web/usePage'
 import { usePostFundSr } from '@/api/fund'
 import { riskLevelOptions2 } from '@/utils/options/basicOptions'
 import { useApiBasic } from '@/utils/hook/useApi'
+import { formateNumStr } from '@/utils/formate'
 // import { useRoute } from 'vue-router'
 
 export default defineComponent({
@@ -36,7 +37,7 @@ export default defineComponent({
         (i) => i.value == props.record?.riskLevel || i.value == props.record?.risk_level
       )?.label
     })
-    const searchInfo = reactive({
+    const searchInfo = reactive<any>({
       current: 0,
       checked: false,
       value: null
@@ -71,11 +72,12 @@ export default defineComponent({
       }
     ]
     const riskModalRef = ref()
-    function renderItem(name: string, value: any) {
+    function renderItem(name: string, value: any, desc?: string) {
       return (
         <div class="flex !items-baseline !justify-start pb-6">
           <div class="color-secondary text-nowrap min-w-24">{name}</div>
           <div class="font-500">{value || '- -'}</div>
+          <div class="color-secondary">{desc}</div>
         </div>
       )
     }
@@ -88,7 +90,7 @@ export default defineComponent({
     function handleClickSubmit() {
       if (searchInfo.current === 0) {
         if (searchInfo.value) {
-          if(props.type == 'out'&& searchInfo.value > props.record?.shares ){
+          if (props.type == 'out' && searchInfo.value > props.record?.shares) {
             message.error('赎回份额不能大于持有份额')
             return
           }
@@ -101,15 +103,15 @@ export default defineComponent({
           useApiBasic({
             apiFn: usePostFundSr({
               type: props.type,
-              fundId: props.record?.id ||  props.record?.fundId,
+              fundId: props.record?.id || props.record?.fundId,
               amount: searchInfo.value
             }) as any,
             successFn: () => {
               searchInfo.current = 2
-              nextTick(()=>{
+              nextTick(() => {
                 message.success({
-                  content:"操作成功，请等待审核。",
-                  key: '_save_fake_data',
+                  content: '操作成功，请等待审核。',
+                  key: '_save_fake_data'
                 })
               })
             },
@@ -127,19 +129,37 @@ export default defineComponent({
     function openModal() {
       config.visible = true
     }
+    // 设置赎回份额
+    function setShares(volume: number) {
+      const _val = props.record?.shares || 0
+      searchInfo.value = Math.floor(_val * volume)
+    }
     watch(
       () => props.type,
       (cur) => {
         config.title = cur == 'in' ? '基金申购' : '基金赎回'
       }
     )
+    watch(
+      () => config.visible,
+      (cur) => {
+        if (!cur) {
+          searchInfo.current = 0
+          searchInfo.value = null
+          searchInfo.checked = false
+        }
+      }
+    )
     expose({
       openModal
     })
+
     return () => {
       const _isIn = props.type == 'in'
       // console.log("---------------",props);
-      
+      const _exchange_rate = props.record?.exchange_rate || props.record?.unit?.exchangeRate || 1
+      const _sign = props.record?.unit?.sign || props.record?.fund_unit
+      const _net_worth = props.record?.netWorth || props.record?.net_worth || 1
       return (
         <Modal
           width={config.width}
@@ -167,7 +187,7 @@ export default defineComponent({
                 <>
                   {renderItem('基金名称', props.record?.name)}
                   {renderItem('基金代码', props.record?.code || props.record?.fund_code)}
-                  {renderItem('最新净值', props.record?.netWorth || props.record?.net_worth)}
+                  {renderItem('最新净值', _net_worth)}
                   {renderItem('风险等级', level.value)}
                   {searchInfo.current == 0 ? (
                     <div class="flex !items-baseline !justify-start pb-12">
@@ -175,21 +195,75 @@ export default defineComponent({
                         {_isIn ? '购买金额' : '赎回份额'}
                       </div>
                       <div class="font-500">
-                        <Input
-                          v-model:value={searchInfo.value}
-                          size="large"
-                          placeholder="≥1"
-                          class="w-80"
-                        >
-                          {{
-                            suffix: () => <div class="color-tertiary">{_isIn ? '$' : '份'}</div>
-                          }}
-                        </Input>
-                        {_isIn ? '' : <div class='font-h8 color-secondary mt-1'>当前拥有{props.record?.shares}份额</div>}
+                        {_isIn ? (
+                          <Popover placement="topLeft">
+                            {{
+                              default: () => (
+                                <InputNumber
+                                  v-model:value={searchInfo.value}
+                                  size="large"
+                                  placeholder="≥1"
+                                  precision={2}
+                                  class="w-80"
+                                >
+                                  {{
+                                    addonAfter: () => <div class="color-tertiary">{_sign}</div>
+                                  }}
+                                </InputNumber>
+                              ),
+                              content: () => `当前输入为${_sign}，系统申赎自动换算为CNY`
+                            }}
+                          </Popover>
+                        ) : (
+                          <InputNumber
+                            v-model:value={searchInfo.value}
+                            size="large"
+                            placeholder="≥1"
+                            precision={2}
+                            class="w-80"
+                          >
+                            {{
+                              addonAfter: () => <div class="color-tertiary">份</div>
+                            }}
+                          </InputNumber>
+                        )}
+
+                        {_isIn ? (
+                          ''
+                        ) : (
+                          <div class="flex mt-1 gap-2 items-center">
+                            <Button.Group size="small">
+                              <Button onClick={() => setShares(0.2)}>1/5</Button>
+                              <Button onClick={() => setShares(0.5)}>1/2</Button>
+                              <Button onClick={() => setShares(1)}>全部</Button>
+                            </Button.Group>
+                            <div class="font-h8 color-secondary ">
+                              当前拥有{props.record?.shares}份额
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ) : (
-                    renderItem(_isIn ? '购买金额' : '赎回份额', searchInfo.value + (_isIn ?' $':' 份'))
+                    <>
+                      {renderItem(
+                        _isIn ? '购买金额' : '赎回份额',
+                        searchInfo.value +
+                          (_isIn
+                            ? ` ${_sign} ≈ ${formateNumStr(searchInfo.value * _exchange_rate)} CNY`
+                            : ` 份`)
+                      )}
+                      {!_isIn &&
+                        renderItem(
+                          '预计赎回金额',
+                          formateNumStr(searchInfo.value * _net_worth, {
+                            keepZero: false,
+                            decimals: 2
+                          }) + ' CNY',
+                          '（实际赎回额度以结算当天汇率为准）'
+                        )}
+                      <div></div>
+                    </>
                   )}
                 </>
               ) : (

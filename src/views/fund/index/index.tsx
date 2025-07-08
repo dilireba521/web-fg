@@ -12,7 +12,7 @@ import {
 import { BasicList } from '@/components/list'
 import { useGo } from '@/hooks/web/usePage'
 import { useGetlist } from '@/api/fund'
-import { useFundCategory } from "@/utils/options/useBasicOptions"
+import { useFundCategory } from '@/utils/options/useBasicOptions'
 export default defineComponent({
   setup(props, ctx) {
     const { options } = useFundCategory()
@@ -123,16 +123,21 @@ export default defineComponent({
                 label: () => <div class="font-h7 color-secondary">成立年限</div>
               }}
             </Form.Item>
-            <Form.Item>
-              {{
-                default: () => (
-                  <div class="flex">
-                    <BasicButtonForm options={options.value} v-model:value={searchInfo.categoryId} />
-                  </div>
-                ),
-                label: () => <div class="font-h7 color-secondary">基金标签</div>
-              }}
-            </Form.Item>
+            {options.value.length > 0 && (
+              <Form.Item>
+                {{
+                  default: () => (
+                    <div class="flex">
+                      <BasicButtonForm
+                        options={options.value}
+                        v-model:value={searchInfo.categoryId}
+                      />
+                    </div>
+                  ),
+                  label: () => <div class="font-h7 color-secondary">基金标签</div>
+                }}
+              </Form.Item>
+            )}
           </Form>
           <BasicList
             api={useGetlist}
@@ -143,12 +148,16 @@ export default defineComponent({
           >
             {{
               renderItem: ({ item }) => {
-                const _level:any = riskLevelOptions2?.find((i) => i.value == item?.riskLevel)?.label
+                const _level: any = riskLevelOptions2?.find(
+                  (i) => i.value == item?.riskLevel
+                )?.label
                 return (
                   <List.Item class="!px-8 !py-6 bg-black/3 mb-2">
                     <div class="w-full flex items-center justify-between">
                       <div>
-                        <div onClick={()=>jump(item)} class="font-h5 font-500 cursor-pointer ">{item?.name}</div>
+                        <div onClick={() => jump(item)} class="font-h5 font-500 cursor-pointer ">
+                          {item?.name}
+                        </div>
                         <div class="flex mt-3 gap-8">
                           {renderItem('基金代码：', item?.fundCode)}
                           {renderItem('风险等级：', _level)}
@@ -156,7 +165,7 @@ export default defineComponent({
                           {renderItem('基金经理：', item?.manager)}
                         </div>
                       </div>
-                      <div onClick={()=>jump(item)} class="cursor-pointer color-primary1">
+                      <div onClick={() => jump(item)} class="cursor-pointer color-primary1">
                         查看详细
                       </div>
                     </div>

@@ -18,7 +18,6 @@ function baseFetch(api: Function, { label = 'label', value = 'value' }: Options,
   async function fetch() {
     const _key = api.toString().match(regex)?.[1]
     const _map = useProjectConfig.getOptionsMap
-
     if (_key && _map[_key]) {
       options.value = JSON.parse(JSON.stringify(_map[_key]))
       return Promise.resolve(JSON.parse(JSON.stringify(options.value)))

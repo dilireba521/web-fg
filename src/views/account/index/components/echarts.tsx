@@ -70,7 +70,7 @@ export function useRenderTotalEchart() {
           return `<div class='min-w-30'>
                                 <div clsss='text-black/65'>${params[0].name}</div>
                                 <div style='border-bottom: 1px solid #00000026; margin: 8px 0;'></div>
-                                ${searchInfo.unit == 'CNY' ? '¥' : '$'}&nbsp;${formatNumberWithCommas(params[0].value)}
+                                ${searchInfo.unit}&nbsp;${formatNumberWithCommas(params[0].value)}
                             </div>`
         },
         axisPointer: {
@@ -483,22 +483,31 @@ export function useAssetChangeRate() {
     time: []
   })
 
+  // 定义一个异步函数，用于获取用户资产信息
   async function useGetUserAssetAfFn() {
     try {
+      // 设置加载状态为true
       spinning.value = true
+      // 定义参数对象
       const _params: any = {
         // unit: searchInfo.unit
       }
+      // 如果有年份信息，则将年份信息格式化为YYYY格式，并添加到参数对象中
       if (searchInfo.year) {
         _params.year = searchInfo.year.format('YYYY')
       }
+      // 如果有时间信息，则将时间信息格式化为YYYY-MM-DD格式，并添加到参数对象中
       if (searchInfo.time?.length > 0) {
         _params.beginDate = searchInfo.time[0]?.format('YYYY-MM-DD')
         _params.endDate = searchInfo.time[1]?.format('YYYY-MM-DD')
       }
+      // 调用useGetUserAssetAf函数，传入参数对象，获取数据
       const { data } = await useGetUserAssetAf(_params)
+      // 如果返回码为0，则表示获取数据成功
       if (data.value?.retCode == 0) {
+        // 将数据赋值给record.value
         record.value = data.value?.data
+        // 等待数据更新完成
         await nextTick()
         initData()
         console.log('record----', record.value)
